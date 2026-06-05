@@ -1,0 +1,116 @@
+{
+  "policyVersion": "1.0.0",
+
+  "allowedAssetTypes": ["camera", "laptop", "microphone", "tripod", "tablet"],
+
+  "allowedStatuses": ["available", "checked_out", "maintenance", "retired"],
+
+  "allowedConditions": [
+    "new",
+    "good",
+    "worn",
+    "scratched",
+    "damaged",
+    "unusable"
+  ],
+
+  "actorRoles": ["student", "staff", "technician", "admin"],
+
+  "sourceSystems": ["makerspace_app", "inventory_portal", "repair_system"],
+
+  "eventDefinitions": {
+    "CHECKOUT": {
+      "description": "Asset issued to user",
+      "requiresActor": true,
+      "requiresLocation": true
+    },
+
+    "RETURN": {
+      "description": "Asset returned",
+      "requiresActor": true,
+      "requiresLocation": true
+    },
+
+    "TRANSFER": {
+      "description": "Asset moved between locations",
+      "requiresActor": true,
+      "requiresLocation": true
+    },
+
+    "INSPECT": {
+      "description": "Condition inspection performed",
+      "requiresActor": true,
+      "requiresCondition": true
+    },
+
+    "REPAIR": {
+      "description": "Repair activity performed",
+      "requiresActor": true,
+      "requiresCondition": true
+    },
+
+    "RETIRE": {
+      "description": "Asset permanently removed from service",
+      "requiresActor": true,
+      "requiresCondition": true
+    }
+  },
+
+  "actorPermissions": {
+    "student": ["CHECKOUT", "RETURN"],
+
+    "staff": ["CHECKOUT", "RETURN", "TRANSFER"],
+
+    "technician": ["INSPECT", "REPAIR", "RETURN"],
+
+    "admin": ["CHECKOUT", "RETURN", "TRANSFER", "INSPECT", "REPAIR", "RETIRE"]
+  },
+
+  "maxActiveItemsPerStudent": 2,
+
+  "loanHoursByType": {
+    "camera": 48,
+    "laptop": 24,
+    "microphone": 72,
+    "tripod": 72,
+    "tablet": 24
+  },
+
+  "conditionSeverityRanking": {
+    "new": 0,
+    "good": 1,
+    "worn": 2,
+    "scratched": 3,
+    "damaged": 4,
+    "unusable": 5
+  },
+
+  "autoMaintenanceConditionRank": 4,
+
+  "locationRules": {
+    "media-lab": {
+      "active": true
+    },
+    "equipment-store": {
+      "active": true
+    },
+    "studio-a": {
+      "active": true
+    },
+    "repair-bench": {
+      "active": true
+    },
+    "library-store": {
+      "active": true
+    }
+  },
+
+  "validationRules": {
+    "requireUniqueEventIds": true,
+    "requireKnownAsset": true,
+    "requireKnownEventType": true,
+    "requireKnownActorRole": true,
+    "requireValidCondition": true,
+    "requireValidTimestamp": true
+  }
+}
