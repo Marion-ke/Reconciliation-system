@@ -58,6 +58,8 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
 
             rawRecordId: record.rawRecordId,
 
+            eventId: record.payload.event_id,
+
             reasonCode: REASON_CODES.DUPLICATE_EVENT_ID,
 
             severity: SEVERITY.ERROR,
@@ -87,6 +89,8 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
 
             rawRecordId: record.rawRecordId,
 
+            eventId: record.payload.event_id,
+
             reasonCode: REASON_CODES.MISSING_REQUIRED_FIELD,
 
             severity: SEVERITY.ERROR,
@@ -110,6 +114,8 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
           errorId: crypto.randomUUID(),
 
           rawRecordId: record.rawRecordId,
+
+          eventId: record.payload.event_id,
 
           reasonCode: REASON_CODES.MISSING_ACTOR_ROLE,
 
@@ -140,6 +146,8 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
 
           rawRecordId: record.rawRecordId,
 
+          eventId: record.payload.event_id,
+
           reasonCode: REASON_CODES.INVALID_TIMESTAMP,
 
           severity: SEVERITY.ERROR,
@@ -168,6 +176,8 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
 
           rawRecordId: record.rawRecordId,
 
+          eventId: record.payload.event_id,
+
           reasonCode: REASON_CODES.UNKNOWN_EVENT_TYPE,
 
           severity: SEVERITY.ERROR,
@@ -194,6 +204,8 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
           errorId: crypto.randomUUID(),
 
           rawRecordId: record.rawRecordId,
+
+          eventId: record.payload.event_id,
 
           reasonCode: REASON_CODES.UNKNOWN_ASSET,
 
@@ -226,6 +238,8 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
 
             rawRecordId: record.rawRecordId,
 
+            eventId: record.payload.event_id,
+
             reasonCode: REASON_CODES.INVALID_CONDITION,
 
             severity: SEVERITY.ERROR,
@@ -238,60 +252,41 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
       }
     }
     /**
- * -----------------------------------
- * Late Arrival Validation
- * -----------------------------------
- *
- * Events arriving significantly after
- * they occurred are flagged as warnings.
- */
-const occurredAt =
-  Date.parse(
-    record.payload.occurred_at
-  );
+     * -----------------------------------
+     * Late Arrival Validation
+     * -----------------------------------
+     *
+     * Events arriving significantly after
+     * they occurred are flagged as warnings.
+     */
+    const occurredAt = Date.parse(record.payload.occurred_at);
 
-const receivedAt =
-  Date.parse(
-    record.payload.received_at
-  );
+    const receivedAt = Date.parse(record.payload.received_at);
 
-if (
-  !Number.isNaN(occurredAt) &&
-  !Number.isNaN(receivedAt)
-) {
+    if (!Number.isNaN(occurredAt) && !Number.isNaN(receivedAt)) {
+      const hoursDifference = (receivedAt - occurredAt) / (1000 * 60 * 60);
 
-  const hoursDifference =
-    (receivedAt - occurredAt)
-    / (1000 * 60 * 60);
+      // More than 48 hours late
+      if (hoursDifference > 48) {
+        errors.push(
+          new ValidationError({
+            errorId: crypto.randomUUID(),
 
-  // More than 48 hours late
-  if (hoursDifference > 48) {
+            rawRecordId: record.rawRecordId,
 
-    errors.push(
-      new ValidationError({
-        errorId:
-          crypto.randomUUID(),
+            eventId: record.payload.event_id,
 
-        rawRecordId:
-          record.rawRecordId,
+            reasonCode: REASON_CODES.LATE_ARRIVAL,
 
-        reasonCode:
-          REASON_CODES.LATE_ARRIVAL,
+            severity: SEVERITY.WARNING,
 
-        severity:
-          SEVERITY.WARNING,
+            message: `Late arriving event (${Math.round(hoursDifference)} hours)`,
 
-        message:
-          `Late arriving event (${Math.round(hoursDifference)} hours)`,
-
-        sourceValue:
-          record.payload.received_at,
-      })
-    );
-
-  }
-
-}
+            sourceValue: record.payload.received_at,
+          }),
+        );
+      }
+    }
   });
 
   return errors;

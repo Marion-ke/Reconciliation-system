@@ -9,6 +9,7 @@ export default class ValidationError {
   constructor({
     errorId,
     rawRecordId,
+    eventId,
     reasonCode,
     severity,
     message,
@@ -19,6 +20,9 @@ export default class ValidationError {
 
     // Reference back to the original raw record
     this.rawRecordId = rawRecordId;
+
+    // Reference to the event that triggered the validation issue
+    this.eventId = eventId;
 
     // Machine-readable reason
     // Example: MISSING_ID
