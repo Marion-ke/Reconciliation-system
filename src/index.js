@@ -5,6 +5,16 @@ import { validateInventory } from "./validation/inventoryValidator.js";
 
 import { validateEvents } from "./validation/eventValidator.js";
 import { buildValidationResult } from "./validation/buildValidationResult.js";
+import { buildCanonicalEvents } from "./normalization/canonical_mapper.js";
+
+import { sortCanonicalEvents } from "./normalization/deterministic_sorter.js";
+
+import { buildCanonicalEventsCsv } from "./exporters/canonical_events_exporter.js";
+
+import { writeTextFile } from "./utils/file_utils.js";
+import { buildValidationErrorsCsv } from "./exporters/validation_exporter.js";
+import { buildRawRecordIndexCsv } from "./exporters/raw_record_exporter.js";
+import { buildIngestionSummary } from "./exporters/summary_exporter.js";
 
 /**
  * Packet 01 application entry point.
@@ -43,6 +53,26 @@ async function main() {
     eventRawRecords,
     validationErrors,
   );
+
+  const canonicalEvents = buildCanonicalEvents(
+    validationResult.acceptedRecords,
+  );
+
+  const sortedCanonicalEvents = sortCanonicalEvents(canonicalEvents);
+
+  const canonicalCsv = buildCanonicalEventsCsv(sortedCanonicalEvents);
+
+  writeTextFile("outputs/latest/canonical_events.csv", canonicalCsv);
+
+  const rawRecordCsv = buildRawRecordIndexCsv(
+    eventRawRecords,
+    validationResult,
+  );
+
+  writeTextFile("outputs/latest/raw_record_index.csv", rawRecordCsv);
+
+  console.log(`Canonical events exported: ${sortedCanonicalEvents.length}`);
+
   // Basic ingestion verification
   console.log(`Inventory records loaded: ${inventoryRawRecords.length}`);
 
@@ -50,6 +80,9 @@ async function main() {
 
   console.log(`Policy version loaded: ${policy.policyVersion}`);
 
+  const validationCsv = buildValidationErrorsCsv(validationErrors);
+
+  writeTextFile("outputs/latest/validation_errors.csv", validationCsv);
   console.log("\nValidation Errors:");
 
   validationErrors.forEach((error) => {
@@ -64,6 +97,24 @@ async function main() {
     (error) => error.severity === "WARNING",
   ).length;
 
+  const summary = buildIngestionSummary({
+    inventoryCount: inventoryRawRecords.length,
+
+    eventCount: eventRawRecords.length,
+
+    acceptedCount: validationResult.acceptedRecords.length,
+
+    rejectedCount: validationResult.rejectedRecords.length,
+
+    warningCount,
+
+    errorCount,
+
+    policyVersion: policy.policyVersion,
+  });
+
+  writeTextFile("outputs/latest/ingestion_summary.md", summary);
+
   console.log("\n=== Validation Summary ===");
 
   console.log(`Errors: ${errorCount}`);
@@ -76,6 +127,7 @@ async function main() {
   console.log(`Rejected: ${validationResult.rejectedRecords.length}`);
 
   console.log(`Warnings: ${validationResult.warningRecords.length}`);
+  console.log(`Validation errors exported: ${validationErrors.length}`);
 }
 
 main().catch((error) => {

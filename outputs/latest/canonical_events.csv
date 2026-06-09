@@ -1,0 +1,38 @@
+canonical_event_id,event_id,occurred_at,received_at,actor_id,actor_role,event_type,asset_id,location_id,condition_report,source_system,note,raw_record_id
+ce-0001,e001,2026-06-01T08:00:00Z,2026-06-01T08:01:00Z,s101,student,CHECKOUT,cam-001,media-lab,,makerspace_app,Film project checkout,events.csv-1
+ce-0002,e002,2026-06-01T08:15:00Z,2026-06-01T08:16:00Z,s102,student,CHECKOUT,lap-001,equipment-store,,makerspace_app,Research work,events.csv-2
+ce-0003,e003,2026-06-01T08:30:00Z,2026-06-01T08:31:00Z,s103,student,CHECKOUT,tab-001,library-store,,makerspace_app,Class presentation,events.csv-3
+ce-0004,e004,2026-06-01T09:00:00Z,2026-06-01T09:01:00Z,st001,staff,TRANSFER,cam-002,media-lab,,inventory_portal,Transferred to studio,events.csv-4
+ce-0036,e048,2026-06-01T09:00:00Z,2026-06-05T20:00:00Z,s124,student,CHECKOUT,tab-003,library-store,,makerspace_app,Late arriving event,events.csv-48
+ce-0005,e005,2026-06-01T09:30:00Z,2026-06-01T09:31:00Z,t001,technician,INSPECT,cam-003,repair-bench,scratched,repair_system,Routine inspection,events.csv-5
+ce-0006,e006,2026-06-01T10:00:00Z,2026-06-01T10:01:00Z,s104,student,CHECKOUT,mic-001,studio-a,,makerspace_app,Podcast recording,events.csv-6
+ce-0037,e049,2026-06-01T10:00:00Z,2026-06-06T08:00:00Z,st002,staff,TRANSFER,cam-004,media-lab,,inventory_portal,Late arriving event,events.csv-49
+ce-0007,e007,2026-06-01T10:30:00Z,2026-06-01T10:31:00Z,s105,student,CHECKOUT,trip-001,studio-a,,makerspace_app,Photography session,events.csv-7
+ce-0008,e008,2026-06-01T11:00:00Z,2026-06-01T11:01:00Z,st002,staff,TRANSFER,lap-002,equipment-store,,inventory_portal,Move to lab,events.csv-8
+ce-0009,e009,2026-06-01T11:30:00Z,2026-06-01T11:31:00Z,t001,technician,REPAIR,lap-004,repair-bench,damaged,repair_system,Keyboard repair,events.csv-9
+ce-0010,e010,2026-06-01T12:00:00Z,2026-06-01T12:01:00Z,s101,student,RETURN,cam-001,media-lab,good,makerspace_app,Returned after use,events.csv-10
+ce-0011,e011,2026-06-01T13:00:00Z,2026-06-01T13:01:00Z,s102,student,RETURN,lap-001,equipment-store,good,makerspace_app,Returned laptop,events.csv-11
+ce-0012,e012,2026-06-01T14:00:00Z,2026-06-01T14:01:00Z,t002,technician,INSPECT,mic-002,studio-a,scratched,repair_system,Audio quality check,events.csv-12
+ce-0013,e013,2026-06-01T15:00:00Z,2026-06-01T15:01:00Z,a001,admin,RETIRE,cam-005,media-lab,worn,inventory_portal,Asset retired,events.csv-13
+ce-0014,e014,2026-06-01T16:00:00Z,2026-06-01T16:01:00Z,s103,student,RETURN,tab-001,library-store,good,makerspace_app,Returned tablet,events.csv-14
+ce-0015,e015,2026-06-02T08:00:00Z,2026-06-02T08:01:00Z,s104,student,RETURN,mic-001,studio-a,good,makerspace_app,Returned microphone,events.csv-15
+ce-0016,e016,2026-06-02T08:30:00Z,2026-06-02T08:31:00Z,s105,student,RETURN,trip-001,studio-a,good,makerspace_app,Returned tripod,events.csv-16
+ce-0017,e017,2026-06-02T09:00:00Z,2026-06-02T09:01:00Z,st001,staff,TRANSFER,cam-004,media-lab,,inventory_portal,Move for event,events.csv-17
+ce-0018,e018,2026-06-02T10:00:00Z,2026-06-02T10:01:00Z,t001,technician,INSPECT,tab-002,repair-bench,scratched,repair_system,Screen inspection,events.csv-18
+ce-0019,e019,2026-06-02T11:00:00Z,2026-06-02T11:01:00Z,s106,student,CHECKOUT,cam-006,media-lab,,makerspace_app,Media assignment,events.csv-19
+ce-0020,e020,2026-06-03T10:00:00Z,2026-06-03T10:01:00Z,s107,student,CHECKOUT,lap-003,equipment-store,,makerspace_app,Project work,events.csv-20
+ce-0021,e021,2026-06-03T10:00:00Z,2026-06-03T10:02:00Z,st002,staff,TRANSFER,mic-003,studio-a,,inventory_portal,Transfer for recording,events.csv-21
+ce-0022,e022,2026-06-03T11:00:00Z,2026-06-03T11:01:00Z,t002,technician,REPAIR,cam-003,repair-bench,scratched,repair_system,Lens adjustment,events.csv-22
+ce-0023,e023,2026-06-03T12:00:00Z,2026-06-03T12:01:00Z,s108,student,CHECKOUT,tab-003,library-store,,makerspace_app,Class use,events.csv-23
+ce-0024,e024,2026-06-03T13:00:00Z,2026-06-03T13:01:00Z,s109,student,CHECKOUT,trip-002,studio-a,,makerspace_app,Photography practice,events.csv-24
+ce-0025,e025,2026-06-03T14:00:00Z,2026-06-03T14:01:00Z,st001,staff,TRANSFER,lap-005,equipment-store,,inventory_portal,Move between rooms,events.csv-25
+ce-0026,e026,2026-06-03T15:00:00Z,2026-06-03T15:01:00Z,t001,technician,INSPECT,mic-001,studio-a,good,repair_system,Sound test,events.csv-26
+ce-0027,e027,2026-06-04T08:00:00Z,2026-06-04T08:01:00Z,s110,student,CHECKOUT,cam-001,media-lab,,makerspace_app,Field project,events.csv-27
+ce-0028,e028,2026-06-04T09:00:00Z,2026-06-04T09:01:00Z,s111,student,CHECKOUT,lap-001,equipment-store,,makerspace_app,Research work,events.csv-28
+ce-0029,e029,2026-06-04T10:00:00Z,2026-06-04T10:01:00Z,s112,student,CHECKOUT,mic-002,studio-a,,makerspace_app,Recording session,events.csv-29
+ce-0030,e030,2026-06-04T11:00:00Z,2026-06-04T11:01:00Z,s113,student,CHECKOUT,trip-003,studio-a,,makerspace_app,Studio work,events.csv-30
+ce-0031,e031,2026-06-04T12:00:00Z,2026-06-04T12:01:00Z,t002,technician,INSPECT,lap-002,equipment-store,worn,repair_system,Health check,events.csv-31
+ce-0032,e032,2026-06-04T13:00:00Z,2026-06-04T13:01:00Z,a001,admin,RETIRE,mic-003,studio-a,worn,inventory_portal,End of service life,events.csv-32
+ce-0033,e033,2026-06-04T14:00:00Z,2026-06-04T14:01:00Z,s110,student,RETURN,cam-001,media-lab,good,makerspace_app,Returned camera,events.csv-33
+ce-0034,e034,2026-06-04T15:00:00Z,2026-06-04T15:01:00Z,s111,student,RETURN,lap-001,equipment-store,good,makerspace_app,Returned laptop,events.csv-34
+ce-0035,e035,2026-06-04T16:00:00Z,2026-06-04T16:01:00Z,s112,student,RETURN,mic-002,studio-a,good,makerspace_app,Returned microphone,events.csv-35
