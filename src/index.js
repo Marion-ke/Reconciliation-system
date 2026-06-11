@@ -15,6 +15,8 @@ import { writeTextFile } from "./utils/file_utils.js";
 import { buildValidationErrorsCsv } from "./exporters/validation_exporter.js";
 import { buildRawRecordIndexCsv } from "./exporters/raw_record_exporter.js";
 import { buildIngestionSummary } from "./exporters/summary_exporter.js";
+import { buildEventProfile } from "./profiling/profiler.js";
+import { buildDataProfileMarkdown } from "./exporters/profile_exporter.js";
 
 /**
  * Packet 01 application entry point.
@@ -88,10 +90,20 @@ async function main() {
   validationErrors.forEach((error) => {
     console.log(error);
   });
+  //   const profile = buildEventProfile(eventRawRecords);
 
+  //   console.log("\n=== Data Profile ===");
+
+  //   console.log(profile);
   const errorCount = validationErrors.filter(
     (error) => error.severity === "ERROR",
   ).length;
+
+  const profile = buildEventProfile(eventRawRecords);
+
+  const profileMarkdown = buildDataProfileMarkdown(profile);
+
+  writeTextFile("outputs/latest/data_profile.md", profileMarkdown);
 
   const warningCount = validationErrors.filter(
     (error) => error.severity === "WARNING",

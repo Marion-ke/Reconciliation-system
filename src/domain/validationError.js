@@ -14,6 +14,8 @@ export default class ValidationError {
     severity,
     message,
     sourceValue,
+    expectedRule,
+    recommendedNextAction,
   }) {
     // Unique identifier for the validation issue
     this.errorId = errorId;
@@ -36,5 +38,10 @@ export default class ValidationError {
 
     // Original value that triggered the issue
     this.sourceValue = sourceValue;
+    // Rule that was violated
+    this.expectedRule = expectedRule;
+
+    // Suggested fix
+    this.recommendedNextAction = recommendedNextAction;
   }
 }

@@ -67,6 +67,11 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
             message: `Duplicate event id: ${eventId}`,
 
             sourceValue: eventId,
+
+            expectedRule: "Each event_id must be unique.",
+
+            recommendedNextAction:
+              "Remove or correct duplicate event identifiers.",
           }),
         );
       } else {
@@ -98,6 +103,10 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
             message: `${field} is required`,
 
             sourceValue: value,
+
+            expectedRule: `${field} must be present and non-empty.`,
+
+            recommendedNextAction: `Populate the ${field} field before processing.`,
           }),
         );
       }
@@ -124,6 +133,11 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
           message: "Actor role is required",
 
           sourceValue: record.payload.actor_role,
+
+          expectedRule:
+            "actor_role is required for authorization and validation.",
+
+          recommendedNextAction: "Provide a valid actor role.",
         }),
       );
     }
@@ -155,6 +169,11 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
           message: "Invalid occurred_at timestamp",
 
           sourceValue: record.payload.occurred_at,
+
+          expectedRule: "occurred_at must be a valid ISO-8601 timestamp.",
+
+          recommendedNextAction:
+            "Provide a valid timestamp in ISO-8601 format.",
         }),
       );
     }
@@ -185,6 +204,10 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
           message: `Unknown event type: ${eventType}`,
 
           sourceValue: eventType,
+          expectedRule: "event_type must exist in the policy definition.",
+
+          recommendedNextAction:
+            "Use a supported event type or update the policy configuration.",
         }),
       );
     }
@@ -214,6 +237,11 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
           message: `Unknown asset: ${assetId}`,
 
           sourceValue: assetId,
+
+          expectedRule: "asset_id must reference an asset in inventory.csv.",
+
+          recommendedNextAction:
+            "Correct the asset identifier or add the asset to inventory.",
         }),
       );
     }
@@ -247,6 +275,12 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
             message: `Invalid condition: ${condition}`,
 
             sourceValue: condition,
+
+            expectedRule:
+              "condition_report must be one of the policy-approved values.",
+
+            recommendedNextAction:
+              "Use a valid condition value defined in policy.json.",
           }),
         );
       }
@@ -283,6 +317,12 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
             message: `Late arriving event (${Math.round(hoursDifference)} hours)`,
 
             sourceValue: record.payload.received_at,
+
+            expectedRule:
+              "Events should arrive within the configured lateness threshold.",
+
+            recommendedNextAction:
+              "Investigate delayed event delivery from the source system.",
           }),
         );
       }

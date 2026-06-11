@@ -1,16 +1,16 @@
 error_id,raw_record_id,event_id,reason_code,severity,message,source_value
-7a6b2381-f4b5-4f23-94f0-3a038a4a72c3,events.csv-36,e015,DUPLICATE_EVENT_ID,ERROR,Duplicate event id: e015,e015
-48738889-52f6-42e2-936b-d38ec51134de,events.csv-37,e020,DUPLICATE_EVENT_ID,ERROR,Duplicate event id: e020,e020
-fc68fe65-d2ce-4bde-a36e-43722c6a12d3,events.csv-38,e038,INVALID_TIMESTAMP,ERROR,Invalid occurred_at timestamp,INVALID_DATE
-511e8f64-b8ff-41a5-8714-b1cfec650e40,events.csv-39,e039,MISSING_REQUIRED_FIELD,ERROR,occurred_at is required,
-0b76d739-0644-4663-b6e8-433425242ccf,events.csv-40,e040,UNKNOWN_EVENT_TYPE,ERROR,Unknown event type: LOST_ITEM,LOST_ITEM
-0badf807-ade6-4626-90db-83c31dd97ca1,events.csv-41,e041,UNKNOWN_EVENT_TYPE,ERROR,Unknown event type: BORROW,BORROW
-389ce8ad-85b8-4e8e-99ef-d96e0a9c12d5,events.csv-42,e042,UNKNOWN_ASSET,ERROR,Unknown asset: cam-999,cam-999
-d393680f-3dec-4945-b0f9-e7fcf0e5ce9b,events.csv-43,e043,UNKNOWN_ASSET,ERROR,Unknown asset: lap-999,lap-999
-13023069-18a8-41ae-88b7-6eced80e145a,events.csv-44,e044,MISSING_ACTOR_ROLE,ERROR,Actor role is required,
-b363435c-9c68-4adf-923b-069f6eddf507,events.csv-45,e045,MISSING_ACTOR_ROLE,ERROR,Actor role is required,
-531ba04a-84b3-46bd-aa1a-39d0f788a3ae,events.csv-46,e046,INVALID_CONDITION,ERROR,Invalid condition: brokenish,brokenish
-c7e6dd7c-0ee2-4940-9cd6-24a38bc2ffa0,events.csv-47,e047,INVALID_CONDITION,ERROR,Invalid condition: super_worn,super_worn
-52af5980-6b81-41af-819a-a00b7e08ad4d,events.csv-48,e048,LATE_ARRIVAL,WARNING,Late arriving event (107 hours),2026-06-05T20:00:00Z
-d03d23f6-a315-4e34-87d5-8a4984076e94,events.csv-49,e049,LATE_ARRIVAL,WARNING,Late arriving event (118 hours),2026-06-06T08:00:00Z
-c971c3a1-ad01-4d6b-acd1-87ec3d6c7ece,events.csv-50,e050,UNKNOWN_ASSET,ERROR,Unknown asset: asset-xyz,asset-xyz
+2f292812-1431-4946-946b-310dad61ed14,events.csv-36,e015,DUPLICATE_EVENT_ID,ERROR,Duplicate event id: e015,e015
+cabcfa06-1b75-4eb0-9dca-56871f88ea65,events.csv-37,e020,DUPLICATE_EVENT_ID,ERROR,Duplicate event id: e020,e020
+1329966f-d028-48b7-95b1-411708ddd8c5,events.csv-38,e038,INVALID_TIMESTAMP,ERROR,Invalid occurred_at timestamp,INVALID_DATE
+e89789b6-25fd-4763-ac25-d3836d2c2db3,events.csv-39,e039,MISSING_REQUIRED_FIELD,ERROR,occurred_at is required,
+2197e14b-855a-47cb-b3b2-03db218006bb,events.csv-40,e040,UNKNOWN_EVENT_TYPE,ERROR,Unknown event type: LOST_ITEM,LOST_ITEM
+08ac7f38-58d9-430e-a0f5-8ee1e3e18707,events.csv-41,e041,UNKNOWN_EVENT_TYPE,ERROR,Unknown event type: BORROW,BORROW
+33f6415f-7181-4f2b-85ea-3940f3315493,events.csv-42,e042,UNKNOWN_ASSET,ERROR,Unknown asset: cam-999,cam-999
+e01d007a-4f84-4c02-b30d-2d3d88ce4063,events.csv-43,e043,UNKNOWN_ASSET,ERROR,Unknown asset: lap-999,lap-999
+19c4c585-a797-4882-8b5c-7ed49eb11ff3,events.csv-44,e044,MISSING_ACTOR_ROLE,ERROR,Actor role is required,
+4386e51d-eff2-4498-9d07-9bc2b4af682a,events.csv-45,e045,MISSING_ACTOR_ROLE,ERROR,Actor role is required,
+41d5356f-8d25-428b-824c-85d0dbc05468,events.csv-46,e046,INVALID_CONDITION,ERROR,Invalid condition: brokenish,brokenish
+3fa42d6d-8ff9-406e-a07b-bb755f7fd3c1,events.csv-47,e047,INVALID_CONDITION,ERROR,Invalid condition: super_worn,super_worn
+a85213b2-dc0f-498d-856a-21062fa73739,events.csv-48,e048,LATE_ARRIVAL,WARNING,Late arriving event (107 hours),2026-06-05T20:00:00Z
+adcdf3b2-2ed3-4587-8bdb-0ed0dd715e20,events.csv-49,e049,LATE_ARRIVAL,WARNING,Late arriving event (118 hours),2026-06-06T08:00:00Z
+66e4219c-a7a4-4a15-9fc6-5b35ff516bb2,events.csv-50,e050,UNKNOWN_ASSET,ERROR,Unknown asset: asset-xyz,asset-xyz
