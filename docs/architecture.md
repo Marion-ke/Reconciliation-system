@@ -2,13 +2,17 @@
 
 ## Purpose
 
-The Reconciliation Intelligence System ingests operational asset events, validates data quality, transforms valid records into a canonical representation, and generates traceable output artifacts for auditing and reconciliation.
+The Reconciliation Intelligence System ingests operational asset events, validates data quality, transforms trusted records into a canonical representation, and generates traceable output artifacts for auditing, reconciliation, and future asset-state reconstruction.
+
+The architecture is designed around traceability, deterministic processing, validation-first design, and extensibility for future reconciliation packets.
 
 ---
 
-## Processing Pipeline
+# Processing Pipeline
 
-Source Files
+## Source Files
+
+Input datasets:
 
 - inventory.csv
 - events.csv
@@ -16,25 +20,42 @@ Source Files
 
 ↓
 
-Ingestion Layer
+## Ingestion Layer
+
+Responsibilities:
+
+- Load CSV and JSON datasets.
+- Verify source files can be processed.
+- Convert source records into a common internal representation.
+
+Components:
 
 - CSV Loader
 - JSON Loader
 
 ↓
 
-Raw Record Builder
+## Raw Record Builder
 
-- Creates immutable raw records.
-- Preserves source traceability.
+Responsibilities:
+
+- Create immutable RawRecord objects.
+- Assign unique raw record identifiers.
+- Preserve source file references.
+- Preserve source row numbers.
+- Maintain original payloads.
+
+This layer provides complete traceability throughout the processing lifecycle.
 
 ↓
 
-Validation Layer
+## Validation Layer
 
-- Inventory Validation
-- Event Validation
-- Policy Validation
+Responsibilities:
+
+- Verify data quality.
+- Enforce policy-driven rules.
+- Detect abnormal records.
 
 Validation checks include:
 
@@ -47,41 +68,56 @@ Validation checks include:
 - Invalid condition values
 - Late-arriving events
 
+Validation issues are classified as either:
+
+- ERROR
+- WARNING
+
 ↓
 
-Validation Result
+## Validation Result
 
 Records are classified into:
 
-- Accepted Records
-- Rejected Records
-- Warning Records
+### Accepted Records
+
+Records that satisfy all validation requirements.
+
+### Rejected Records
+
+Records containing validation errors.
+
+### Warning Records
+
+Records that remain processable but contain non-blocking issues.
 
 ↓
 
-Canonical Mapping
+## Canonical Mapping
 
 Accepted records are transformed into Canonical Events.
 
-Canonical events provide a standardized internal representation independent of source formats.
+The Canonical Event model provides a standardized representation independent of source formats and prepares records for downstream reconciliation logic.
 
 ↓
 
-Deterministic Ordering
+## Deterministic Ordering
 
 Canonical events are sorted using:
 
 1. occurredAt
 2. receivedAt
-3. eventId
+3. sourceSystem priority
+4. sourceRow
+5. eventId
 
-This guarantees repeatable processing and output generation.
+This guarantees repeatable execution and reproducible outputs regardless of processing order.
 
 ↓
 
-Export Layer
+## Export Layer
 
-Generated outputs:
+Generated artifacts:
 
 - canonical_events.csv
 - validation_errors.csv
@@ -89,33 +125,42 @@ Generated outputs:
 - ingestion_summary.md
 - data_profile.md
 
+These outputs provide visibility into processing outcomes, validation results, and traceability information.
+
 ---
 
-## Core Domain Objects
+# Core Domain Objects
 
-### RawRecord
+## RawRecord
 
 Represents the original source record exactly as received.
 
 Responsibilities:
 
 - Preserve source data
-- Maintain traceability
-- Support auditing
+- Preserve source file references
+- Preserve source row numbers
+- Support auditing and traceability
 
-### ValidationError
+---
+
+## ValidationError
 
 Represents a validation failure or warning.
 
 Responsibilities:
 
-- Capture validation issues
+- Store severity classification
 - Store reason codes
-- Preserve source references
+- Capture source values
+- Document expected rules
+- Recommend corrective actions
 
-### ValidationResult
+---
 
-Stores record classification results.
+## ValidationResult
+
+Stores processing outcomes.
 
 Responsibilities:
 
@@ -124,40 +169,88 @@ Responsibilities:
 - Warning records
 - Validation errors
 
-### CanonicalEvent
+---
+
+## CanonicalEvent
 
 Represents a validated business event in a standardized format.
 
 Responsibilities:
 
-- Provide a consistent internal model
+- Normalize source records
 - Support deterministic processing
-- Enable future reconciliation logic
+- Enable future reconciliation workflows
+- Maintain traceability to source records
 
 ---
 
-## Traceability Strategy
+# Traceability Strategy
 
-Every canonical event maintains a reference to its originating raw record through rawRecordId.
+Traceability is maintained throughout the entire processing pipeline.
 
-This allows:
+Each Canonical Event retains:
+
+- rawRecordId
+- source file reference
+- source row reference
+
+Each ValidationError retains:
+
+- rawRecordId
+- eventId
+- source value
+
+The raw_record_index.csv artifact provides a complete audit trail linking source records to validation outcomes and canonical events.
+
+This enables:
 
 - Auditability
 - Error investigation
+- Data lineage tracking
 - Source reconstruction
-
-The raw_record_index.csv artifact provides a complete traceability map between source records and processing outcomes.
 
 ---
 
-## Design Principles
+# Schema Evolution
+
+## Adding a New Source File
+
+The architecture supports new source systems without modifying the core processing pipeline.
+
+Steps:
+
+1. Create a source contract.
+2. Create a loader for the new source format.
+3. Convert records into RawRecord objects.
+4. Reuse existing validation and canonical mapping layers.
+
+No changes are required to downstream processing components.
+
+---
+
+## Adding a New Event Type
+
+The architecture supports additional event types through policy-driven configuration.
+
+Steps:
+
+1. Add the event type to policy.json.
+2. Extend validation rules if necessary.
+3. Process through the existing canonical event model.
+
+No changes are required to ingestion, deterministic ordering, or export generation.
+
+---
+
+# Design Principles
 
 The system was designed around:
 
 - Traceability
 - Deterministic processing
-- Data quality validation
+- Validation-first architecture
 - Separation of concerns
-- Extensibility for future reconciliation packets
+- Extensibility
+- Auditability
 
-These principles ensure that future functionality can be added without replacing the foundational architecture.
+These principles ensure that future reconciliation functionality can be introduced without replacing the foundational architecture.

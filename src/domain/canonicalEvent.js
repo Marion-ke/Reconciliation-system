@@ -18,6 +18,7 @@ export default class CanonicalEvent {
     locationId,
     conditionReport,
     sourceSystem,
+    sourceRow,
     note,
     rawRecordId,
   }) {
@@ -42,6 +43,8 @@ export default class CanonicalEvent {
     this.conditionReport = conditionReport;
 
     this.sourceSystem = sourceSystem;
+
+    this.sourceRow = sourceRow;
 
     this.note = note;
 

@@ -1,16 +1,16 @@
-error_id,raw_record_id,event_id,reason_code,severity,message,source_value
-2f292812-1431-4946-946b-310dad61ed14,events.csv-36,e015,DUPLICATE_EVENT_ID,ERROR,Duplicate event id: e015,e015
-cabcfa06-1b75-4eb0-9dca-56871f88ea65,events.csv-37,e020,DUPLICATE_EVENT_ID,ERROR,Duplicate event id: e020,e020
-1329966f-d028-48b7-95b1-411708ddd8c5,events.csv-38,e038,INVALID_TIMESTAMP,ERROR,Invalid occurred_at timestamp,INVALID_DATE
-e89789b6-25fd-4763-ac25-d3836d2c2db3,events.csv-39,e039,MISSING_REQUIRED_FIELD,ERROR,occurred_at is required,
-2197e14b-855a-47cb-b3b2-03db218006bb,events.csv-40,e040,UNKNOWN_EVENT_TYPE,ERROR,Unknown event type: LOST_ITEM,LOST_ITEM
-08ac7f38-58d9-430e-a0f5-8ee1e3e18707,events.csv-41,e041,UNKNOWN_EVENT_TYPE,ERROR,Unknown event type: BORROW,BORROW
-33f6415f-7181-4f2b-85ea-3940f3315493,events.csv-42,e042,UNKNOWN_ASSET,ERROR,Unknown asset: cam-999,cam-999
-e01d007a-4f84-4c02-b30d-2d3d88ce4063,events.csv-43,e043,UNKNOWN_ASSET,ERROR,Unknown asset: lap-999,lap-999
-19c4c585-a797-4882-8b5c-7ed49eb11ff3,events.csv-44,e044,MISSING_ACTOR_ROLE,ERROR,Actor role is required,
-4386e51d-eff2-4498-9d07-9bc2b4af682a,events.csv-45,e045,MISSING_ACTOR_ROLE,ERROR,Actor role is required,
-41d5356f-8d25-428b-824c-85d0dbc05468,events.csv-46,e046,INVALID_CONDITION,ERROR,Invalid condition: brokenish,brokenish
-3fa42d6d-8ff9-406e-a07b-bb755f7fd3c1,events.csv-47,e047,INVALID_CONDITION,ERROR,Invalid condition: super_worn,super_worn
-a85213b2-dc0f-498d-856a-21062fa73739,events.csv-48,e048,LATE_ARRIVAL,WARNING,Late arriving event (107 hours),2026-06-05T20:00:00Z
-adcdf3b2-2ed3-4587-8bdb-0ed0dd715e20,events.csv-49,e049,LATE_ARRIVAL,WARNING,Late arriving event (118 hours),2026-06-06T08:00:00Z
-66e4219c-a7a4-4a15-9fc6-5b35ff516bb2,events.csv-50,e050,UNKNOWN_ASSET,ERROR,Unknown asset: asset-xyz,asset-xyz
+error_id,raw_record_id,event_id,reason_code,severity,message,source_value,expected_rule,recommended_next_action
+09e7a5bb-7535-48ec-9031-278d7fd0b3f1,events.csv-36,e015,DUPLICATE_EVENT_ID,ERROR,"Duplicate event id: e015","e015","Each event_id must be unique.","Remove or correct duplicate event identifiers."
+87405045-e0a7-4e17-9a78-c105325b6f6c,events.csv-37,e020,DUPLICATE_EVENT_ID,ERROR,"Duplicate event id: e020","e020","Each event_id must be unique.","Remove or correct duplicate event identifiers."
+5f018c6f-198b-4497-a8d3-16d0f0473858,events.csv-38,e038,INVALID_TIMESTAMP,ERROR,"Invalid occurred_at timestamp","INVALID_DATE","occurred_at must be a valid ISO-8601 timestamp.","Provide a valid timestamp in ISO-8601 format."
+27828167-3b6f-47f4-8132-8586f67abe51,events.csv-39,e039,MISSING_REQUIRED_FIELD,ERROR,"occurred_at is required","","occurred_at must be present and non-empty.","Populate the occurred_at field before processing."
+566abc65-7cdb-48e3-8cbf-a8a1a59eebef,events.csv-40,e040,UNKNOWN_EVENT_TYPE,ERROR,"Unknown event type: LOST_ITEM","LOST_ITEM","event_type must exist in the policy definition.","Use a supported event type or update the policy configuration."
+58316811-ec0c-478f-a788-cf01fc2bde0c,events.csv-41,e041,UNKNOWN_EVENT_TYPE,ERROR,"Unknown event type: BORROW","BORROW","event_type must exist in the policy definition.","Use a supported event type or update the policy configuration."
+61cb89a3-8274-432a-bdcb-a870f4f11b38,events.csv-42,e042,UNKNOWN_ASSET,ERROR,"Unknown asset: cam-999","cam-999","asset_id must reference an asset in inventory.csv.","Correct the asset identifier or add the asset to inventory."
+90a11921-e4a0-4e17-9b6c-8d291e0f8475,events.csv-43,e043,UNKNOWN_ASSET,ERROR,"Unknown asset: lap-999","lap-999","asset_id must reference an asset in inventory.csv.","Correct the asset identifier or add the asset to inventory."
+88857cb7-d7fe-49df-982a-509eb72f9bbd,events.csv-44,e044,MISSING_ACTOR_ROLE,ERROR,"Actor role is required","","actor_role is required for authorization and validation.","Provide a valid actor role."
+a853ef2a-5c6b-4372-a95c-4fda20bcde7c,events.csv-45,e045,MISSING_ACTOR_ROLE,ERROR,"Actor role is required","","actor_role is required for authorization and validation.","Provide a valid actor role."
+d3671c64-b42e-49ce-bc32-67e376d534b1,events.csv-46,e046,INVALID_CONDITION,ERROR,"Invalid condition: brokenish","brokenish","condition_report must be one of the policy-approved values.","Use a valid condition value defined in policy.json."
+e58ba6a0-7215-4de4-b64b-ad55e0499774,events.csv-47,e047,INVALID_CONDITION,ERROR,"Invalid condition: super_worn","super_worn","condition_report must be one of the policy-approved values.","Use a valid condition value defined in policy.json."
+fed960fa-bb59-4ea9-b746-b9c3871314b7,events.csv-48,e048,LATE_ARRIVAL,WARNING,"Late arriving event (107 hours)","2026-06-05T20:00:00Z","Events should arrive within the configured lateness threshold.","Investigate delayed event delivery from the source system."
+e4ad6fcf-e02c-4f54-96be-c1244dc74913,events.csv-49,e049,LATE_ARRIVAL,WARNING,"Late arriving event (118 hours)","2026-06-06T08:00:00Z","Events should arrive within the configured lateness threshold.","Investigate delayed event delivery from the source system."
+1cdaaf3e-b849-43ab-84ca-e3d721bef6d9,events.csv-50,e050,UNKNOWN_ASSET,ERROR,"Unknown asset: asset-xyz","asset-xyz","asset_id must reference an asset in inventory.csv.","Correct the asset identifier or add the asset to inventory."

@@ -30,6 +30,8 @@ export function buildCanonicalEvents(acceptedRecords) {
 
         sourceSystem: record.payload.source_system,
 
+        sourceRow: record.sourceRow,
+
         note: record.payload.note,
 
         rawRecordId: record.rawRecordId,

@@ -44,4 +44,27 @@ describe("Deterministic Ordering", () => {
     expect(sorted[0].eventId).toBe("e002");
     expect(sorted[1].eventId).toBe("e001");
   });
+
+  test("should use source priority when timestamps are equal", () => {
+    const events = [
+      {
+        occurredAt: "2026-06-01T10:00:00Z",
+        receivedAt: "2026-06-01T10:00:00Z",
+        sourceSystem: "makerspace_app",
+        sourceRow: 1,
+        eventId: "e001",
+      },
+      {
+        occurredAt: "2026-06-01T10:00:00Z",
+        receivedAt: "2026-06-01T10:00:00Z",
+        sourceSystem: "repair_system",
+        sourceRow: 1,
+        eventId: "e002",
+      },
+    ];
+
+    const sorted = sortCanonicalEvents(events);
+
+    expect(sorted[0].sourceSystem).toBe("repair_system");
+  });
 });

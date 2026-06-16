@@ -11,6 +11,8 @@ export function buildValidationErrorsCsv(validationErrors) {
     "severity",
     "message",
     "source_value",
+    "expected_rule",
+    "recommended_next_action",
   ].join(",");
 
   const rows = validationErrors.map((error) =>
@@ -20,8 +22,10 @@ export function buildValidationErrorsCsv(validationErrors) {
       error.eventId ?? "",
       error.reasonCode,
       error.severity,
-      error.message,
-      error.sourceValue ?? "",
+      `"${error.message}"`,
+      `"${error.sourceValue}"`,
+      `"${error.expectedRule ?? ""}"`,
+      `"${error.recommendedNextAction ?? ""}"`,
     ].join(","),
   );
 

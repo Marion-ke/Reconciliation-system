@@ -78,6 +78,33 @@ Unexpected condition values are treated as validation failures.
 
 ---
 
+### Dataset Assumption
+
+The implementation was developed using the datasets provided during the course activities.
+
+These datasets contained additional fields and scenarios beyond the initial sample data and were used as the authoritative input source for development, testing, validation, profiling, and canonical event generation.
+
+The implementation assumes that the provided datasets represent the expected structure for Packet 01 processing.
+
+Additional validation scenarios present in the dataset, including duplicate identifiers, invalid timestamps, unknown assets, missing values, and late-arriving events, were used to verify system behavior and reporting capabilities.
+
+### Synthetic Test Scenarios
+
+Additional abnormal records were intentionally introduced to validate system behavior under error conditions.
+
+Examples include:
+
+- Duplicate event identifiers
+- Invalid timestamps
+- Missing required fields
+- Missing actor roles
+- Unknown event types
+- Unknown assets
+- Invalid condition values
+- Late-arriving events
+
+These scenarios were added to verify that validation logic, error classification, traceability, and reporting mechanisms function correctly.
+
 ## Processing Assumptions
 
 ### Accepted Records Only
