@@ -19,14 +19,14 @@ import { buildEventProfile } from "./profiling/profiler.js";
 import { buildDataProfileMarkdown } from "./exporters/profile_exporter.js";
 
 /**
- * Packet 01 application entry point.
- *
- * Current responsibility:
- * 1. Load source files
- * 2. Create raw records
- * 3. Verify ingestion succeeded
- *
- * Validation and normalization will be added later.
+  Packet 01 application entry point.
+ 
+  Current responsibility:
+  1. Load source files
+  2. Create raw records
+  3. Verify ingestion succeeded
+ 
+  Validation and normalization will be added later.
  */
 async function main() {
   console.log("\n=== Reconciliation Intelligence System ===\n");

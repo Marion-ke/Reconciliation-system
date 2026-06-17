@@ -1,8 +1,8 @@
 /**
- * Central catalog of validation reason codes.
- *
- * Using constants avoids hardcoding strings
- * throughout the application.
+  Central catalog of validation reason codes.
+ 
+ using constants avoids hardcoding strings
+ throughout the application.
  */
 export const REASON_CODES = {
   // Required identifier missing
@@ -32,8 +32,8 @@ export const REASON_CODES = {
   LATE_ARRIVAL: "LATE_ARRIVAL",
 };
 
-/**
- * Validation severity levels.
+/*
+ Validation severity levels.
  */
 export const SEVERITY = {
   // Record should not proceed

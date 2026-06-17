@@ -4,11 +4,10 @@ import ValidationError from "../domain/ValidationError.js";
 
 import { REASON_CODES, SEVERITY } from "./reasonCodes.js";
 
-/**
- * Minimum required fields for inventory records.
- *
- * If any of these are missing,
- * the record cannot be trusted.
+/*
+ Minimum required fields for inventory records.
+ If any of these are missing,
+ the record cannot be trusted.
  */
 const REQUIRED_FIELDS = [
   "asset_id",
@@ -19,15 +18,15 @@ const REQUIRED_FIELDS = [
 ];
 
 /**
- * Validate inventory raw records.
- *
- * Current responsibility:
- * - Check required fields
- *
- * Future versions will also validate:
- * - Allowed asset types
- * - Allowed statuses
- * - Allowed conditions
+  Validate inventory raw records.
+ 
+  Current responsibility:
+  - Check required fields
+ 
+  Future versions will also validate:
+  - Allowed asset types
+  - Allowed statuses
+  - Allowed conditions
  */
 export function validateInventory(rawRecords) {
   const errors = [];
@@ -36,9 +35,9 @@ export function validateInventory(rawRecords) {
     REQUIRED_FIELDS.forEach((field) => {
       const value = record.payload[field];
 
-      /**
-       * Empty string, undefined,
-       * or null are considered missing.
+      /*
+       Empty string, undefined,
+       or null are considered missing.
        */
       if (!value) {
         errors.push(

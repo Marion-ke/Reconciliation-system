@@ -4,9 +4,9 @@ import ValidationError from "../domain/ValidationError.js";
 
 import { REASON_CODES, SEVERITY } from "./reasonCodes.js";
 
-/**
- * Required event fields based on
- * the Packet 01 event contract.
+/*
+  Required event fields based on
+  the Packet 01 event contract.
  */
 const REQUIRED_FIELDS = [
   "event_id",
@@ -18,35 +18,34 @@ const REQUIRED_FIELDS = [
 ];
 
 /**
- * Validate event raw records.
- *
- * Current validations:
- * - Duplicate event ids
- * - Required fields
- * - Missing actor role
- * - Invalid timestamps
+ Validate event
+  raw records.
+  Current validations:
+  Duplicate event ids
+  Required fields
+  Missing actor role
+  Invalid timestamps
  */
 export function validateEvents(rawRecords, policy, inventoryRawRecords) {
   const errors = [];
 
-  /**
-   * Stores all event ids already seen.
-   * Used to detect duplicates.
+  /*
+    Stores all event ids already seen.
+   Used to detect duplicates.
    */
   const seenEventIds = new Set();
-  /**
-   * Build a set of valid asset ids
-   * from inventory.
+  /*
+    Build a set of valid asset ids
+    from inventory.
    */
   const validAssetIds = new Set(
     inventoryRawRecords.map((record) => record.payload.asset_id),
   );
 
   rawRecords.forEach((record) => {
-    /**
-     * -----------------------------------
-     * Duplicate Event ID Validation
-     * -----------------------------------
+    /*
+      Duplicate Event ID Validation
+     
      */
     const eventId = record.payload.event_id;
 
@@ -79,10 +78,10 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
       }
     }
 
-    /**
-     * -----------------------------------
-     * Required Field Validation
-     * -----------------------------------
+    /*
+     
+      Required Field Validation
+     
      */
     REQUIRED_FIELDS.forEach((field) => {
       const value = record.payload[field];
@@ -112,10 +111,9 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
       }
     });
 
-    /**
-     * -----------------------------------
-     * Actor Role Validation
-     * -----------------------------------
+    /*
+     Actor Role Validation
+     
      */
     if (!record.payload.actor_role) {
       errors.push(
@@ -142,13 +140,10 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
       );
     }
 
-    /**
-     * -----------------------------------
-     * Timestamp Validation
-     * -----------------------------------
-     *
-     * Example invalid value:
-     * INVALID_DATE
+    /*
+     Timestamp Validation
+     Example invalid value:
+      INVALID_DATE
      */
     if (
       record.payload.occurred_at &&
@@ -178,11 +173,9 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
       );
     }
     /**
-     * -----------------------------------
-     * Event Type Validation
-     * -----------------------------------
-     *
-     * Event types must exist in policy.
+     Event Type Validation
+     
+     Event types must exist in policy.
      */
     const eventType = record.payload.event_type;
 
@@ -211,13 +204,11 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
         }),
       );
     }
-    /**
-     * -----------------------------------
-     * Asset Validation
-     * -----------------------------------
-     *
-     * Every event must reference
-     * a known inventory asset.
+    /*
+    
+     Asset Validation
+     Every event must reference
+      a known inventory asset.
      */
     const assetId = record.payload.asset_id;
 
@@ -246,13 +237,12 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
       );
     }
     /**
-     * -----------------------------------
-     * Condition Validation
-     * -----------------------------------
-     *
-     * If a condition is supplied,
-     * it must be one of the policy
-     * approved condition values.
+     
+     Condition Validation
+     
+     If a condition is supplied,
+      it must be one of the policy
+      approved condition values.
      */
     const condition = record.payload.condition_report;
 
@@ -285,13 +275,11 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
         );
       }
     }
-    /**
-     * -----------------------------------
-     * Late Arrival Validation
-     * -----------------------------------
-     *
-     * Events arriving significantly after
-     * they occurred are flagged as warnings.
+    /*
+     
+     Late Arrival Validation
+     Events arriving significantly after
+      they occurred are flagged as warnings.
      */
     const occurredAt = Date.parse(record.payload.occurred_at);
 
