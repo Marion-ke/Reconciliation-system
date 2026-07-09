@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-import ValidationError from "../domain/ValidationError.js";
+import ValidationError from "../domain/validationError.js";
 
 import { REASON_CODES, SEVERITY } from "./reasonCodes.js";
 
@@ -53,7 +53,7 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
       if (seenEventIds.has(eventId)) {
         errors.push(
           new ValidationError({
-            errorId: crypto.randomUUID(),
+            errorId: `${record.rawRecordId}-${REASON_CODES.DUPLICATE_EVENT_ID}`,
 
             rawRecordId: record.rawRecordId,
 
@@ -89,7 +89,7 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
       if (!value) {
         errors.push(
           new ValidationError({
-            errorId: crypto.randomUUID(),
+            errorId: `${record.rawRecordId}-${REASON_CODES.MISSING_REQUIRED_FIELD}`,
 
             rawRecordId: record.rawRecordId,
 
@@ -118,7 +118,7 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
     if (!record.payload.actor_role) {
       errors.push(
         new ValidationError({
-          errorId: crypto.randomUUID(),
+          errorId: `${record.rawRecordId}-${REASON_CODES.MISSING_ACTOR_ROLE}`,
 
           rawRecordId: record.rawRecordId,
 
@@ -151,7 +151,7 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
     ) {
       errors.push(
         new ValidationError({
-          errorId: crypto.randomUUID(),
+          errorId: `${record.rawRecordId}-${REASON_CODES.INVALID_TIMESTAMP}`,
 
           rawRecordId: record.rawRecordId,
 
@@ -184,7 +184,7 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
     if (eventType && !allowedEventTypes.includes(eventType)) {
       errors.push(
         new ValidationError({
-          errorId: crypto.randomUUID(),
+          errorId: `${record.rawRecordId}-${REASON_CODES.UNKNOWN_EVENT_TYPE}`,
 
           rawRecordId: record.rawRecordId,
 
@@ -215,7 +215,7 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
     if (assetId && !validAssetIds.has(assetId)) {
       errors.push(
         new ValidationError({
-          errorId: crypto.randomUUID(),
+          errorId: `${record.rawRecordId}-${REASON_CODES.UNKNOWN_ASSET}`,
 
           rawRecordId: record.rawRecordId,
 
@@ -252,7 +252,7 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
       if (!allowedConditions.includes(condition)) {
         errors.push(
           new ValidationError({
-            errorId: crypto.randomUUID(),
+            errorId: `${record.rawRecordId}-${REASON_CODES.INVALID_CONDITION}`,
 
             rawRecordId: record.rawRecordId,
 
@@ -292,7 +292,7 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
       if (hoursDifference > 48) {
         errors.push(
           new ValidationError({
-            errorId: crypto.randomUUID(),
+            errorId: `${record.rawRecordId}-${REASON_CODES.LATE_ARRIVAL}`,
 
             rawRecordId: record.rawRecordId,
 

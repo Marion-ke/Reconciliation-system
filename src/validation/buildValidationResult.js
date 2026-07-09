@@ -1,4 +1,4 @@
-import ValidationResult from "../domain/ValidationResult.js";
+import ValidationResult from "../domain/validationResult.js";
 
 /**
  * Determines which records are accepted,

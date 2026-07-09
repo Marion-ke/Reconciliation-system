@@ -1,4 +1,4 @@
-import RawRecord from "../domain/RawRecord.js";
+import RawRecord from "../domain/rawRecord.js";
 
 /**
  * Converts source rows into RawRecord objects.

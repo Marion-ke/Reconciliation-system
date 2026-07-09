@@ -45,6 +45,20 @@ The student assumes responsibility for the correctness and completeness of the s
 
 ---
 
+## Files Reviewed with External Assistance
+
+Examples include:
+
+- decisionEngine.js
+- reconciliationEngine.js
+- transitionTable.js
+- validation modules
+- exporter modules
+- automated test files
+- README and project documentation
+
+Suggestions were reviewed, adapted where necessary, implemented by the student, and verified through local testing.
+
 ## Summary
 
 External resources were used to support learning, implementation, testing, and documentation. Final design decisions, implementation, and validation remained the responsibility of the student.

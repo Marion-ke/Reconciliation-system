@@ -7,8 +7,6 @@ import { validateEvents } from "./validation/eventValidator.js";
 import { buildValidationResult } from "./validation/buildValidationResult.js";
 import { buildCanonicalEvents } from "./normalization/canonical_mapper.js";
 
-import { sortCanonicalEvents } from "./normalization/deterministic_sorter.js";
-
 import { buildCanonicalEventsCsv } from "./exporters/canonical_events_exporter.js";
 
 import { writeTextFile } from "./utils/file_utils.js";
@@ -17,17 +15,15 @@ import { buildRawRecordIndexCsv } from "./exporters/raw_record_exporter.js";
 import { buildIngestionSummary } from "./exporters/summary_exporter.js";
 import { buildEventProfile } from "./profiling/profiler.js";
 import { buildDataProfileMarkdown } from "./exporters/profile_exporter.js";
-
-/**
-  Packet 01 application entry point.
- 
-  Current responsibility:
-  1. Load source files
-  2. Create raw records
-  3. Verify ingestion succeeded
- 
-  Validation and normalization will be added later.
- */
+import { buildLedger } from "./reconciliation/ledger.js";
+import { reconcileEvents } from "./reconciliation/reconciliationEngine.js";
+import { buildEventDecisionsCsv } from "./exporters/event_decisions_exporter.js";
+import { buildFinalAssetStateCsv } from "./exporters/final_asset_state_exporter.js";
+import { buildExceptionQueue } from "./reconciliation/exceptionQueue.js";
+import { buildExceptionQueueCsv } from "./exporters/exception_queue_exporter.js";
+import { orderEvents } from "./reconciliation/replayOrdering.js";
+import { detectLateEvents } from "./reconciliation/lateEventDetector.js";
+import { buildRunSummary } from "./exporters/run_summary_exporter.js";
 async function main() {
   console.log("\n=== Reconciliation Intelligence System ===\n");
 
@@ -36,7 +32,7 @@ async function main() {
 
   const events = await loadCsv("./data/sample/events.csv");
 
-  const policy = await loadJson("./data/sample/policy.json");
+  const policy = await loadJson("./data/policy/policy-v2.json");
 
   // Create traceable raw records
   const inventoryRawRecords = buildRawRecords(inventory, "inventory.csv");
@@ -60,12 +56,48 @@ async function main() {
     validationResult.acceptedRecords,
   );
 
-  const sortedCanonicalEvents = sortCanonicalEvents(canonicalEvents);
+  const replayOrderedEvents = detectLateEvents(
+    orderEvents(canonicalEvents),
+    policy,
+  );
+  const ledger = buildLedger(inventoryRawRecords);
+  const reconciliationResult = reconcileEvents(
+    replayOrderedEvents,
+    ledger,
+    policy,
+  );
+  const finalAssetStateCsv = buildFinalAssetStateCsv(
+    reconciliationResult.ledger,
+  );
 
-  const canonicalCsv = buildCanonicalEventsCsv(sortedCanonicalEvents);
+  writeTextFile("outputs/latest/final_asset_state.csv", finalAssetStateCsv);
+
+  console.log(
+    `Final asset states exported: ${reconciliationResult.ledger.size}`,
+  );
+  const eventDecisionsCsv = buildEventDecisionsCsv(
+    reconciliationResult.decisions,
+  );
+
+  writeTextFile("outputs/latest/event_decisions.csv", eventDecisionsCsv);
+
+  console.log(
+    `Event decisions exported: ${reconciliationResult.decisions.length}`,
+  );
+  // console.log(reconciliationResult);
+  // final_asset_state.csv
+  const exceptionQueue = buildExceptionQueue(reconciliationResult.decisions);
+
+  const exceptionQueueCsv = buildExceptionQueueCsv(exceptionQueue);
+
+  writeTextFile("outputs/latest/exception_queue.csv", exceptionQueueCsv);
+
+  console.log(`Exception cases exported: ${exceptionQueue.length}`);
+
+  const canonicalCsv = buildCanonicalEventsCsv(replayOrderedEvents);
 
   writeTextFile("outputs/latest/canonical_events.csv", canonicalCsv);
-
+  console.log(`Canonical events exported: ${replayOrderedEvents.length}`);
   const rawRecordCsv = buildRawRecordIndexCsv(
     eventRawRecords,
     validationResult,
@@ -73,7 +105,7 @@ async function main() {
 
   writeTextFile("outputs/latest/raw_record_index.csv", rawRecordCsv);
 
-  console.log(`Canonical events exported: ${sortedCanonicalEvents.length}`);
+  console.log(`Canonical events exported: ${canonicalEvents.length}`);
 
   // Basic ingestion verification
   console.log(`Inventory records loaded: ${inventoryRawRecords.length}`);
@@ -126,6 +158,40 @@ async function main() {
   });
 
   writeTextFile("outputs/latest/ingestion_summary.md", summary);
+
+  const runSummary = buildRunSummary({
+    policyVersion: policy.policyVersion,
+
+    inventoryCount: inventoryRawRecords.length,
+
+    eventCount: replayOrderedEvents.length,
+
+    reconciliationSummary: reconciliationResult.summary,
+
+    decisions: reconciliationResult.decisions,
+
+    exceptions: exceptionQueue,
+  });
+
+  writeTextFile("outputs/latest/run_summary.md", runSummary);
+
+  console.log("\n=== Reconciliation Summary ===");
+
+  console.log(`Processed: ${reconciliationResult.summary.processed}`);
+
+  console.log(`Accepted: ${reconciliationResult.summary.accepted}`);
+
+  console.log(
+    `Accepted With Warning: ${reconciliationResult.summary.acceptedWithWarning}`,
+  );
+
+  console.log(`Rejected: ${reconciliationResult.summary.rejected}`);
+
+  console.log(
+    `Review Required: ${reconciliationResult.summary.reviewRequired}`,
+  );
+
+  console.log(`Warning Only: ${reconciliationResult.summary.warningOnly}`);
 
   console.log("\n=== Validation Summary ===");
 

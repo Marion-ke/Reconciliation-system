@@ -1,0 +1,42 @@
+case_id,severity,reason_code,asset_id,event_id,raw_record_id,message,recommended_next_action,grouping_key
+EX-0001,ERROR,ILLEGAL_STATE_TRANSITION,cam-001,e002,events.csv-2,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",cam-001-ILLEGAL_STATE_TRANSITION
+EX-0002,ERROR,UNAUTHORIZED_ACTOR,cam-003,e004,events.csv-4,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",cam-003-UNAUTHORIZED_ACTOR
+EX-0003,ERROR,ILLEGAL_STATE_TRANSITION,cam-003,e005,events.csv-5,"Cannot CHECKOUT an asset in state MAINTENANCE.","Review the current asset state before replaying the event.",cam-003-ILLEGAL_STATE_TRANSITION
+EX-0004,ERROR,UNAUTHORIZED_ACTOR,lap-002,e008,events.csv-8,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",lap-002-UNAUTHORIZED_ACTOR
+EX-0005,ERROR,ILLEGAL_STATE_TRANSITION,lap-002,e009,events.csv-9,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",lap-002-ILLEGAL_STATE_TRANSITION
+EX-0006,ERROR,ILLEGAL_STATE_TRANSITION,trip-001,e011,events.csv-11,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",trip-001-ILLEGAL_STATE_TRANSITION
+EX-0007,ERROR,UNAUTHORIZED_ACTOR,mic-002,e013,events.csv-13,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",mic-002-UNAUTHORIZED_ACTOR
+EX-0008,ERROR,ILLEGAL_STATE_TRANSITION,tab-001,e015,events.csv-15,"Cannot RETURN an asset in state AVAILABLE.","Review the current asset state before replaying the event.",tab-001-ILLEGAL_STATE_TRANSITION
+EX-0009,ERROR,UNAUTHORIZED_ACTOR,tab-001,e016,events.csv-16,"student is not permitted to perform MAINTENANCE_OPEN.","Review manually.",tab-001-UNAUTHORIZED_ACTOR
+EX-0010,ERROR,UNAUTHORIZED_ACTOR,tab-001,e018,events.csv-18,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",tab-001-UNAUTHORIZED_ACTOR
+EX-0011,ERROR,ILLEGAL_STATE_TRANSITION,tab-001,e019,events.csv-19,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",tab-001-ILLEGAL_STATE_TRANSITION
+EX-0012,ERROR,HOLDER_MISMATCH,tab-001,e020,events.csv-20,"Asset holder does not match the returning actor.","Verify the current holder before processing the return.",tab-001-HOLDER_MISMATCH
+EX-0013,ERROR,UNAUTHORIZED_ACTOR,trip-002,e024,events.csv-24,"student is not permitted to perform MAINTENANCE_OPEN.","Review manually.",trip-002-UNAUTHORIZED_ACTOR
+EX-0014,ERROR,UNAUTHORIZED_ACTOR,trip-002,e025,events.csv-25,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",trip-002-UNAUTHORIZED_ACTOR
+EX-0015,ERROR,UNAUTHORIZED_ACTOR,cam-001,e029,events.csv-29,"student is not permitted to perform MAINTENANCE_OPEN.","Review manually.",cam-001-UNAUTHORIZED_ACTOR
+EX-0016,ERROR,HOLDER_MISMATCH,cam-001,e030,events.csv-30,"Asset holder does not match the returning actor.","Verify the current holder before processing the return.",cam-001-HOLDER_MISMATCH
+EX-0017,ERROR,UNAUTHORIZED_ACTOR,cam-001,e031,events.csv-31,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",cam-001-UNAUTHORIZED_ACTOR
+EX-0018,ERROR,ILLEGAL_STATE_TRANSITION,cam-001,e032,events.csv-32,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",cam-001-ILLEGAL_STATE_TRANSITION
+EX-0019,ERROR,UNAUTHORIZED_ACTOR,tab-002,e033,events.csv-33,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",tab-002-UNAUTHORIZED_ACTOR
+EX-0020,ERROR,ILLEGAL_STATE_TRANSITION,tab-002,e034,events.csv-34,"Cannot CHECKOUT an asset in state MAINTENANCE.","Review the current asset state before replaying the event.",tab-002-ILLEGAL_STATE_TRANSITION
+EX-0021,ERROR,ILLEGAL_STATE_TRANSITION,mic-001,e040,events.csv-40,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",mic-001-ILLEGAL_STATE_TRANSITION
+EX-0022,ERROR,HOLDER_MISMATCH,lap-003,e041,events.csv-41,"Asset holder does not match the returning actor.","Verify the current holder before processing the return.",lap-003-HOLDER_MISMATCH
+EX-0023,ERROR,ILLEGAL_STATE_TRANSITION,mic-001,e042,events.csv-42,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",mic-001-ILLEGAL_STATE_TRANSITION
+EX-0024,ERROR,UNAUTHORIZED_ACTOR,lap-001,e046,events.csv-46,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",lap-001-UNAUTHORIZED_ACTOR
+EX-0025,ERROR,UNAUTHORIZED_ACTOR,cam-002,e050,events.csv-50,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",cam-002-UNAUTHORIZED_ACTOR
+EX-0026,WARNING,AUDIT_DISCREPANCY,cam-004,e055,events.csv-55,"Audit observation recorded successfully.","Compare audit observations with the ledger.",cam-004-AUDIT_DISCREPANCY
+EX-0027,WARNING,AUDIT_DISCREPANCY,lap-004,e058,events.csv-58,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",lap-004-AUDIT_DISCREPANCY
+EX-0028,WARNING,AUDIT_DISCREPANCY,mic-004,e071,events.csv-71,"Audit observation recorded successfully.","Compare audit observations with the ledger.",mic-004-AUDIT_DISCREPANCY
+EX-0029,ERROR,ILLEGAL_STATE_TRANSITION,light-004,e088,events.csv-88,"Cannot RETIRE an asset in state RETIRED.","Review the current asset state before replaying the event.",light-004-ILLEGAL_STATE_TRANSITION
+EX-0030,ERROR,ILLEGAL_STATE_TRANSITION,light-004,e089,events.csv-89,"Cannot CHECKOUT an asset in state RETIRED.","Review the current asset state before replaying the event.",light-004-ILLEGAL_STATE_TRANSITION
+EX-0031,WARNING,AUDIT_DISCREPANCY,cam-001,e090,events.csv-90,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0032,WARNING,AUDIT_DISCREPANCY,cam-001,e091,events.csv-91,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0033,WARNING,AUDIT_DISCREPANCY,cam-001,e092,events.csv-92,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0034,WARNING,AUDIT_DISCREPANCY,cam-001,e093,events.csv-93,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0035,WARNING,AUDIT_DISCREPANCY,cam-001,e094,events.csv-94,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0036,WARNING,AUDIT_DISCREPANCY,cam-001,e095,events.csv-95,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0037,WARNING,AUDIT_DISCREPANCY,cam-001,e096,events.csv-96,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0038,WARNING,AUDIT_DISCREPANCY,cam-001,e097,events.csv-97,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0039,WARNING,AUDIT_DISCREPANCY,cam-001,e098,events.csv-98,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0040,WARNING,AUDIT_DISCREPANCY,cam-001,e099,events.csv-99,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0041,WARNING,AUDIT_DISCREPANCY,cam-001,e100,events.csv-100,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY

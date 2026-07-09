@@ -1,4 +1,4 @@
-import CanonicalEvent from "../domain/CanonicalEvent.js";
+import CanonicalEvent from "../domain/canonicalEvent.js";
 
 /**
  * Converts accepted raw records

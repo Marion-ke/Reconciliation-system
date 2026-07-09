@@ -1,51 +1,101 @@
 event_id,occurred_at,received_at,actor_id,actor_role,event_type,asset_id,location_id,condition_report,source_system,note
-e001,2026-06-01T08:00:00Z,2026-06-01T08:01:00Z,s101,student,CHECKOUT,cam-001,media-lab,,makerspace_app,Film project checkout
-e002,2026-06-01T08:15:00Z,2026-06-01T08:16:00Z,s102,student,CHECKOUT,lap-001,equipment-store,,makerspace_app,Research work
-e003,2026-06-01T08:30:00Z,2026-06-01T08:31:00Z,s103,student,CHECKOUT,tab-001,library-store,,makerspace_app,Class presentation
-e004,2026-06-01T09:00:00Z,2026-06-01T09:01:00Z,st001,staff,TRANSFER,cam-002,media-lab,,inventory_portal,Transferred to studio
-e005,2026-06-01T09:30:00Z,2026-06-01T09:31:00Z,t001,technician,INSPECT,cam-003,repair-bench,scratched,repair_system,Routine inspection
-e006,2026-06-01T10:00:00Z,2026-06-01T10:01:00Z,s104,student,CHECKOUT,mic-001,studio-a,,makerspace_app,Podcast recording
-e007,2026-06-01T10:30:00Z,2026-06-01T10:31:00Z,s105,student,CHECKOUT,trip-001,studio-a,,makerspace_app,Photography session
-e008,2026-06-01T11:00:00Z,2026-06-01T11:01:00Z,st002,staff,TRANSFER,lap-002,equipment-store,,inventory_portal,Move to lab
-e009,2026-06-01T11:30:00Z,2026-06-01T11:31:00Z,t001,technician,REPAIR,lap-004,repair-bench,damaged,repair_system,Keyboard repair
-e010,2026-06-01T12:00:00Z,2026-06-01T12:01:00Z,s101,student,RETURN,cam-001,media-lab,good,makerspace_app,Returned after use
-e011,2026-06-01T13:00:00Z,2026-06-01T13:01:00Z,s102,student,RETURN,lap-001,equipment-store,good,makerspace_app,Returned laptop
-e012,2026-06-01T14:00:00Z,2026-06-01T14:01:00Z,t002,technician,INSPECT,mic-002,studio-a,scratched,repair_system,Audio quality check
-e013,2026-06-01T15:00:00Z,2026-06-01T15:01:00Z,a001,admin,RETIRE,cam-005,media-lab,worn,inventory_portal,Asset retired
-e014,2026-06-01T16:00:00Z,2026-06-01T16:01:00Z,s103,student,RETURN,tab-001,library-store,good,makerspace_app,Returned tablet
-e015,2026-06-02T08:00:00Z,2026-06-02T08:01:00Z,s104,student,RETURN,mic-001,studio-a,good,makerspace_app,Returned microphone
-e016,2026-06-02T08:30:00Z,2026-06-02T08:31:00Z,s105,student,RETURN,trip-001,studio-a,good,makerspace_app,Returned tripod
-e017,2026-06-02T09:00:00Z,2026-06-02T09:01:00Z,st001,staff,TRANSFER,cam-004,media-lab,,inventory_portal,Move for event
-e018,2026-06-02T10:00:00Z,2026-06-02T10:01:00Z,t001,technician,INSPECT,tab-002,repair-bench,scratched,repair_system,Screen inspection
-e019,2026-06-02T11:00:00Z,2026-06-02T11:01:00Z,s106,student,CHECKOUT,cam-006,media-lab,,makerspace_app,Media assignment
-e020,2026-06-03T10:00:00Z,2026-06-03T10:01:00Z,s107,student,CHECKOUT,lap-003,equipment-store,,makerspace_app,Project work
-e021,2026-06-03T10:00:00Z,2026-06-03T10:02:00Z,st002,staff,TRANSFER,mic-003,studio-a,,inventory_portal,Transfer for recording
-e022,2026-06-03T11:00:00Z,2026-06-03T11:01:00Z,t002,technician,REPAIR,cam-003,repair-bench,scratched,repair_system,Lens adjustment
-e023,2026-06-03T12:00:00Z,2026-06-03T12:01:00Z,s108,student,CHECKOUT,tab-003,library-store,,makerspace_app,Class use
-e024,2026-06-03T13:00:00Z,2026-06-03T13:01:00Z,s109,student,CHECKOUT,trip-002,studio-a,,makerspace_app,Photography practice
-e025,2026-06-03T14:00:00Z,2026-06-03T14:01:00Z,st001,staff,TRANSFER,lap-005,equipment-store,,inventory_portal,Move between rooms
-e026,2026-06-03T15:00:00Z,2026-06-03T15:01:00Z,t001,technician,INSPECT,mic-001,studio-a,good,repair_system,Sound test
-e027,2026-06-04T08:00:00Z,2026-06-04T08:01:00Z,s110,student,CHECKOUT,cam-001,media-lab,,makerspace_app,Field project
-e028,2026-06-04T09:00:00Z,2026-06-04T09:01:00Z,s111,student,CHECKOUT,lap-001,equipment-store,,makerspace_app,Research work
-e029,2026-06-04T10:00:00Z,2026-06-04T10:01:00Z,s112,student,CHECKOUT,mic-002,studio-a,,makerspace_app,Recording session
-e030,2026-06-04T11:00:00Z,2026-06-04T11:01:00Z,s113,student,CHECKOUT,trip-003,studio-a,,makerspace_app,Studio work
-e031,2026-06-04T12:00:00Z,2026-06-04T12:01:00Z,t002,technician,INSPECT,lap-002,equipment-store,worn,repair_system,Health check
-e032,2026-06-04T13:00:00Z,2026-06-04T13:01:00Z,a001,admin,RETIRE,mic-003,studio-a,worn,inventory_portal,End of service life
-e033,2026-06-04T14:00:00Z,2026-06-04T14:01:00Z,s110,student,RETURN,cam-001,media-lab,good,makerspace_app,Returned camera
-e034,2026-06-04T15:00:00Z,2026-06-04T15:01:00Z,s111,student,RETURN,lap-001,equipment-store,good,makerspace_app,Returned laptop
-e035,2026-06-04T16:00:00Z,2026-06-04T16:01:00Z,s112,student,RETURN,mic-002,studio-a,good,makerspace_app,Returned microphone
-e015,2026-06-05T08:00:00Z,2026-06-05T08:01:00Z,s114,student,CHECKOUT,cam-002,media-lab,,makerspace_app,Duplicate ID test
-e020,2026-06-05T09:00:00Z,2026-06-05T09:01:00Z,s115,student,CHECKOUT,lap-003,equipment-store,,makerspace_app,Duplicate ID test
-e038,INVALID_DATE,2026-06-05T10:01:00Z,s116,student,CHECKOUT,cam-004,media-lab,,makerspace_app,Invalid timestamp
-e039,,2026-06-05T11:01:00Z,s117,student,CHECKOUT,tab-002,library-store,,makerspace_app,Missing timestamp
-e040,2026-06-05T12:00:00Z,2026-06-05T12:01:00Z,s118,student,LOST_ITEM,cam-001,media-lab,,makerspace_app,Unknown event type
-e041,2026-06-05T13:00:00Z,2026-06-05T13:01:00Z,s119,student,BORROW,lap-001,equipment-store,,makerspace_app,Unknown event type
-e042,2026-06-05T14:00:00Z,2026-06-05T14:01:00Z,s120,student,CHECKOUT,cam-999,media-lab,,makerspace_app,Unknown asset
-e043,2026-06-05T15:00:00Z,2026-06-05T15:01:00Z,s121,student,RETURN,lap-999,equipment-store,good,makerspace_app,Unknown asset
-e044,2026-06-05T16:00:00Z,2026-06-05T16:01:00Z,s122,,CHECKOUT,cam-006,media-lab,,makerspace_app,Missing actor role
-e045,2026-06-05T17:00:00Z,2026-06-05T17:01:00Z,s123,,RETURN,trip-001,studio-a,good,makerspace_app,Missing actor role
-e046,2026-06-05T18:00:00Z,2026-06-05T18:01:00Z,t001,technician,INSPECT,mic-001,studio-a,brokenish,repair_system,Invalid condition value
-e047,2026-06-05T19:00:00Z,2026-06-05T19:01:00Z,t002,technician,INSPECT,cam-003,repair-bench,super_worn,repair_system,Invalid condition value
-e048,2026-06-01T09:00:00Z,2026-06-05T20:00:00Z,s124,student,CHECKOUT,tab-003,library-store,,makerspace_app,Late arriving event
-e049,2026-06-01T10:00:00Z,2026-06-06T08:00:00Z,st002,staff,TRANSFER,cam-004,media-lab,,inventory_portal,Late arriving event
-e050,2026-06-05T21:00:00Z,2026-06-05T21:01:00Z,s125,student,CHECKOUT,asset-xyz,media-lab,,makerspace_app,Unknown asset
+e001,2026-06-01T09:05,2026-06-01T10:05,s101,student,CHECKOUT,cam-001,media-lab,,makerspace_app,film project
+e002,2026-06-01T09:07,2026-06-01T10:07,s102,student,CHECKOUT,cam-001,media-lab,,makerspace_app,duplicate camera request
+e003,2026-06-01T09:10,2026-06-01T11:10,s201,student,RETURN,cam-002,media-lab,good,makerspace_app,returned from overnight loan
+e004,2026-06-01T09:12,2026-06-01T12:12,staff1,student,MAINTENANCE_CLOSE,cam-003,media-lab,good,makerspace_app,maintenance completed
+e005,2026-06-01T09:13,2026-06-01T10:13,s103,student,CHECKOUT,cam-003,media-lab,,makerspace_app,borrow after restore
+e006,2026-06-01T09:15,2026-06-01T13:15,s202,student,RETURN,lap-002,equipment-store,damaged,makerspace_app,screen flickers
+e007,2026-06-01T09:20,2026-06-01T10:20,s104,student,CHECKOUT,lap-002,equipment-store,,makerspace_app,tries damaged laptop
+e008,2026-06-01T09:25,2026-06-01T10:25,staff2,student,MAINTENANCE_CLOSE,lap-002,equipment-store,worn,makerspace_app,repaired display cable
+e009,2026-06-01T09:30,2026-06-01T10:30,s104,student,CHECKOUT,lap-002,equipment-store,,makerspace_app,successful laptop checkout
+e010,2026-06-01T09:35,2026-06-01T12:35,s104,student,CHECKOUT,mic-001,studio-a,,makerspace_app,audio lab
+e011,2026-06-01T09:40,2026-08-01T09:40,s104,student,CHECKOUT,trip-001,studio-a,,makerspace_app,third item attempt
+e012,2026-06-01T09:45,2026-06-01T09:45,s203,student,RETURN,mic-002,studio-a,unusable,makerspace_app,dropped microphone
+e013,2026-06-01T09:50,2026-06-01T09:50,staff1,student,MAINTENANCE_CLOSE,mic-002,studio-a,good,makerspace_app,replaced capsule
+e014,2026-06-01T09:55,2026-06-01T09:55,s105,student,CHECKOUT,mic-002,studio-a,,makerspace_app,podcast team
+e015,2026-06-01T10:00,2026-06-02T10:00,s106,student,RETURN,tab-001,library-store,good,makerspace_app,return without checkout
+e016,2026-06-01T10:05,2026-06-01T10:05,staff2,student,MAINTENANCE_OPEN,tab-001,library-store,scratched,makerspace_app,screen inspection
+e017,2026-06-01T10:10,2026-06-01T10:10,s107,student,CHECKOUT,tab-001,library-store,,makerspace_app,student tries maintenance tablet
+e018,2026-06-01T10:15,2026-06-01T10:15,staff2,student,MAINTENANCE_CLOSE,tab-001,library-store,good,makerspace_app,inspection cleared
+e019,2026-06-01T10:20,2026-06-05T10:20,s107,student,CHECKOUT,tab-001,library-store,,makerspace_app,checkout after restore
+e020,2026-06-01T10:25,2026-06-01T10:25,staff3,student,RETURN,tab-001,library-store,scratched,makerspace_app,student left early
+e021,2026-06-01T10:30,2026-06-01T10:30,s108,student,CHECKOUT,light-001,media-lab,,makerspace_app,lighting kit request
+e022,2026-06-01T10:35,2026-06-01T10:35,s109,student,CHECKOUT,trip-002,studio-a,,makerspace_app,tripod checkout
+e023,2026-06-01T10:40,2026-06-01T10:40,s109,student,RETURN,trip-002,studio-a,new,makerspace_app,claims better than before
+e024,2026-06-01T10:45,2026-06-01T10:45,staff1,student,MAINTENANCE_OPEN,trip-002,studio-a,worn,makerspace_app,leg clamp check
+e025,2026-06-01T10:50,2026-06-01T10:50,staff1,student,MAINTENANCE_CLOSE,trip-002,studio-a,good,makerspace_app,clamp fixed
+e026,2026-06-01T10:55,2026-06-01T10:55,s110,student,CHECKOUT,trip-002,studio-a,,makerspace_app,checkout restored tripod
+e027,2026-06-01T11:00,2026-06-01T11:00,s101,student,RETURN,cam-001,media-lab,scratched,makerspace_app,lens cap missing
+e028,2026-06-01T11:05,2026-06-01T11:05,s111,student,CHECKOUT,cam-001,media-lab,,makerspace_app,new borrower
+e029,2026-06-01T11:10,2026-06-01T13:10,staff4,student,MAINTENANCE_OPEN,cam-001,media-lab,damaged,makerspace_app,staff tries while checked out
+e030,2026-06-01T11:15,2026-06-01T11:15,staff4,student,RETURN,cam-001,media-lab,damaged,makerspace_app,borrower unreachable
+e031,2026-06-01T11:20,2026-06-01T11:20,staff4,student,MAINTENANCE_CLOSE,cam-001,media-lab,worn,makerspace_app,cleaned lens
+e032,2026-06-01T11:25,2026-06-01T12:25,s112,student,CHECKOUT,cam-001,media-lab,,makerspace_app,final camera checkout
+e033,2026-06-01T11:30,2026-06-01T11:30,staff1,student,MAINTENANCE_CLOSE,tab-002,library-store,good,makerspace_app,tablet repaired
+e034,2026-06-01T11:35,2026-06-01T11:35,s113,student,CHECKOUT,tab-002,library-store,,makerspace_app,tablet checkout
+e035,2026-06-01T11:36,2026-06-01T11:36,s113,student,RETURN,tab-002,library-store,unknown_condition,makerspace_app,typed wrong condition
+e036,2026-06-01T11:40,2026-06-01T11:40,s114,student,HOLD,lap-001,equipment-store,,makerspace_app,invalid action
+e037,2026-06-01T11:45,2026-06-01T11:45,staff1,student,MAINTENANCE_OPEN,ghost-999,media-lab,damaged,makerspace_app,unknown item
+e038,2026-06-01T11:50,2026-06-01T11:50,s115,student,CHECKOUT,lap-001,equipment-store,,makerspace_app,laptop borrow
+e039,2026-06-01T11:55,2026-06-01T11:55,s115,student,CHECKOUT,lap-003,equipment-store,,makerspace_app,second laptop borrow
+e040,2026-06-01T12:00,2026-06-01T12:00,s115,student,CHECKOUT,mic-001,studio-a,,makerspace_app,limit reached attempt
+e041,2026-06-01T12:05,2026-06-01T12:05,staff5,student,RETURN,lap-003,equipment-store,worn,makerspace_app,returned at desk
+e042,2026-06-01T12:10,2026-06-01T12:10,s115,student,CHECKOUT,mic-001,studio-a,,makerspace_app,now below limit
+e043,2026-06-01T08:55,2026-06-01T08:55,s116,student,CHECKOUT,trip-001,studio-a,,makerspace_app,early event listed late
+e044,2026-06-01T12:15,2026-06-04T12:15,s116,student,RETURN,trip-001,studio-a,worn,makerspace_app,return by early borrower
+e045,not-a-time,not-a-time,s117,student,CHECKOUT,lap-001,equipment-store,,makerspace_app,bad timestamp
+e046,2026-06-01T12:20,2026-06-01T12:20,staff5,student,MAINTENANCE_CLOSE,lap-001,equipment-store,good,makerspace_app,restore non-maintenance item
+e047,2026-06-01T12:25,2026-06-01T12:25,s118,student,CHECKOUT,bad-001,media-lab,,makerspace_app,bad starting row item
+e048,2026-06-01T12:30,2026-06-01T12:30,s119,student,CHECKOUT,cam-002,media-lab,,makerspace_app,camera after return
+e049,2026-06-01T12:35,2026-06-01T12:35,s119,student,RETURN,cam-002,media-lab,damaged,makerspace_app,damaged on return
+e050,2026-06-01T12:40,2026-06-01T12:40,staff2,student,MAINTENANCE_CLOSE,cam-002,media-lab,good,makerspace_app,repaired camera
+e051,2026-06-07T08:00:00Z,2026-06-07T08:00:00Z,s301,student,CHECKOUT,cam-004,media-lab,,makerspace_app,
+e052,2026-06-07T09:00:00Z,2026-06-07T09:00:00Z,s301,student,RETURN,cam-004,media-lab,good,makerspace_app,
+e053,2026-06-07T10:00:00Z,2026-06-07T10:00:00Z,st301,staff,TRANSFER_OUT,cam-004,media-lab,,makerspace_app,
+e054,2026-06-07T11:00:00Z,2026-06-07T11:00:00Z,st301,staff,TRANSFER_IN,cam-004,studio-a,,makerspace_app,
+e055,2026-06-07T12:00:00Z,2026-06-07T12:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-004,,good,audit_system,
+e056,2026-06-07T13:00:00Z,2026-06-07T13:00:00Z,t301,technician,MAINTENANCE_OPEN,cam-004,repair-bench,damaged,repair_system,
+e057,2026-06-07T14:00:00Z,2026-06-07T14:00:00Z,t301,technician,MAINTENANCE_CLOSE,cam-004,repair-bench,good,repair_system,
+e058,2026-06-07T15:00:00Z,2026-06-07T15:00:00Z,au301,auditor,AUDIT_OBSERVATION,lap-004,,scratched,audit_system,
+e059,2026-06-07T16:00:00Z,2026-06-07T16:00:00Z,t301,technician,MAINTENANCE_CLOSE,lap-004,repair-bench,good,repair_system,
+e060,2026-06-07T17:00:00Z,2026-06-07T17:00:00Z,s302,student,CHECKOUT,lap-004,equipment-store,,makerspace_app,
+e061,2026-06-07T18:00:00Z,2026-06-07T18:00:00Z,s302,student,RETURN,lap-004,equipment-store,good,makerspace_app,
+e062,2026-06-07T19:00:00Z,2026-06-07T19:00:00Z,s303,student,CHECKOUT,lap-005,equipment-store,,makerspace_app,
+e063,2026-06-07T20:00:00Z,2026-06-07T20:00:00Z,s303,student,RETURN,lap-005,equipment-store,good,makerspace_app,
+e064,2026-06-07T21:00:00Z,2026-06-07T21:00:00Z,st301,staff,TRANSFER_OUT,lap-005,equipment-store,,makerspace_app,
+e065,2026-06-07T22:00:00Z,2026-06-07T22:00:00Z,st301,staff,TRANSFER_IN,lap-005,library-store,,makerspace_app,
+e066,2026-06-07T23:00:00Z,2026-06-07T23:00:00Z,s304,student,CHECKOUT,mic-003,studio-a,,makerspace_app,
+e067,2026-06-08T00:00:00Z,2026-06-08T00:00:00Z,s304,student,RETURN,mic-003,studio-a,worn,makerspace_app,
+e068,2026-06-08T01:00:00Z,2026-06-08T01:00:00Z,t301,technician,MAINTENANCE_OPEN,mic-003,repair-bench,damaged,repair_system,
+e069,2026-06-08T02:00:00Z,2026-06-08T02:00:00Z,t301,technician,MAINTENANCE_CLOSE,mic-003,repair-bench,good,repair_system,
+e070,2026-06-08T03:00:00Z,2026-06-08T03:00:00Z,st301,staff,TRANSFER_IN,mic-004,studio-a,,makerspace_app,
+e071,2026-06-08T04:00:00Z,2026-06-08T04:00:00Z,au301,auditor,AUDIT_OBSERVATION,mic-004,,good,audit_system,
+e072,2026-06-08T05:00:00Z,2026-06-08T05:00:00Z,t301,technician,MAINTENANCE_OPEN,mic-004,repair-bench,damaged,repair_system,
+e073,2026-06-08T06:00:00Z,2026-06-08T06:00:00Z,t301,technician,MAINTENANCE_CLOSE,mic-004,repair-bench,good,repair_system,
+e074,2026-06-08T07:00:00Z,2026-06-08T07:00:00Z,s305,student,CHECKOUT,trip-003,studio-a,,makerspace_app,
+e075,2026-06-08T08:00:00Z,2026-06-08T08:00:00Z,s305,student,RETURN,trip-003,studio-a,good,makerspace_app,
+e076,2026-06-08T09:00:00Z,2026-06-08T09:00:00Z,st301,staff,TRANSFER_IN,trip-004,studio-a,,makerspace_app,
+e077,2026-06-08T10:00:00Z,2026-06-08T10:00:00Z,s306,student,CHECKOUT,trip-004,studio-a,,makerspace_app,
+e078,2026-06-08T11:00:00Z,2026-06-08T11:00:00Z,s306,student,RETURN,trip-004,studio-a,good,makerspace_app,
+e079,2026-06-08T12:00:00Z,2026-06-08T12:00:00Z,s205,student,RETURN,tab-003,library-store,good,makerspace_app,
+e080,2026-06-08T13:00:00Z,2026-06-08T13:00:00Z,st301,staff,TRANSFER_OUT,tab-003,library-store,,makerspace_app,
+e081,2026-06-08T14:00:00Z,2026-06-08T14:00:00Z,st301,staff,TRANSFER_IN,tab-003,media-lab,,makerspace_app,
+e082,2026-06-08T15:00:00Z,2026-06-08T15:00:00Z,t301,technician,MAINTENANCE_CLOSE,tab-004,repair-bench,good,repair_system,
+e083,2026-06-08T16:00:00Z,2026-06-08T16:00:00Z,s307,student,CHECKOUT,tab-004,library-store,,makerspace_app,
+e084,2026-06-08T17:00:00Z,2026-06-08T17:00:00Z,s307,student,RETURN,tab-004,library-store,good,makerspace_app,
+e085,2026-06-08T18:00:00Z,2026-06-08T18:00:00Z,t301,technician,MAINTENANCE_CLOSE,light-003,repair-bench,good,repair_system,
+e086,2026-06-08T19:00:00Z,2026-06-08T19:00:00Z,s308,student,CHECKOUT,light-003,media-lab,,makerspace_app,
+e087,2026-06-08T20:00:00Z,2026-06-08T20:00:00Z,s308,student,RETURN,light-003,media-lab,good,makerspace_app,
+e088,2026-06-08T21:00:00Z,2026-06-08T21:00:00Z,a001,admin,RETIRE,light-004,media-lab,unusable,inventory_portal,
+e089,2026-06-08T22:00:00Z,2026-06-08T22:00:00Z,s309,student,CHECKOUT,light-004,media-lab,,makerspace_app,Intentional illegal checkout after retirement
+e090,2026-06-08T23:00:00Z,2026-06-08T23:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
+e091,2026-06-09T00:00:00Z,2026-06-09T00:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
+e092,2026-06-09T01:00:00Z,2026-06-09T01:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
+e093,2026-06-09T02:00:00Z,2026-06-09T02:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
+e094,2026-06-09T03:00:00Z,2026-06-09T03:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
+e095,2026-06-09T04:00:00Z,2026-06-09T04:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
+e096,2026-06-09T05:00:00Z,2026-06-09T05:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
+e097,2026-06-09T06:00:00Z,2026-06-09T06:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
+e098,2026-06-09T07:00:00Z,2026-06-09T07:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
+e099,2026-06-09T08:00:00Z,2026-06-09T08:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
+e100,2026-06-09T09:00:00Z,2026-06-09T09:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,

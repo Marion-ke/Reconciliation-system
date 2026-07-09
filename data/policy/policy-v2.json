@@ -1,0 +1,213 @@
+{
+  "policyVersion": "2.0.0",
+
+  "allowedAssetTypes": [
+    "camera",
+    "laptop",
+    "microphone",
+    "tripod",
+    "tablet",
+    "lighting"
+  ],
+
+  "allowedStatuses": [
+    "available",
+    "checked_out",
+    "in_transit",
+    "maintenance",
+    "retired"
+  ],
+
+  "allowedConditions": [
+    "new",
+    "good",
+    "worn",
+    "scratched",
+    "damaged",
+    "unusable"
+  ],
+
+  "actorRoles": ["student", "staff", "technician", "auditor", "admin"],
+
+  "sourceSystems": [
+    "makerspace_app",
+    "inventory_portal",
+    "repair_system",
+    "audit_system"
+  ],
+
+  "eventDefinitions": {
+    "CHECKOUT": {
+      "description": "Asset issued to user",
+      "requiresActor": true,
+      "requiresLocation": true,
+      "allowedStates": ["available"]
+    },
+
+    "RETURN": {
+      "description": "Asset returned",
+      "requiresActor": true,
+      "requiresLocation": true,
+      "requiresCondition": true,
+      "allowedStates": ["checked_out"]
+    },
+
+    "MAINTENANCE_OPEN": {
+      "description": "Asset moved into maintenance",
+      "requiresActor": true,
+      "requiresCondition": true,
+      "allowedStates": ["available"]
+    },
+
+    "MAINTENANCE_CLOSE": {
+      "description": "Maintenance completed",
+      "requiresActor": true,
+      "requiresCondition": true,
+      "allowedStates": ["maintenance"]
+    },
+
+    "TRANSFER_OUT": {
+      "description": "Asset leaves origin location",
+      "requiresActor": true,
+      "requiresLocation": true,
+      "allowedStates": ["available"]
+    },
+
+    "TRANSFER_IN": {
+      "description": "Asset received at destination",
+      "requiresActor": true,
+      "requiresLocation": true,
+      "allowedStates": ["in_transit"]
+    },
+
+    "AUDIT_OBSERVATION": {
+      "description": "Audit observation recorded",
+      "requiresActor": true,
+      "requiresLocation": false,
+      "allowedStates": ["available", "checked_out", "maintenance", "in_transit"]
+    },
+
+    "RETIRE": {
+      "description": "Asset permanently removed",
+      "requiresActor": true,
+      "allowedStates": ["available", "maintenance"]
+    }
+  },
+
+  "actorPermissions": {
+    "student": ["CHECKOUT", "RETURN"],
+
+    "staff": ["CHECKOUT", "RETURN", "TRANSFER_OUT", "TRANSFER_IN"],
+
+    "technician": [
+      "MAINTENANCE_OPEN",
+      "MAINTENANCE_CLOSE",
+      "AUDIT_OBSERVATION"
+    ],
+
+    "auditor": ["AUDIT_OBSERVATION"],
+
+    "admin": [
+      "CHECKOUT",
+      "RETURN",
+      "TRANSFER_OUT",
+      "TRANSFER_IN",
+      "MAINTENANCE_OPEN",
+      "MAINTENANCE_CLOSE",
+      "AUDIT_OBSERVATION",
+      "RETIRE"
+    ]
+  },
+
+  "checkoutLimits": {
+    "student": 2,
+    "staff": 5,
+    "technician": 3,
+    "auditor": 0,
+    "admin": 999
+  },
+
+  "loanHoursByType": {
+    "camera": 48,
+    "laptop": 24,
+    "microphone": 72,
+    "tripod": 72,
+    "tablet": 24,
+    "lighting": 48
+  },
+
+  "conditionSeverityRanking": {
+    "new": 0,
+    "good": 1,
+    "worn": 2,
+    "scratched": 3,
+    "damaged": 4,
+    "unusable": 5
+  },
+
+  "lateEventPolicy": {
+    "enabled": true,
+    "thresholdHours": 24,
+    "decision": "ACCEPTED_WITH_WARNING"
+  },
+
+  "autoMaintenanceConditionRank": 4,
+
+  "locationRules": {
+    "media-lab": {
+      "active": true
+    },
+
+    "equipment-store": {
+      "active": true
+    },
+
+    "studio-a": {
+      "active": true
+    },
+
+    "repair-bench": {
+      "active": true
+    },
+
+    "library-store": {
+      "active": true
+    }
+  },
+
+  "reconciliationRules": {
+    "requireHolderMatchOnReturn": true,
+
+    "requireOriginMatchOnTransferOut": true,
+
+    "requireDestinationMatchOnTransferIn": true,
+
+    "allowStaffOverride": true,
+
+    "allowAuditWithoutStateChange": true
+  },
+
+  "reviewRules": {
+    "conditionDowngradeRequiresReview": true,
+
+    "destinationMismatchRequiresReview": true,
+
+    "holderMismatchRequiresReview": true,
+
+    "auditMismatchRequiresReview": true
+  },
+
+  "validationRules": {
+    "requireUniqueEventIds": true,
+
+    "requireKnownAsset": true,
+
+    "requireKnownEventType": true,
+
+    "requireKnownActorRole": true,
+
+    "requireValidCondition": true,
+
+    "require ValidTimestamp": true
+  }
+}

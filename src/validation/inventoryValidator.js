@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-import ValidationError from "../domain/ValidationError.js";
+import ValidationError from "../domain/validationError.js";
 
 import { REASON_CODES, SEVERITY } from "./reasonCodes.js";
 
@@ -43,7 +43,7 @@ export function validateInventory(rawRecords) {
         errors.push(
           new ValidationError({
             // Generate unique error id
-            errorId: crypto.randomUUID(),
+            errorId: `${record.rawRecordId}-${REASON_CODES.MISSING_REQUIRED_FIELD}`,
 
             // Link error to raw record
             rawRecordId: record.rawRecordId,
