@@ -75,12 +75,16 @@ export function buildRunSummary({
   lines.push("## Decisions");
   lines.push("");
 
-  Object.entries(decisionCounts).forEach(([key, value]) => {
-    lines.push(`${key}: ${value}`);
-  });
+  lines.push(`Processed: ${reconciliationSummary.processed}`);
+  lines.push(`ACCEPTED: ${reconciliationSummary.accepted}`);
+  lines.push(
+    `ACCEPTED_WITH_WARNING: ${reconciliationSummary.acceptedWithWarning}`,
+  );
+  lines.push(`REJECTED: ${reconciliationSummary.rejected}`);
+  lines.push(`REVIEW_REQUIRED: ${reconciliationSummary.reviewRequired}`);
+  lines.push(`WARNING_ONLY: ${reconciliationSummary.warningOnly}`);
 
   lines.push("");
-
   // -----------------------------
   // Severity
   // -----------------------------
@@ -119,23 +123,20 @@ export function buildRunSummary({
   // -----------------------------
   // Notable Findings
   // -----------------------------
-  lines.push("## Notable Findings");
-  lines.push("");
-
-  lines.push(`- ${decisions.length} canonical events processed.`);
-  lines.push(`- ${decisionCounts.ACCEPTED ?? 0} events accepted.`);
   lines.push(
-    `- ${decisionCounts.ACCEPTED_WITH_WARNING ?? 0} events accepted with warning.`,
+    `- ${reconciliationSummary.processed} canonical events processed.`,
   );
-  lines.push(`- ${decisionCounts.REJECTED ?? 0} events rejected.`);
+  lines.push(`- ${reconciliationSummary.accepted} events accepted.`);
   lines.push(
-    `- ${decisionCounts.REVIEW_REQUIRED ?? 0} events require manual review.`,
+    `- ${reconciliationSummary.acceptedWithWarning} events accepted with warning.`,
+  );
+  lines.push(`- ${reconciliationSummary.rejected} events rejected.`);
+  lines.push(
+    `- ${reconciliationSummary.reviewRequired} events require manual review.`,
   );
   lines.push(
-    `- ${decisionCounts.WARNING_ONLY ?? 0} warning-only events generated.`,
+    `- ${reconciliationSummary.warningOnly} warning-only events generated.`,
   );
-  lines.push(`- ${exceptions.length} exception cases generated.`);
-  lines.push("");
 
   // -----------------------------
   // Output Files

@@ -6,9 +6,9 @@ describe("Policy Rules", () => {
     expect(mockPolicy.checkoutLimits.student).toBeGreaterThan(0);
   });
 
-  test("policy contains condition ranking", () => {
-    expect(mockPolicy.conditionRanking.good).toBeGreaterThan(
-      mockPolicy.conditionRanking.damaged,
+  test("policy contains condition severity ranking", () => {
+    expect(mockPolicy.conditionSeverityRanking.good).toBeLessThan(
+      mockPolicy.conditionSeverityRanking.damaged,
     );
   });
 

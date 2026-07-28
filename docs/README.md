@@ -27,6 +27,22 @@ The system is designed to:
 
 ---
 
+# Architecture
+
+The reconciliation pipeline consists of the following stages:
+
+1. CSV Ingestion
+2. Raw Record Construction
+3. Validation
+4. Canonical Mapping
+5. Replay Ordering
+6. Late Event Detection
+7. Reconciliation Engine
+8. Exception Queue Generation
+9. Report and CSV Export
+
+Each stage produces deterministic outputs that are consumed by the next stage, ensuring reproducible reconciliation results.
+
 # Project Structure
 
 ```
@@ -71,13 +87,13 @@ Canonical events are replayed using deterministic ordering based on:
 4. source row
 5. event_id
 
-This guarantees identical replay behaviour across repeated executions.
+This ordering guarantees that identical input datasets always produce identical replay behaviour and byte-for-byte identical output files across repeated executions.
 
 ---
 
 ## Policy-Driven Reconciliation
 
-Business rules are read from the policy configuration rather than being hard-coded.
+Business rules are externalised in `policy-v2.json` rather than being hard-coded into the reconciliation engine. Updating the policy file changes reconciliation behaviour without modifying application code.
 
 Current policy includes:
 
@@ -89,6 +105,16 @@ Current policy includes:
 - Condition ranking
 
 ---
+
+# Reproducibility
+
+The system includes an automated regression test that executes the complete reconciliation pipeline twice and compares SHA-256 hashes of the generated output files.
+
+This verifies that:
+
+- deterministic replay ordering is preserved;
+- policy-driven processing remains stable;
+- exported reports are reproducible across repeated executions.
 
 ## State Machine
 
@@ -220,6 +246,20 @@ npm test
 
 ---
 
+# Requirements Traceability
+
+| Requirement           | Implementation                                  |
+| --------------------- | ----------------------------------------------- |
+| Validation            | `src/validation/`                               |
+| Canonical Mapping     | `src/normalization/`                            |
+| Replay Ordering       | `src/reconciliation/replayOrdering.js`          |
+| Policy Engine         | `data/policy/policy-v2.json`                    |
+| State Machine         | `src/reconciliation/stateMachine.js`            |
+| Reconciliation Engine | `src/reconciliation/reconciliationEngine.js`    |
+| Exception Queue       | `src/reconciliation/exceptionQueue.js`          |
+| Exporters             | `src/exporters/`                                |
+| Deterministic Outputs | `tests/regression/reproducible_outputs.test.js` |
+
 ## Traceability
 
 Every asset state in the final ledger can be traced back through:
@@ -234,7 +274,9 @@ Rejected and review-required events never mutate the authoritative ledger unless
 
 # Test Coverage
 
-Automated tests cover:
+Automated Test Coverage (40 Tests / 29 Test Suites)
+
+The automated test suite covers:
 
 - State transitions
 - Deterministic ordering

@@ -24,7 +24,7 @@ import { buildExceptionQueueCsv } from "./exporters/exception_queue_exporter.js"
 import { orderEvents } from "./reconciliation/replayOrdering.js";
 import { detectLateEvents } from "./reconciliation/lateEventDetector.js";
 import { buildRunSummary } from "./exporters/run_summary_exporter.js";
-async function main() {
+export async function main() {
   console.log("\n=== Reconciliation Intelligence System ===\n");
 
   // Load source files
@@ -207,7 +207,3 @@ async function main() {
   console.log(`Warnings: ${validationResult.warningRecords.length}`);
   console.log(`Validation errors exported: ${validationErrors.length}`);
 }
-
-main().catch((error) => {
-  console.error("Application startup failed:", error);
-});

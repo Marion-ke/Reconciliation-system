@@ -10,11 +10,12 @@ Processed Events: 95
 
 ## Decisions
 
-ACCEPTED: 53
-REJECTED: 27
+Processed: 95
+ACCEPTED: 54
 ACCEPTED_WITH_WARNING: 1
-WARNING_ONLY: 2
+REJECTED: 27
 REVIEW_REQUIRED: 12
+WARNING_ONLY: 2
 
 ## Severity
 
@@ -37,16 +38,12 @@ TRANSFER_OUT: 3
 
 Total Exception Cases: 41
 
-## Notable Findings
-
 - 95 canonical events processed.
-- 53 events accepted.
+- 54 events accepted.
 - 1 events accepted with warning.
 - 27 events rejected.
 - 12 events require manual review.
 - 2 warning-only events generated.
-- 41 exception cases generated.
-
 ## Generated Outputs
 
 outputs/latest/canonical_events.csv

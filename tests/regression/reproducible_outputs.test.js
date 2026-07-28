@@ -1,29 +1,38 @@
 import { describe, test, expect } from "@jest/globals";
+import { createHash } from "crypto";
+import { readFile } from "fs/promises";
 
-import { sortCanonicalEvents } from "../../src/normalization/deterministic_sorter.js";
+import { main } from "../../src/index.js";
+
+const files = [
+  "outputs/latest/canonical_events.csv",
+  "outputs/latest/event_decisions.csv",
+  "outputs/latest/exception_queue.csv",
+  "outputs/latest/final_asset_state.csv",
+  "outputs/latest/run_summary.md",
+];
+
+async function hashFile(path) {
+  const buffer = await readFile(path);
+  return createHash("sha256").update(buffer).digest("hex");
+}
 
 describe("Reproducible Outputs", () => {
-  test("should produce identical ordering for the same input", () => {
-    const events = [
-      {
-        occurredAt: "2026-06-01T10:00:00Z",
-        receivedAt: "2026-06-01T10:02:00Z",
-        sourceSystem: "makerspace_app",
-        sourceRow: 2,
-        eventId: "e002",
-      },
-      {
-        occurredAt: "2026-06-01T10:00:00Z",
-        receivedAt: "2026-06-01T10:01:00Z",
-        sourceSystem: "inventory_portal",
-        sourceRow: 1,
-        eventId: "e001",
-      },
-    ];
+  test("pipeline produces identical output files across repeated runs", async () => {
+    await main();
 
-    const firstRun = sortCanonicalEvents(events);
-    const secondRun = sortCanonicalEvents(events);
+    const firstRun = {};
+    for (const file of files) {
+      firstRun[file] = await hashFile(file);
+    }
 
-    expect(firstRun).toEqual(secondRun);
+    await main();
+
+    const secondRun = {};
+    for (const file of files) {
+      secondRun[file] = await hashFile(file);
+    }
+
+    expect(secondRun).toEqual(firstRun);
   });
 });
