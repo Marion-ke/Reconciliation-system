@@ -91,21 +91,50 @@
       "description": "Asset permanently removed",
       "requiresActor": true,
       "allowedStates": ["available", "maintenance"]
+    },
+    "RESERVE": {
+      "description": "Asset reservation created",
+      "requiresActor": true,
+      "requiresLocation": false,
+      "allowedStates": ["available", "checked_out"]
+    },
+
+    "CANCEL_RESERVATION": {
+      "description": "Existing asset reservation cancelled",
+      "requiresActor": true,
+      "requiresLocation": false,
+      "allowedStates": ["available", "checked_out", "in_transit", "maintenance"]
+    },
+
+    "MANUAL_CORRECTION": {
+      "description": "Authorized manual correction applied to asset state",
+      "requiresActor": true,
+      "requiresLocation": false,
+      "allowedStates": ["available", "checked_out", "in_transit", "maintenance"]
     }
   },
 
   "actorPermissions": {
-    "student": ["CHECKOUT", "RETURN"],
+    "student": ["CHECKOUT", "RETURN", "RESERVE", "CANCEL_RESERVATION"],
 
-    "staff": ["CHECKOUT", "RETURN", "TRANSFER_OUT", "TRANSFER_IN"],
+    "staff": [
+      "CHECKOUT",
+      "RETURN",
+      "TRANSFER_OUT",
+      "TRANSFER_IN",
+      "RESERVE",
+      "CANCEL_RESERVATION"
+    ],
 
     "technician": [
       "MAINTENANCE_OPEN",
       "MAINTENANCE_CLOSE",
-      "AUDIT_OBSERVATION"
+      "AUDIT_OBSERVATION",
+      "RESERVE",
+      "CANCEL_RESERVATION"
     ],
 
-    "auditor": ["AUDIT_OBSERVATION"],
+    "auditor": ["AUDIT_OBSERVATION", "RESERVE", "CANCEL_RESERVATION"],
 
     "admin": [
       "CHECKOUT",
@@ -115,7 +144,10 @@
       "MAINTENANCE_OPEN",
       "MAINTENANCE_CLOSE",
       "AUDIT_OBSERVATION",
-      "RETIRE"
+      "RETIRE",
+      "RESERVE",
+      "CANCEL_RESERVATION",
+      "MANUAL_CORRECTION"
     ]
   },
 
@@ -208,6 +240,6 @@
 
     "requireValidCondition": true,
 
-    "require ValidTimestamp": true
+    "requireValidTimestamp": true
   }
 }

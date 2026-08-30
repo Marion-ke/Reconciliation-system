@@ -1,31 +1,43 @@
 /**
  * Builds the final reconciliation run summary.
+ *
+ * The summary is generated from the actual reconciliation run so that
+ * run identity, policy version, source counts, decision counts, timing,
+ * exceptions, findings, and generated outputs remain traceable.
  */
 export function buildRunSummary({
+  runId,
   policyVersion,
+  inputHash,
+  startedAt,
+  completedAt,
+  status,
+  sourceCounts = {},
   inventoryCount,
   eventCount,
   reconciliationSummary,
   decisions,
   exceptions,
+  auditDiscrepancyCount = 0,
+  policyComparison = null,
+  outputFiles = [],
 }) {
   const eventTypeCounts = {};
   const decisionCounts = {};
   const severityCounts = {};
 
+  // -----------------------------
+  // Calculate decision statistics
+  // -----------------------------
   decisions.forEach((decision) => {
-    // -----------------------------
-    // Decision counts
-    // -----------------------------
-    decisionCounts[decision.decision] =
-      (decisionCounts[decision.decision] ?? 0) + 1;
+    const decisionType = decision.decision ?? "UNKNOWN";
 
-    // -----------------------------
-    // Severity counts
-    // -----------------------------
+    decisionCounts[decisionType] = (decisionCounts[decisionType] ?? 0) + 1;
+
+    // Convert reconciliation decisions into report severity.
     let severity = "INFO";
 
-    switch (decision.decision) {
+    switch (decisionType) {
       case "REJECTED":
         severity = "ERROR";
         break;
@@ -52,21 +64,44 @@ export function buildRunSummary({
 
   const lines = [];
 
+  // -----------------------------
+  // Run metadata
+  // -----------------------------
   lines.push("# Reconciliation Run Summary");
   lines.push("");
 
-  lines.push(`Policy Version: ${policyVersion}`);
+  lines.push("## Run");
+  lines.push("");
+
+  lines.push(`- Run ID: ${runId}`);
+  lines.push(`- Policy Version: ${policyVersion}`);
+  lines.push(`- Status: ${status}`);
+  lines.push(`- Started At: ${startedAt}`);
+  lines.push(`- Completed At: ${completedAt ?? "Not completed"}`);
+  lines.push(`- Input Hash: ${inputHash}`);
   lines.push("");
 
   // -----------------------------
-  // Input
+  // Input sources
   // -----------------------------
-  lines.push("## Input");
+  lines.push("## Input Sources");
   lines.push("");
 
-  lines.push(`Inventory Records: ${inventoryCount}`);
-  lines.push(`Canonical Events: ${eventCount}`);
-  lines.push(`Processed Events: ${decisions.length}`);
+  Object.entries(sourceCounts).forEach(([source, count]) => {
+    lines.push(`- ${source}: ${count}`);
+  });
+
+  lines.push("");
+
+  // -----------------------------
+  // Processing
+  // -----------------------------
+  lines.push("## Processing");
+  lines.push("");
+
+  lines.push(`- Inventory Records: ${inventoryCount}`);
+  lines.push(`- Canonical Events: ${eventCount}`);
+  lines.push(`- Processed Events: ${decisions.length}`);
   lines.push("");
 
   // -----------------------------
@@ -75,30 +110,32 @@ export function buildRunSummary({
   lines.push("## Decisions");
   lines.push("");
 
-  lines.push(`Processed: ${reconciliationSummary.processed}`);
-  lines.push(`ACCEPTED: ${reconciliationSummary.accepted}`);
+  lines.push(`- Processed: ${reconciliationSummary.processed}`);
+  lines.push(`- ACCEPTED: ${reconciliationSummary.accepted}`);
   lines.push(
-    `ACCEPTED_WITH_WARNING: ${reconciliationSummary.acceptedWithWarning}`,
+    `- ACCEPTED_WITH_WARNING: ${reconciliationSummary.acceptedWithWarning}`,
   );
-  lines.push(`REJECTED: ${reconciliationSummary.rejected}`);
-  lines.push(`REVIEW_REQUIRED: ${reconciliationSummary.reviewRequired}`);
-  lines.push(`WARNING_ONLY: ${reconciliationSummary.warningOnly}`);
-
+  lines.push(`- REJECTED: ${reconciliationSummary.rejected}`);
+  lines.push(`- REVIEW_REQUIRED: ${reconciliationSummary.reviewRequired}`);
+  lines.push(`- WARNING_ONLY: ${reconciliationSummary.warningOnly}`);
   lines.push("");
+
   // -----------------------------
   // Severity
   // -----------------------------
   lines.push("## Severity");
   lines.push("");
 
-  Object.entries(severityCounts).forEach(([key, value]) => {
-    lines.push(`${key}: ${value}`);
-  });
+  Object.entries(severityCounts)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .forEach(([key, value]) => {
+      lines.push(`- ${key}: ${value}`);
+    });
 
   lines.push("");
 
   // -----------------------------
-  // Event Types
+  // Event types
   // -----------------------------
   lines.push("## Event Types");
   lines.push("");
@@ -106,7 +143,7 @@ export function buildRunSummary({
   Object.entries(eventTypeCounts)
     .sort(([a], [b]) => a.localeCompare(b))
     .forEach(([key, value]) => {
-      lines.push(`${key}: ${value}`);
+      lines.push(`- ${key}: ${value}`);
     });
 
   lines.push("");
@@ -117,41 +154,66 @@ export function buildRunSummary({
   lines.push("## Exceptions");
   lines.push("");
 
-  lines.push(`Total Exception Cases: ${exceptions.length}`);
+  lines.push(`- Total Exception Cases: ${exceptions.length}`);
+  lines.push(`- Rejected Events: ${reconciliationSummary.rejected}`);
+  lines.push(
+    `- Events Requiring Manual Review: ${reconciliationSummary.reviewRequired}`,
+  );
+  lines.push(`- Warning-Only Events: ${reconciliationSummary.warningOnly}`);
+  lines.push(
+    `- Accepted With Warning: ${reconciliationSummary.acceptedWithWarning}`,
+  );
+  lines.push(`- Audit Discrepancies Detected: ${auditDiscrepancyCount}`);
   lines.push("");
 
   // -----------------------------
-  // Notable Findings
+  // Major findings
   // -----------------------------
+  lines.push("## Major Findings");
+  lines.push("");
+
   lines.push(
-    `- ${reconciliationSummary.processed} canonical events processed.`,
+    `- ${reconciliationSummary.rejected} events were rejected during reconciliation.`,
   );
-  lines.push(`- ${reconciliationSummary.accepted} events accepted.`);
-  lines.push(
-    `- ${reconciliationSummary.acceptedWithWarning} events accepted with warning.`,
-  );
-  lines.push(`- ${reconciliationSummary.rejected} events rejected.`);
+
   lines.push(
     `- ${reconciliationSummary.reviewRequired} events require manual review.`,
   );
+
   lines.push(
-    `- ${reconciliationSummary.warningOnly} warning-only events generated.`,
+    `- ${reconciliationSummary.warningOnly} warning-only outcomes were generated.`,
   );
 
+  lines.push(
+    `- ${reconciliationSummary.acceptedWithWarning} events were accepted with warning.`,
+  );
+
+  lines.push(`- ${auditDiscrepancyCount} audit discrepancies were detected.`);
+
   // -----------------------------
-  // Output Files
+  // Policy comparison findings
+  // -----------------------------
+  if (policyComparison) {
+    lines.push(
+      `- Policy versions ${policyComparison.policyV1} and ${policyComparison.policyV2} produced ${policyComparison.totalDifferences} total differences.`,
+    );
+
+    lines.push(
+      `- ${policyComparison.changedOutcomeCount} reconciliation outcomes changed between the two policy versions.`,
+    );
+  }
+
+  lines.push("");
+
+  // -----------------------------
+  // Generated outputs
   // -----------------------------
   lines.push("## Generated Outputs");
   lines.push("");
 
-  lines.push("outputs/latest/canonical_events.csv");
-  lines.push("outputs/latest/event_decisions.csv");
-  lines.push("outputs/latest/exception_queue.csv");
-  lines.push("outputs/latest/final_asset_state.csv");
-  lines.push("outputs/latest/validation_errors.csv");
-  lines.push("outputs/latest/run_summary.md");
-  lines.push("outputs/latest/data_profile.md");
-  lines.push("outputs/latest/ingestion_summary.md");
+  for (const outputFile of outputFiles) {
+    lines.push(`- ${outputFile}`);
+  }
 
   return lines.join("\n");
 }

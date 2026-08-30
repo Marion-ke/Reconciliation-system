@@ -94,3 +94,53 @@ e097,cam-001,AUDIT_OBSERVATION,REVIEW_REQUIRED,AUDIT_DISCREPANCY,"Audit observat
 e098,cam-001,AUDIT_OBSERVATION,REVIEW_REQUIRED,AUDIT_DISCREPANCY,"Audit observation differs from recorded condition.",CHECKED_OUT,CHECKED_OUT,events.csv-98,2.0.0
 e099,cam-001,AUDIT_OBSERVATION,REVIEW_REQUIRED,AUDIT_DISCREPANCY,"Audit observation differs from recorded condition.",CHECKED_OUT,CHECKED_OUT,events.csv-99,2.0.0
 e100,cam-001,AUDIT_OBSERVATION,REVIEW_REQUIRED,AUDIT_DISCREPANCY,"Audit observation differs from recorded condition.",CHECKED_OUT,CHECKED_OUT,events.csv-100,2.0.0
+e101,cam-001,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset cam-001.",CHECKED_OUT,CHECKED_OUT,events.csv-101,2.0.0
+e102,lap-001,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset lap-001.",CHECKED_OUT,CHECKED_OUT,events.csv-102,2.0.0
+e103,cam-001,CANCEL_RESERVATION,REJECTED,RESERVATION_NOT_FOUND,"Reservation undefined does not exist.",CHECKED_OUT,,events.csv-103,2.0.0
+e104,lap-001,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,"Manual correction is missing required evidence: evidence_ref",CHECKED_OUT,,events.csv-104,2.0.0
+e105,lap-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-105,2.0.0
+e106,lap-001,RETURN,REJECTED,HOLDER_MISMATCH,"Asset holder does not match the returning actor.",CHECKED_OUT,,events.csv-106,2.0.0
+e107,mic-001,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset mic-001.",CHECKED_OUT,CHECKED_OUT,events.csv-107,2.0.0
+e108,trip-001,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset trip-001.",AVAILABLE,AVAILABLE,events.csv-108,2.0.0
+e109,mic-001,CANCEL_RESERVATION,REJECTED,RESERVATION_NOT_FOUND,"Reservation undefined does not exist.",CHECKED_OUT,,events.csv-109,2.0.0
+e110,mic-001,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,"Manual correction is missing required evidence: evidence_ref",CHECKED_OUT,,events.csv-110,2.0.0
+e111,trip-001,CHECKOUT,ACCEPTED,STATE_TRANSITION_ALLOWED,"CHECKOUT completed successfully.",AVAILABLE,CHECKED_OUT,events.csv-111,2.0.0
+e112,trip-001,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-112,2.0.0
+e113,tab-001,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset tab-001.",CHECKED_OUT,CHECKED_OUT,events.csv-113,2.0.0
+e114,light-001,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset light-001.",CHECKED_OUT,CHECKED_OUT,events.csv-114,2.0.0
+e115,tab-001,CANCEL_RESERVATION,REJECTED,RESERVATION_NOT_FOUND,"Reservation undefined does not exist.",CHECKED_OUT,,events.csv-115,2.0.0
+e116,tab-001,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,"Manual correction is missing required evidence: evidence_ref",CHECKED_OUT,,events.csv-116,2.0.0
+e117,tab-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-117,2.0.0
+e118,tab-001,RETURN,REJECTED,HOLDER_MISMATCH,"Asset holder does not match the returning actor.",CHECKED_OUT,,events.csv-118,2.0.0
+e119,cam-002,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset cam-002.",AVAILABLE,AVAILABLE,events.csv-119,2.0.0
+e120,lap-002,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset lap-002.",CHECKED_OUT,CHECKED_OUT,events.csv-120,2.0.0
+e121,cam-002,CANCEL_RESERVATION,REJECTED,RESERVATION_NOT_FOUND,"Reservation undefined does not exist.",AVAILABLE,,events.csv-121,2.0.0
+e122,cam-002,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,"Manual correction is missing required evidence: evidence_ref",AVAILABLE,,events.csv-122,2.0.0
+e123,cam-002,CHECKOUT,ACCEPTED,STATE_TRANSITION_ALLOWED,"CHECKOUT completed successfully.",AVAILABLE,CHECKED_OUT,events.csv-123,2.0.0
+e124,cam-002,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-124,2.0.0
+e125,mic-002,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset mic-002.",CHECKED_OUT,CHECKED_OUT,events.csv-125,2.0.0
+e126,trip-002,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset trip-002.",CHECKED_OUT,CHECKED_OUT,events.csv-126,2.0.0
+e127,mic-002,CANCEL_RESERVATION,REJECTED,RESERVATION_NOT_FOUND,"Reservation undefined does not exist.",CHECKED_OUT,,events.csv-127,2.0.0
+e128,mic-002,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,"Manual correction is missing required evidence: evidence_ref",CHECKED_OUT,,events.csv-128,2.0.0
+e129,mic-002,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-129,2.0.0
+e130,mic-002,RETURN,REJECTED,HOLDER_MISMATCH,"Asset holder does not match the returning actor.",CHECKED_OUT,,events.csv-130,2.0.0
+e131,lap-003,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset lap-003.",CHECKED_OUT,CHECKED_OUT,events.csv-131,2.0.0
+e132,cam-004,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset cam-004.",AVAILABLE,AVAILABLE,events.csv-132,2.0.0
+e133,lap-003,CANCEL_RESERVATION,REJECTED,RESERVATION_NOT_FOUND,"Reservation undefined does not exist.",CHECKED_OUT,,events.csv-133,2.0.0
+e134,lap-003,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,"Manual correction is missing required evidence: evidence_ref",CHECKED_OUT,,events.csv-134,2.0.0
+e135,lap-003,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-135,2.0.0
+e136,lap-003,RETURN,REJECTED,HOLDER_MISMATCH,"Asset holder does not match the returning actor.",CHECKED_OUT,,events.csv-136,2.0.0
+e137,light-003,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset light-003.",AVAILABLE,AVAILABLE,events.csv-137,2.0.0
+e138,light-004,RESERVE,REJECTED,ASSET_NOT_RESERVABLE,"Asset light-004 cannot be reserved in state RETIRED.",RETIRED,,events.csv-138,2.0.0
+e139,light-003,CANCEL_RESERVATION,REJECTED,RESERVATION_NOT_FOUND,"Reservation undefined does not exist.",AVAILABLE,,events.csv-139,2.0.0
+e140,light-003,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,"Manual correction is missing required evidence: evidence_ref",AVAILABLE,,events.csv-140,2.0.0
+e141,light-003,CHECKOUT,ACCEPTED,STATE_TRANSITION_ALLOWED,"CHECKOUT completed successfully.",AVAILABLE,CHECKED_OUT,events.csv-141,2.0.0
+e142,light-003,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-142,2.0.0
+e143,trip-003,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset trip-003.",AVAILABLE,AVAILABLE,events.csv-143,2.0.0
+e144,trip-004,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset trip-004.",AVAILABLE,AVAILABLE,events.csv-144,2.0.0
+e145,trip-003,CANCEL_RESERVATION,REJECTED,RESERVATION_NOT_FOUND,"Reservation undefined does not exist.",AVAILABLE,,events.csv-145,2.0.0
+e146,trip-003,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,"Manual correction is missing required evidence: evidence_ref",AVAILABLE,,events.csv-146,2.0.0
+e147,trip-003,CHECKOUT,ACCEPTED,STATE_TRANSITION_ALLOWED,"CHECKOUT completed successfully.",AVAILABLE,CHECKED_OUT,events.csv-147,2.0.0
+e148,trip-003,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-148,2.0.0
+e149,tab-003,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset tab-003.",AVAILABLE,AVAILABLE,events.csv-149,2.0.0
+e150,tab-003,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,"Manual correction is missing required evidence: evidence_ref",AVAILABLE,,events.csv-150,2.0.0

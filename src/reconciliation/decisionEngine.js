@@ -1,11 +1,17 @@
 import EventDecision from "../domain/eventDecision.js";
 import { getNextState } from "./stateMachine.js";
 import { REASON_CODES } from "./reasonCodes.js";
+import { evaluateReserveEvent } from "./reservationDecision.js";
+import { evaluateCancelReservationEvent } from "./cancelReservationDecision.js";
+import { evaluateManualCorrectionEvent } from "./manualCorrectionDecision.js";
+
 /**
- * Evaluates whether a canonical event
- * may be applied to the current asset state.
+ * Main Decision Engine
+ *
+ * Evaluates whether a canonical event can be applied
+ * to the current asset state.
  */
-export function evaluateEvent(assetState, event, policy, ledger) {
+export function evaluateEvent(assetState, event, policy, ledger, context = {}) {
   // 1. Validate event type
   const eventTypeResult = validateEventType(event, policy);
 
@@ -14,17 +20,41 @@ export function evaluateEvent(assetState, event, policy, ledger) {
   }
 
   // 2. Validate actor permissions
-  const permissionResult = validateActorPermission(event, policy);
+  // 2. Validate actor permissions
+  // Special events handle their own authorization so they can
+  // return their specific reason codes.
+  const specialAuthorizationEvents = new Set([
+    "MANUAL_CORRECTION",
+    "CANCEL_RESERVATION",
+  ]);
 
-  if (permissionResult) {
-    return permissionResult;
+  if (!specialAuthorizationEvents.has(event.eventType)) {
+    const permissionResult = validateActorPermission(event, policy);
+
+    if (permissionResult) {
+      return permissionResult;
+    }
   }
 
-  // 3. Validate state transition
-  const transitionResult = validateStateTransition(assetState, event, policy);
+  // 3. Validate state transition only for events
+  // that actually change the asset's physical state.
+  const stateChangingEvents = new Set([
+    "CHECKOUT",
+    "RETURN",
+    "TRANSFER_OUT",
+    "TRANSFER_IN",
+    "MAINTENANCE_OPEN",
+    "MAINTENANCE_CLOSE",
+    "AUDIT_OBSERVATION",
+    "RETIRE",
+  ]);
 
-  if (transitionResult) {
-    return transitionResult;
+  if (stateChangingEvents.has(event.eventType)) {
+    const transitionResult = validateStateTransition(assetState, event, policy);
+
+    if (transitionResult) {
+      return transitionResult;
+    }
   }
 
   // 4. Validate business rules
@@ -33,11 +63,14 @@ export function evaluateEvent(assetState, event, policy, ledger) {
     event,
     policy,
     ledger,
+    context,
   );
 
   if (businessRuleResult) {
     return businessRuleResult;
   }
+
+  // 5. Handle late events
   if (event.isLateEvent) {
     return acceptedWithWarning(
       assetState,
@@ -48,211 +81,15 @@ export function evaluateEvent(assetState, event, policy, ledger) {
     );
   }
 
-  return accepted(assetState, event, policy);
-
-  function validateBusinessRules(assetState, event, policy, ledger) {
-    const validators = {
-      CHECKOUT: validateCheckout,
-      RETURN: validateReturn,
-      MAINTENANCE_OPEN: validateMaintenanceOpen,
-      MAINTENANCE_CLOSE: validateMaintenanceClose,
-      TRANSFER_OUT: validateTransferOut,
-      TRANSFER_IN: validateTransferIn,
-      AUDIT_OBSERVATION: validateAuditObservation,
-      RETIRE: validateRetire,
-    };
-
-    const validator = validators[event.eventType];
-
-    if (!validator) {
-      return null;
-    }
-
-    return validator(assetState, event, policy, ledger);
-  }
-
-  function validateCheckout(assetState, event, policy, ledger) {
-    const limit = policy.checkoutLimits[event.actorRole];
-
-    if (limit === undefined) {
-      return null;
-    }
-
-    const activeLoans = [...ledger.values()].filter(
-      (asset) =>
-        asset.holderId === event.actorId && asset.status === "CHECKED_OUT",
-    );
-
-    if (activeLoans.length >= limit) {
-      return rejected(
-        assetState,
-        event,
-        policy,
-        "CHECKOUT_LIMIT_EXCEEDED",
-        `${event.actorId} has reached the checkout limit.`,
-      );
-    }
-
-    return null;
-  }
-  function validateReturn(assetState, event, policy) {
-    if (assetState.holderId !== event.actorId) {
-      return rejected(
-        assetState,
-        event,
-        policy,
-        "HOLDER_MISMATCH",
-        "Asset holder does not match the returning actor.",
-      );
-    }
-
-    return null;
-  }
-  function validateTransferOut(assetState, event, policy) {
-    if (assetState.locationId !== event.locationId) {
-      return rejected(
-        assetState,
-        event,
-        policy,
-        "ORIGIN_LOCATION_MISMATCH",
-        "Transfer origin does not match the current asset location.",
-      );
-    }
-
-    return null;
-  }
-
-  function validateTransferIn(assetState, event, policy) {
-    if (assetState.status !== "IN_TRANSIT") {
-      return rejected(
-        assetState,
-        event,
-        policy,
-        "DESTINATION_LOCATION_MISMATCH",
-        "Asset is not currently in transit.",
-      );
-    }
-
-    return null;
-  }
-
-  function validateMaintenanceOpen(assetState, event, policy) {
-    if (assetState.status !== "AVAILABLE") {
-      return rejected(
-        assetState,
-        event,
-        policy,
-        "MAINTENANCE_NOT_ALLOWED",
-        "Only available assets can enter maintenance.",
-      );
-    }
-
-    return null;
-  }
-
-  function validateMaintenanceClose(assetState, event, policy) {
-    if (assetState.status !== "MAINTENANCE") {
-      return rejected(
-        assetState,
-        event,
-        policy,
-        "MAINTENANCE_NOT_ACTIVE",
-        "Asset is not currently in maintenance.",
-      );
-    }
-
-    return null;
-  }
-  function isConditionDowngrade(assetState, event, policy) {
-    if (!event.conditionReport) {
-      return false;
-    }
-
-    const ranking = policy.conditionSeverityRanking;
-
-    const current = ranking[assetState.condition.toLowerCase()];
-
-    const observed = ranking[event.conditionReport.toLowerCase()];
-
-    if (current === undefined || observed === undefined) {
-      return false;
-    }
-
-    return observed > current;
-  }
-  function validateAuditObservation(assetState, event, policy) {
-    if (isConditionDowngrade(assetState, event, policy)) {
-      return acceptedWithWarning(
-        assetState,
-        event,
-        policy,
-        REASON_CODES.CONDITION_DOWNGRADE,
-        `Condition downgraded from ${assetState.condition} to ${event.conditionReport}.`,
-      );
-    }
-
-    if (
-      event.conditionReport &&
-      event.conditionReport !== assetState.condition
-    ) {
-      return reviewRequired(
-        assetState,
-        event,
-        policy,
-        REASON_CODES.AUDIT_DISCREPANCY,
-        "Audit observation differs from recorded condition.",
-      );
-    }
-
-    return warningOnly(
-      assetState,
-      event,
-      policy,
-      REASON_CODES.AUDIT_DISCREPANCY,
-      "Audit observation recorded successfully.",
-    );
-  }
-  function validateRetire(assetState, event, policy) {
-    if (assetState.status === "CHECKED_OUT") {
-      return rejected(
-        assetState,
-        event,
-        policy,
-        REASON_CODES.RETIREMENT_BLOCKED,
-        "Checked out assets cannot be retired.",
-      );
-    }
-
-    if (assetState.status === "IN_TRANSIT") {
-      return rejected(
-        assetState,
-        event,
-        policy,
-        "RETIREMENT_BLOCKED",
-        "Assets in transit cannot be retired.",
-      );
-    }
-
-    if (assetState.status === "RETIRED") {
-      return rejected(
-        assetState,
-        event,
-        policy,
-        "ALREADY_RETIRED",
-        "Asset is already retired.",
-      );
-    }
-
-    return null;
-  }
-  if (businessRuleResult) {
-    return businessRuleResult;
-  }
-
-  // 5. Everything passed
+  // 6. Normal accepted event
   return accepted(assetState, event, policy);
 }
 
+/**
+ * ---------------------------------------------------------
+ * EVENT TYPE VALIDATION
+ * ---------------------------------------------------------
+ */
 function validateEventType(event, policy) {
   if (!policy.eventDefinitions[event.eventType]) {
     return rejected(
@@ -267,6 +104,11 @@ function validateEventType(event, policy) {
   return null;
 }
 
+/**
+ * ---------------------------------------------------------
+ * ACTOR PERMISSION VALIDATION
+ * ---------------------------------------------------------
+ */
 function validateActorPermission(event, policy) {
   const allowedEvents = policy.actorPermissions[event.actorRole];
 
@@ -293,6 +135,11 @@ function validateActorPermission(event, policy) {
   return null;
 }
 
+/**
+ * ---------------------------------------------------------
+ * STATE TRANSITION VALIDATION
+ * ---------------------------------------------------------
+ */
 function validateStateTransition(assetState, event, policy) {
   const nextState = getNextState(assetState.status, event.eventType);
 
@@ -308,18 +155,358 @@ function validateStateTransition(assetState, event, policy) {
 
   return null;
 }
+
+/**
+ * ---------------------------------------------------------
+ * BUSINESS RULE VALIDATION
+ * ---------------------------------------------------------
+ */
+function validateBusinessRules(assetState, event, policy, ledger, context) {
+  const validators = {
+    CHECKOUT: validateCheckout,
+    RETURN: validateReturn,
+    MAINTENANCE_OPEN: validateMaintenanceOpen,
+    MAINTENANCE_CLOSE: validateMaintenanceClose,
+    TRANSFER_OUT: validateTransferOut,
+    TRANSFER_IN: validateTransferIn,
+    AUDIT_OBSERVATION: validateAuditObservation,
+    RETIRE: validateRetire,
+
+    RESERVE: evaluateReserveEvent,
+    CANCEL_RESERVATION: evaluateCancelReservationEvent,
+    MANUAL_CORRECTION: evaluateManualCorrectionEvent,
+  };
+
+  const validator = validators[event.eventType];
+
+  if (!validator) {
+    return null;
+  }
+
+  // RESERVE
+  if (event.eventType === "RESERVE") {
+    const result = validator({
+      event,
+      actorRole: event.actorRole,
+      assetState,
+      hasConflictingHold: context.hasConflictingHold ?? false,
+    });
+
+    return convertSpecialDecision(result, assetState, event, policy);
+  }
+
+  // CANCEL_RESERVATION
+  if (event.eventType === "CANCEL_RESERVATION") {
+    const result = validator({
+      event,
+      reservation: context.reservation ?? null,
+      actorRole: event.actorRole,
+    });
+
+    return convertSpecialDecision(result, assetState, event, policy);
+  }
+
+  // MANUAL_CORRECTION
+  if (event.eventType === "MANUAL_CORRECTION") {
+    const result = validator({
+      event,
+      actorRole: event.actorRole,
+      evidence: context.evidence ?? {
+        evidence_ref: event.evidence_ref,
+        reason: event.note,
+      },
+      assetState,
+    });
+
+    return convertSpecialDecision(result, assetState, event, policy);
+  }
+
+  // Normal validators
+  return validator(assetState, event, policy, ledger);
+}
+
+/**
+ * ---------------------------------------------------------
+ * SPECIAL EVENT RESULT CONVERSION
+ * ---------------------------------------------------------
+ */
+function convertSpecialDecision(result, assetState, event, policy) {
+  if (!result) {
+    return null;
+  }
+
+  if (result.decisionType === "REJECTED") {
+    return rejected(
+      assetState,
+      event,
+      policy,
+      result.reasonCode,
+      result.message,
+    );
+  }
+
+  if (result.decisionType === "ACCEPTED") {
+    return acceptedSpecialEvent(
+      assetState,
+      event,
+      policy,
+      result.reasonCode,
+      result.message,
+    );
+  }
+
+  if (result.decisionType === "ACCEPTED_WITH_WARNING") {
+    return acceptedWithWarningSpecialEvent(
+      assetState,
+      event,
+      policy,
+      result.reasonCode,
+      result.message,
+    );
+  }
+
+  return null;
+}
+
+/**
+ * ---------------------------------------------------------
+ * CHECKOUT
+ * ---------------------------------------------------------
+ */
+function validateCheckout(assetState, event, policy, ledger) {
+  const limit = policy.checkoutLimits[event.actorRole];
+
+  if (limit === undefined) {
+    return null;
+  }
+
+  const activeLoans = [...ledger.values()].filter(
+    (asset) =>
+      asset.holderId === event.actorId && asset.status === "CHECKED_OUT",
+  );
+
+  if (activeLoans.length >= limit) {
+    return rejected(
+      assetState,
+      event,
+      policy,
+      "CHECKOUT_LIMIT_EXCEEDED",
+      `${event.actorId} has reached the checkout limit.`,
+    );
+  }
+
+  return null;
+}
+
+/**
+ * ---------------------------------------------------------
+ * RETURN
+ * ---------------------------------------------------------
+ */
+function validateReturn(assetState, event, policy) {
+  if (assetState.holderId !== event.actorId) {
+    return rejected(
+      assetState,
+      event,
+      policy,
+      "HOLDER_MISMATCH",
+      "Asset holder does not match the returning actor.",
+    );
+  }
+
+  return null;
+}
+
+/**
+ * ---------------------------------------------------------
+ * TRANSFER OUT
+ * ---------------------------------------------------------
+ */
+function validateTransferOut(assetState, event, policy) {
+  if (assetState.locationId !== event.locationId) {
+    return rejected(
+      assetState,
+      event,
+      policy,
+      "ORIGIN_LOCATION_MISMATCH",
+      "Transfer origin does not match the current asset location.",
+    );
+  }
+
+  return null;
+}
+
+/**
+ * ---------------------------------------------------------
+ * TRANSFER IN
+ * ---------------------------------------------------------
+ */
+function validateTransferIn(assetState, event, policy) {
+  if (assetState.status !== "IN_TRANSIT") {
+    return rejected(
+      assetState,
+      event,
+      policy,
+      "DESTINATION_LOCATION_MISMATCH",
+      "Asset is not currently in transit.",
+    );
+  }
+
+  return null;
+}
+
+/**
+ * ---------------------------------------------------------
+ * MAINTENANCE OPEN
+ * ---------------------------------------------------------
+ */
+function validateMaintenanceOpen(assetState, event, policy) {
+  if (assetState.status !== "AVAILABLE") {
+    return rejected(
+      assetState,
+      event,
+      policy,
+      "MAINTENANCE_NOT_ALLOWED",
+      "Only available assets can enter maintenance.",
+    );
+  }
+
+  return null;
+}
+
+/**
+ * ---------------------------------------------------------
+ * MAINTENANCE CLOSE
+ * ---------------------------------------------------------
+ */
+function validateMaintenanceClose(assetState, event, policy) {
+  if (assetState.status !== "MAINTENANCE") {
+    return rejected(
+      assetState,
+      event,
+      policy,
+      "MAINTENANCE_NOT_ACTIVE",
+      "Asset is not currently in maintenance.",
+    );
+  }
+
+  return null;
+}
+
+/**
+ * ---------------------------------------------------------
+ * CONDITION COMPARISON
+ * ---------------------------------------------------------
+ */
+function isConditionDowngrade(assetState, event, policy) {
+  if (!event.conditionReport) {
+    return false;
+  }
+
+  const ranking = policy.conditionSeverityRanking;
+
+  const current = ranking[assetState.condition.toLowerCase()];
+
+  const observed = ranking[event.conditionReport.toLowerCase()];
+
+  if (current === undefined || observed === undefined) {
+    return false;
+  }
+
+  return observed > current;
+}
+
+/**
+ * ---------------------------------------------------------
+ * AUDIT OBSERVATION
+ * ---------------------------------------------------------
+ */
+function validateAuditObservation(assetState, event, policy) {
+  if (isConditionDowngrade(assetState, event, policy)) {
+    return acceptedWithWarning(
+      assetState,
+      event,
+      policy,
+      REASON_CODES.CONDITION_DOWNGRADE,
+      `Condition downgraded from ${assetState.condition} to ${event.conditionReport}.`,
+    );
+  }
+
+  if (event.conditionReport && event.conditionReport !== assetState.condition) {
+    return reviewRequired(
+      assetState,
+      event,
+      policy,
+      REASON_CODES.AUDIT_DISCREPANCY,
+      "Audit observation differs from recorded condition.",
+    );
+  }
+
+  return warningOnly(
+    assetState,
+    event,
+    policy,
+    REASON_CODES.AUDIT_DISCREPANCY,
+    "Audit observation recorded successfully.",
+  );
+}
+
+/**
+ * ---------------------------------------------------------
+ * RETIRE
+ * ---------------------------------------------------------
+ */
+function validateRetire(assetState, event, policy) {
+  if (assetState.status === "CHECKED_OUT") {
+    return rejected(
+      assetState,
+      event,
+      policy,
+      REASON_CODES.RETIREMENT_BLOCKED,
+      "Checked out assets cannot be retired.",
+    );
+  }
+
+  if (assetState.status === "IN_TRANSIT") {
+    return rejected(
+      assetState,
+      event,
+      policy,
+      "RETIREMENT_BLOCKED",
+      "Assets in transit cannot be retired.",
+    );
+  }
+
+  if (assetState.status === "RETIRED") {
+    return rejected(
+      assetState,
+      event,
+      policy,
+      "ALREADY_RETIRED",
+      "Asset is already retired.",
+    );
+  }
+
+  return null;
+}
+
+/**
+ * ---------------------------------------------------------
+ * ACCEPTED NORMAL EVENT
+ * ---------------------------------------------------------
+ */
 function accepted(assetState, event, policy) {
   const nextState = getNextState(assetState.status, event.eventType);
+
   if (!nextState) {
     throw new Error(
       `Illegal transition accepted: ${assetState.status} -> ${event.eventType}`,
     );
   }
+
   return new EventDecision({
     eventId: event.eventId,
     eventType: event.eventType,
- eventType: event.eventType,
-
     assetId: event.assetId,
 
     decision: "ACCEPTED",
@@ -327,29 +514,21 @@ function accepted(assetState, event, policy) {
     reasonCode: REASON_CODES.STATE_TRANSITION_ALLOWED,
 
     message: buildSuccessMessage(event.eventType),
-    previousState: assetState.status,
 
+    previousState: assetState.status,
     nextState,
 
     rawRecordId: event.rawRecordId,
 
     policyVersion: policy.policyVersion,
   });
-  function buildSuccessMessage(eventType) {
-    const messages = {
-      CHECKOUT: "CHECKOUT completed successfully.",
-      RETURN: "RETURN completed successfully.",
-      MAINTENANCE_OPEN: "Maintenance started successfully.",
-      MAINTENANCE_CLOSE: "Maintenance completed successfully.",
-      TRANSFER_OUT: "Transfer initiated successfully.",
-      TRANSFER_IN: "Transfer completed successfully.",
-      AUDIT_OBSERVATION: "Audit recorded successfully.",
-      RETIRE: "Asset retired successfully.",
-    };
-
-    return messages[eventType] ?? `${eventType} completed successfully.`;
-  }
 }
+
+/**
+ * ---------------------------------------------------------
+ * ACCEPTED WITH WARNING
+ * ---------------------------------------------------------
+ */
 function acceptedWithWarning(assetState, event, policy, reasonCode, message) {
   const nextState = getNextState(assetState.status, event.eventType);
 
@@ -361,20 +540,15 @@ function acceptedWithWarning(assetState, event, policy, reasonCode, message) {
 
   return new EventDecision({
     eventId: event.eventId,
-
-     eventType: event.eventType,
-
-
+    eventType: event.eventType,
     assetId: event.assetId,
 
     decision: "ACCEPTED_WITH_WARNING",
 
     reasonCode,
-
     message,
 
     previousState: assetState.status,
-
     nextState,
 
     rawRecordId: event.rawRecordId,
@@ -382,17 +556,21 @@ function acceptedWithWarning(assetState, event, policy, reasonCode, message) {
     policyVersion: policy.policyVersion,
   });
 }
+
+/**
+ * ---------------------------------------------------------
+ * REJECTED
+ * ---------------------------------------------------------
+ */
 function rejected(assetState, event, policy, reasonCode, message) {
   return new EventDecision({
     eventId: event.eventId,
     eventType: event.eventType,
-
     assetId: event.assetId,
 
     decision: "REJECTED",
 
     reasonCode,
-
     message,
 
     previousState: assetState?.status ?? "",
@@ -405,6 +583,11 @@ function rejected(assetState, event, policy, reasonCode, message) {
   });
 }
 
+/**
+ * ---------------------------------------------------------
+ * REVIEW REQUIRED
+ * ---------------------------------------------------------
+ */
 function reviewRequired(assetState, event, policy, reasonCode, message) {
   return new EventDecision({
     eventId: event.eventId,
@@ -414,12 +597,11 @@ function reviewRequired(assetState, event, policy, reasonCode, message) {
     decision: "REVIEW_REQUIRED",
 
     reasonCode,
-
     message,
 
     previousState: assetState?.status ?? "",
 
-    nextState: assetState.status,
+    nextState: assetState?.status ?? null,
 
     rawRecordId: event.rawRecordId,
 
@@ -427,23 +609,106 @@ function reviewRequired(assetState, event, policy, reasonCode, message) {
   });
 }
 
+/**
+ * ---------------------------------------------------------
+ * WARNING ONLY
+ * ---------------------------------------------------------
+ */
 function warningOnly(assetState, event, policy, reasonCode, message) {
   return new EventDecision({
     eventId: event.eventId,
-    eventType: event.eventType, 
+    eventType: event.eventType,
     assetId: event.assetId,
 
     decision: "WARNING_ONLY",
 
     reasonCode,
-
     message,
 
     previousState: assetState?.status ?? "",
-    nextState: assetState.status,
+
+    nextState: assetState?.status ?? null,
 
     rawRecordId: event.rawRecordId,
 
     policyVersion: policy.policyVersion,
   });
+}
+
+/**
+ * ---------------------------------------------------------
+ * SPECIAL EVENT: ACCEPTED
+ * ---------------------------------------------------------
+ */
+function acceptedSpecialEvent(assetState, event, policy, reasonCode, message) {
+  return new EventDecision({
+    eventId: event.eventId,
+    eventType: event.eventType,
+    assetId: event.assetId,
+
+    decision: "ACCEPTED",
+
+    reasonCode,
+    message,
+
+    previousState: assetState?.status ?? "",
+
+    nextState: assetState?.status ?? null,
+
+    rawRecordId: event.rawRecordId,
+
+    policyVersion: policy.policyVersion,
+  });
+}
+
+/**
+ * ---------------------------------------------------------
+ * SPECIAL EVENT: ACCEPTED WITH WARNING
+ * ---------------------------------------------------------
+ */
+function acceptedWithWarningSpecialEvent(
+  assetState,
+  event,
+  policy,
+  reasonCode,
+  message,
+) {
+  return new EventDecision({
+    eventId: event.eventId,
+    eventType: event.eventType,
+    assetId: event.assetId,
+
+    decision: "ACCEPTED_WITH_WARNING",
+
+    reasonCode,
+    message,
+
+    previousState: assetState?.status ?? "",
+
+    nextState: assetState?.status ?? null,
+
+    rawRecordId: event.rawRecordId,
+
+    policyVersion: policy.policyVersion,
+  });
+}
+
+/**
+ * ---------------------------------------------------------
+ * SUCCESS MESSAGES
+ * ---------------------------------------------------------
+ */
+function buildSuccessMessage(eventType) {
+  const messages = {
+    CHECKOUT: "CHECKOUT completed successfully.",
+    RETURN: "RETURN completed successfully.",
+    MAINTENANCE_OPEN: "Maintenance started successfully.",
+    MAINTENANCE_CLOSE: "Maintenance completed successfully.",
+    TRANSFER_OUT: "Transfer initiated successfully.",
+    TRANSFER_IN: "Transfer completed successfully.",
+    AUDIT_OBSERVATION: "Audit recorded successfully.",
+    RETIRE: "Asset retired successfully.",
+  };
+
+  return messages[eventType] ?? `${eventType} completed successfully.`;
 }

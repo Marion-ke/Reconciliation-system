@@ -1,5 +1,3 @@
-import crypto from "crypto";
-
 import ValidationError from "../domain/validationError.js";
 
 import { REASON_CODES, SEVERITY } from "./reasonCodes.js";
@@ -7,7 +5,7 @@ import { REASON_CODES, SEVERITY } from "./reasonCodes.js";
 /*
   Required event fields based on
   the Packet 01 event contract.
- */
+*/
 const REQUIRED_FIELDS = [
   "event_id",
   "occurred_at",
@@ -18,57 +16,61 @@ const REQUIRED_FIELDS = [
 ];
 
 /**
- Validate event
-  raw records.
-  Current validations:
-  Duplicate event ids
-  Required fields
-  Missing actor role
-  Invalid timestamps
+ * Validate event raw records.
  */
 export function validateEvents(rawRecords, policy, inventoryRawRecords) {
   const errors = [];
 
   /*
-    Stores all event ids already seen.
-   Used to detect duplicates.
-   */
+    Stores event IDs already seen
+    to detect duplicates.
+  */
   const seenEventIds = new Set();
+
   /*
-    Build a set of valid asset ids
+    Build a set of valid asset IDs
     from inventory.
-   */
+  */
   const validAssetIds = new Set(
     inventoryRawRecords.map((record) => record.payload.asset_id),
   );
 
+  /*
+    Read policy values safely.
+    This helps maintain compatibility with
+    tests that may use smaller policy objects.
+  */
+  const allowedEventTypes = Object.keys(policy.eventDefinitions ?? {});
+  const allowedConditions = policy.allowedConditions ?? [];
+  const allowedActorRoles = policy.actorRoles ?? [];
+
+  const lateEventEnabled = policy.lateEventPolicy?.enabled ?? true;
+  const lateThresholdHours = policy.lateEventPolicy?.thresholdHours ?? 48;
+
   rawRecords.forEach((record) => {
+    const eventId = record.payload.event_id;
+    const occurredAtValue = record.payload.occurred_at;
+    const receivedAtValue = record.payload.received_at;
+    const eventType = record.payload.event_type;
+    const assetId = record.payload.asset_id;
+    const actorRole = record.payload.actor_role;
+    const condition = record.payload.condition_report;
+
     /*
       Duplicate Event ID Validation
-     
-     */
-    const eventId = record.payload.event_id;
-
+    */
     if (eventId) {
       if (seenEventIds.has(eventId)) {
         errors.push(
           new ValidationError({
             errorId: `${record.rawRecordId}-${REASON_CODES.DUPLICATE_EVENT_ID}`,
-
             rawRecordId: record.rawRecordId,
-
-            eventId: record.payload.event_id,
-
+            eventId,
             reasonCode: REASON_CODES.DUPLICATE_EVENT_ID,
-
             severity: SEVERITY.ERROR,
-
             message: `Duplicate event id: ${eventId}`,
-
             sourceValue: eventId,
-
             expectedRule: "Each event_id must be unique.",
-
             recommendedNextAction:
               "Remove or correct duplicate event identifiers.",
           }),
@@ -79,10 +81,8 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
     }
 
     /*
-     
       Required Field Validation
-     
-     */
+    */
     REQUIRED_FIELDS.forEach((field) => {
       const value = record.payload[field];
 
@@ -90,21 +90,13 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
         errors.push(
           new ValidationError({
             errorId: `${record.rawRecordId}-${REASON_CODES.MISSING_REQUIRED_FIELD}`,
-
             rawRecordId: record.rawRecordId,
-
-            eventId: record.payload.event_id,
-
+            eventId,
             reasonCode: REASON_CODES.MISSING_REQUIRED_FIELD,
-
             severity: SEVERITY.ERROR,
-
             message: `${field} is required`,
-
             sourceValue: value,
-
             expectedRule: `${field} must be present and non-empty.`,
-
             recommendedNextAction: `Populate the ${field} field before processing.`,
           }),
         );
@@ -112,203 +104,183 @@ export function validateEvents(rawRecords, policy, inventoryRawRecords) {
     });
 
     /*
-     Actor Role Validation
-     
-     */
-    if (!record.payload.actor_role) {
+      Actor Role Validation
+    */
+    if (!actorRole) {
       errors.push(
         new ValidationError({
           errorId: `${record.rawRecordId}-${REASON_CODES.MISSING_ACTOR_ROLE}`,
-
           rawRecordId: record.rawRecordId,
-
-          eventId: record.payload.event_id,
-
+          eventId,
           reasonCode: REASON_CODES.MISSING_ACTOR_ROLE,
-
           severity: SEVERITY.ERROR,
-
           message: "Actor role is required",
-
-          sourceValue: record.payload.actor_role,
-
+          sourceValue: actorRole,
           expectedRule:
             "actor_role is required for authorization and validation.",
-
           recommendedNextAction: "Provide a valid actor role.",
         }),
       );
     }
 
     /*
-     Timestamp Validation
-     Example invalid value:
-      INVALID_DATE
-     */
+      Only validate actor role against policy
+      if actorRoles are available in the policy.
+    */
     if (
-      record.payload.occurred_at &&
-      Number.isNaN(Date.parse(record.payload.occurred_at))
+      actorRole &&
+      allowedActorRoles.length > 0 &&
+      !allowedActorRoles.includes(actorRole)
     ) {
       errors.push(
         new ValidationError({
-          errorId: `${record.rawRecordId}-${REASON_CODES.INVALID_TIMESTAMP}`,
-
+          errorId: `${record.rawRecordId}-UNKNOWN_ACTOR_ROLE`,
           rawRecordId: record.rawRecordId,
-
-          eventId: record.payload.event_id,
-
-          reasonCode: REASON_CODES.INVALID_TIMESTAMP,
-
+          eventId,
+          reasonCode: "UNKNOWN_ACTOR_ROLE",
           severity: SEVERITY.ERROR,
+          message: `Unknown actor role: ${actorRole}`,
+          sourceValue: actorRole,
+          expectedRule: "actor_role must be one of the policy-approved roles.",
+          recommendedNextAction:
+            "Use a valid actor role defined in policy.json.",
+        }),
+      );
+    }
 
+    /*
+      Timestamp Validation
+    */
+    if (occurredAtValue && Number.isNaN(Date.parse(occurredAtValue))) {
+      errors.push(
+        new ValidationError({
+          errorId: `${record.rawRecordId}-${REASON_CODES.INVALID_TIMESTAMP}`,
+          rawRecordId: record.rawRecordId,
+          eventId,
+          reasonCode: REASON_CODES.INVALID_TIMESTAMP,
+          severity: SEVERITY.ERROR,
           message: "Invalid occurred_at timestamp",
-
-          sourceValue: record.payload.occurred_at,
-
+          sourceValue: occurredAtValue,
           expectedRule: "occurred_at must be a valid ISO-8601 timestamp.",
-
           recommendedNextAction:
             "Provide a valid timestamp in ISO-8601 format.",
         }),
       );
     }
-    /**
-     Event Type Validation
-     
-     Event types must exist in policy.
-     */
-    const eventType = record.payload.event_type;
 
-    const allowedEventTypes = Object.keys(policy.eventDefinitions);
+    if (receivedAtValue && Number.isNaN(Date.parse(receivedAtValue))) {
+      errors.push(
+        new ValidationError({
+          errorId: `${record.rawRecordId}-INVALID_RECEIVED_TIMESTAMP`,
+          rawRecordId: record.rawRecordId,
+          eventId,
+          reasonCode: "INVALID_RECEIVED_TIMESTAMP",
+          severity: SEVERITY.ERROR,
+          message: "Invalid received_at timestamp",
+          sourceValue: receivedAtValue,
+          expectedRule: "received_at must be a valid ISO-8601 timestamp.",
+          recommendedNextAction:
+            "Provide a valid timestamp in ISO-8601 format.",
+        }),
+      );
+    }
 
-    if (eventType && !allowedEventTypes.includes(eventType)) {
+    /*
+      Event Type Validation
+    */
+    if (
+      eventType &&
+      allowedEventTypes.length > 0 &&
+      !allowedEventTypes.includes(eventType)
+    ) {
       errors.push(
         new ValidationError({
           errorId: `${record.rawRecordId}-${REASON_CODES.UNKNOWN_EVENT_TYPE}`,
-
           rawRecordId: record.rawRecordId,
-
-          eventId: record.payload.event_id,
-
+          eventId,
           reasonCode: REASON_CODES.UNKNOWN_EVENT_TYPE,
-
           severity: SEVERITY.ERROR,
-
           message: `Unknown event type: ${eventType}`,
-
           sourceValue: eventType,
           expectedRule: "event_type must exist in the policy definition.",
-
           recommendedNextAction:
             "Use a supported event type or update the policy configuration.",
         }),
       );
     }
-    /*
-    
-     Asset Validation
-     Every event must reference
-      a known inventory asset.
-     */
-    const assetId = record.payload.asset_id;
 
+    /*
+      Asset Validation
+    */
     if (assetId && !validAssetIds.has(assetId)) {
       errors.push(
         new ValidationError({
           errorId: `${record.rawRecordId}-${REASON_CODES.UNKNOWN_ASSET}`,
-
           rawRecordId: record.rawRecordId,
-
-          eventId: record.payload.event_id,
-
+          eventId,
           reasonCode: REASON_CODES.UNKNOWN_ASSET,
-
           severity: SEVERITY.ERROR,
-
           message: `Unknown asset: ${assetId}`,
-
           sourceValue: assetId,
-
           expectedRule: "asset_id must reference an asset in inventory.csv.",
-
           recommendedNextAction:
             "Correct the asset identifier or add the asset to inventory.",
         }),
       );
     }
-    /**
-     
-     Condition Validation
-     
-     If a condition is supplied,
-      it must be one of the policy
-      approved condition values.
-     */
-    const condition = record.payload.condition_report;
 
-    if (condition) {
-      const allowedConditions = policy.allowedConditions;
-
-      if (!allowedConditions.includes(condition)) {
-        errors.push(
-          new ValidationError({
-            errorId: `${record.rawRecordId}-${REASON_CODES.INVALID_CONDITION}`,
-
-            rawRecordId: record.rawRecordId,
-
-            eventId: record.payload.event_id,
-
-            reasonCode: REASON_CODES.INVALID_CONDITION,
-
-            severity: SEVERITY.ERROR,
-
-            message: `Invalid condition: ${condition}`,
-
-            sourceValue: condition,
-
-            expectedRule:
-              "condition_report must be one of the policy-approved values.",
-
-            recommendedNextAction:
-              "Use a valid condition value defined in policy.json.",
-          }),
-        );
-      }
-    }
     /*
-     
-     Late Arrival Validation
-     Events arriving significantly after
-      they occurred are flagged as warnings.
-     */
-    const occurredAt = Date.parse(record.payload.occurred_at);
+      Condition Validation
+    */
+    if (
+      condition &&
+      allowedConditions.length > 0 &&
+      !allowedConditions.includes(condition)
+    ) {
+      errors.push(
+        new ValidationError({
+          errorId: `${record.rawRecordId}-${REASON_CODES.INVALID_CONDITION}`,
+          rawRecordId: record.rawRecordId,
+          eventId,
+          reasonCode: REASON_CODES.INVALID_CONDITION,
+          severity: SEVERITY.ERROR,
+          message: `Invalid condition: ${condition}`,
+          sourceValue: condition,
+          expectedRule:
+            "condition_report must be one of the policy-approved values.",
+          recommendedNextAction:
+            "Use a valid condition value defined in policy.json.",
+        }),
+      );
+    }
 
-    const receivedAt = Date.parse(record.payload.received_at);
+    /*
+      Late Arrival Validation
 
-    if (!Number.isNaN(occurredAt) && !Number.isNaN(receivedAt)) {
+      Uses the configured policy threshold
+      instead of a hardcoded 48 hours.
+    */
+    const occurredAt = Date.parse(occurredAtValue);
+    const receivedAt = Date.parse(receivedAtValue);
+
+    if (
+      lateEventEnabled &&
+      !Number.isNaN(occurredAt) &&
+      !Number.isNaN(receivedAt)
+    ) {
       const hoursDifference = (receivedAt - occurredAt) / (1000 * 60 * 60);
 
-      // More than 48 hours late
-      if (hoursDifference > 48) {
+      if (hoursDifference > lateThresholdHours) {
         errors.push(
           new ValidationError({
             errorId: `${record.rawRecordId}-${REASON_CODES.LATE_ARRIVAL}`,
-
             rawRecordId: record.rawRecordId,
-
-            eventId: record.payload.event_id,
-
+            eventId,
             reasonCode: REASON_CODES.LATE_ARRIVAL,
-
             severity: SEVERITY.WARNING,
-
             message: `Late arriving event (${Math.round(hoursDifference)} hours)`,
-
-            sourceValue: record.payload.received_at,
-
-            expectedRule:
-              "Events should arrive within the configured lateness threshold.",
-
+            sourceValue: receivedAtValue,
+            expectedRule: `Events should arrive within ${lateThresholdHours} hours.`,
             recommendedNextAction:
               "Investigate delayed event delivery from the source system.",
           }),

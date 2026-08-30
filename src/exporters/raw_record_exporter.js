@@ -1,5 +1,9 @@
 /**
  * Export raw record traceability index.
+ *
+ * The index covers every source record used by the reconciliation run.
+ * Different source files have different schemas, so event-specific
+ * fields are populated only when they exist.
  */
 export function buildRawRecordIndexCsv(rawRecords, validationResult) {
   const header = [
@@ -13,32 +17,35 @@ export function buildRawRecordIndexCsv(rawRecords, validationResult) {
     "original_payload",
   ].join(",");
 
+  const rejectedRecords = validationResult?.rejectedRecords ?? [];
+  const warningRecords = validationResult?.warningRecords ?? [];
+
   const rows = rawRecords.map((record) => {
     let status = "ACCEPTED";
 
-    if (
-      validationResult.rejectedRecords.some(
-        (r) => r.rawRecordId === record.rawRecordId,
-      )
-    ) {
+    if (rejectedRecords.some((r) => r.rawRecordId === record.rawRecordId)) {
       status = "REJECTED";
     } else if (
-      validationResult.warningRecords.some(
-        (r) => r.rawRecordId === record.rawRecordId,
-      )
+      warningRecords.some((r) => r.rawRecordId === record.rawRecordId)
     ) {
       status = "WARNING";
     }
 
+    const payload = record.payload ?? {};
+
+    const eventId = payload.event_id ?? "";
+    const eventType = payload.event_type ?? "";
+    const assetId = payload.asset_id ?? payload.observed_asset_id ?? "";
+
     return [
-      record.rawRecordId,
-      record.sourceFile,
-      record.sourceRow,
-      record.payload.event_id,
-      record.payload.event_type,
-      record.payload.asset_id,
+      record.rawRecordId ?? "",
+      record.sourceFile ?? "",
+      record.sourceRow ?? "",
+      eventId,
+      eventType,
+      assetId,
       status,
-      `"${JSON.stringify(record.payload).replaceAll('"', '""')}"`,
+      `"${JSON.stringify(payload).replaceAll('"', '""')}"`,
     ].join(",");
   });
 

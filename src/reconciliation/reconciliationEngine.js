@@ -1,6 +1,23 @@
 import { evaluateEvent } from "./decisionEngine.js";
 
 /**
+ * Creates a plain snapshot of an asset state.
+ */
+function snapshotAssetState(assetState) {
+  return {
+    assetId: assetState.assetId,
+    assetType: assetState.assetType,
+    status: assetState.status,
+    holderId: assetState.holderId,
+    locationId: assetState.locationId,
+    condition: assetState.condition,
+    dueAt: assetState.dueAt,
+    lastEventId: assetState.lastEventId,
+    lastOccurredAt: assetState.lastOccurredAt,
+  };
+}
+
+/**
  * Replays canonical events against the asset ledger.
  *
  * For each event:
@@ -8,11 +25,24 @@ import { evaluateEvent } from "./decisionEngine.js";
  * - Evaluates the event
  * - Applies accepted state transitions
  * - Records every reconciliation decision
+ * - Preserves historical asset-state snapshots
  */
 export function reconcileEvents(canonicalEvents, ledger, policy) {
   const decisions = [];
 
-  // Prevent mutation of caller's array
+  // Historical snapshots keyed by asset_id.
+  const stateHistory = new Map();
+  // Preserve the inventory baseline before any events are replayed.
+  for (const [assetId, assetState] of ledger.entries()) {
+    stateHistory.set(assetId, [
+      {
+        occurredAt: null,
+        eventId: null,
+        state: snapshotAssetState(assetState),
+      },
+    ]);
+  }
+  // Prevent mutation of caller's array.
   canonicalEvents = [...canonicalEvents];
 
   canonicalEvents.forEach((event) => {
@@ -35,20 +65,20 @@ export function reconcileEvents(canonicalEvents, ledger, policy) {
     const decision = evaluateEvent(assetState, event, policy, ledger);
 
     decisions.push(decision);
+
     const mutatesState =
       decision.decision === "ACCEPTED" ||
       decision.decision === "ACCEPTED_WITH_WARNING";
 
     if (mutatesState) {
-      // Only accepted events update the ledger
-
+      // Only accepted events update the ledger.
       assetState.status = decision.nextState;
 
-      // Record reconciliation history
+      // Record reconciliation history.
       assetState.lastEventId = event.eventId;
       assetState.lastOccurredAt = event.occurredAt;
 
-      // Holder rules
+      // Holder rules.
       switch (event.eventType) {
         case "CHECKOUT":
           assetState.holderId = event.actorId;
@@ -70,22 +100,34 @@ export function reconcileEvents(canonicalEvents, ledger, policy) {
           break;
       }
 
-      // Update location
+      // Update location.
       if (event.locationId) {
         assetState.locationId = event.locationId;
       }
 
-      // Update condition
+      // Update condition.
       if (event.conditionReport) {
         assetState.condition = event.conditionReport;
       }
     }
+
+    // Save the state after processing this event.
+    if (!stateHistory.has(event.assetId)) {
+      stateHistory.set(event.assetId, []);
+    }
+
+    stateHistory.get(event.assetId).push({
+      occurredAt: event.occurredAt,
+      eventId: event.eventId,
+      state: snapshotAssetState(assetState),
+    });
   });
 
-  // Build reconciliation summary
+  // Build reconciliation summary.
   const accepted = decisions.filter(
     (d) => d.decision === "ACCEPTED" || d.decision === "ACCEPTED_WITH_WARNING",
   ).length;
+
   const acceptedWithWarning = decisions.filter(
     (d) => d.decision === "ACCEPTED_WITH_WARNING",
   ).length;
@@ -96,10 +138,6 @@ export function reconcileEvents(canonicalEvents, ledger, policy) {
     (d) => d.decision === "REVIEW_REQUIRED",
   ).length;
 
-  // const warnings = decisions.filter(
-  //   (d) => d.decision === "WARNING_ONLY",
-  // ).length;
-
   const warningOnly = decisions.filter(
     (d) => d.decision === "WARNING_ONLY",
   ).length;
@@ -107,13 +145,13 @@ export function reconcileEvents(canonicalEvents, ledger, policy) {
   return {
     ledger,
     decisions,
+    stateHistory,
 
     summary: {
       accepted,
       acceptedWithWarning,
       rejected,
       reviewRequired,
-
       warningOnly,
       processed: decisions.length,
     },

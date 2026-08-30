@@ -3,15 +3,15 @@
 ## Source Files
 
 - Inventory Records: 25
-- Event Records: 100
+- Event Records: 150
 - Policy Version: 2.0.0
 
 ## Validation Summary
 
-- Errors: 5
+- Errors: 6
 - Warnings: 3
 
 ## Processing Summary
 
-- Accepted Records: 95
+- Accepted Records: 145
 - Rejected Records: 5

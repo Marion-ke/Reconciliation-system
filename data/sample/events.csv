@@ -99,3 +99,53 @@ e097,2026-06-09T06:00:00Z,2026-06-09T06:00:00Z,au301,auditor,AUDIT_OBSERVATION,c
 e098,2026-06-09T07:00:00Z,2026-06-09T07:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
 e099,2026-06-09T08:00:00Z,2026-06-09T08:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
 e100,2026-06-09T09:00:00Z,2026-06-09T09:00:00Z,au301,auditor,AUDIT_OBSERVATION,cam-001,,good,audit_system,
+e101,2026-06-10T09:00:00Z,2026-06-10T09:10:00Z,s310,student,RESERVE,cam-001,media-lab,,makerspace_app,New reservation
+e102,2026-06-10T09:20:00Z,2026-06-10T09:25:00Z,s311,student,RESERVE,lap-001,equipment-store,,makerspace_app,New reservation
+e103,2026-06-10T09:40:00Z,2026-06-10T09:45:00Z,s310,student,CANCEL_RESERVATION,cam-001,media-lab,,makerspace_app,Reservation cancelled
+e104,2026-06-10T10:00:00Z,2026-06-10T10:05:00Z,a001,admin,MANUAL_CORRECTION,lap-001,equipment-store,good,inventory_portal,Corrected asset record
+e105,2026-06-10T10:20:00Z,2026-06-10T10:30:00Z,s312,student,CHECKOUT,lap-001,equipment-store,,makerspace_app,Routine checkout
+e106,2026-06-10T10:50:00Z,2026-06-10T11:00:00Z,s312,student,RETURN,lap-001,equipment-store,good,makerspace_app,Routine return
+e107,2026-06-10T11:20:00Z,2026-06-10T11:25:00Z,s313,student,RESERVE,mic-001,studio-a,,makerspace_app,New reservation
+e108,2026-06-10T11:40:00Z,2026-06-10T11:45:00Z,s314,student,RESERVE,trip-001,studio-a,,makerspace_app,New reservation
+e109,2026-06-10T12:00:00Z,2026-06-10T12:05:00Z,s313,student,CANCEL_RESERVATION,mic-001,studio-a,,makerspace_app,Reservation cancelled
+e110,2026-06-10T12:20:00Z,2026-06-10T12:25:00Z,a001,admin,MANUAL_CORRECTION,mic-001,studio-a,good,inventory_portal,Condition corrected after inspection
+e111,2026-06-10T13:00:00Z,2026-06-10T13:10:00Z,s315,student,CHECKOUT,trip-001,studio-a,,makerspace_app,Routine checkout
+e112,2026-06-10T13:30:00Z,2026-06-10T13:40:00Z,s315,student,RETURN,trip-001,studio-a,good,makerspace_app,Routine return
+e113,2026-06-10T14:00:00Z,2026-06-10T14:05:00Z,s316,student,RESERVE,tab-001,equipment-store,,makerspace_app,New reservation
+e114,2026-06-10T14:20:00Z,2026-06-10T14:25:00Z,s317,student,RESERVE,light-001,media-lab,,makerspace_app,New reservation
+e115,2026-06-10T14:40:00Z,2026-06-10T14:45:00Z,s316,student,CANCEL_RESERVATION,tab-001,equipment-store,,makerspace_app,Reservation cancelled
+e116,2026-06-10T15:00:00Z,2026-06-10T15:05:00Z,a001,admin,MANUAL_CORRECTION,tab-001,equipment-store,good,inventory_portal,Corrected condition
+e117,2026-06-10T15:30:00Z,2026-06-10T15:35:00Z,s318,student,CHECKOUT,tab-001,equipment-store,,makerspace_app,Routine checkout
+e118,2026-06-10T16:00:00Z,2026-06-10T16:10:00Z,s318,student,RETURN,tab-001,equipment-store,good,makerspace_app,Routine return
+e119,2026-06-10T16:30:00Z,2026-06-10T16:35:00Z,s319,student,RESERVE,cam-002,media-lab,,makerspace_app,New reservation
+e120,2026-06-10T17:00:00Z,2026-06-10T17:05:00Z,s320,student,RESERVE,lap-002,equipment-store,,makerspace_app,New reservation
+e121,2026-06-10T17:30:00Z,2026-06-10T17:35:00Z,s319,student,CANCEL_RESERVATION,cam-002,media-lab,,makerspace_app,Reservation cancelled
+e122,2026-06-10T18:00:00Z,2026-06-10T18:05:00Z,a001,admin,MANUAL_CORRECTION,cam-002,media-lab,worn,inventory_portal,Corrected condition
+e123,2026-06-11T09:00:00Z,2026-06-11T09:05:00Z,s321,student,CHECKOUT,cam-002,media-lab,,makerspace_app,Routine checkout
+e124,2026-06-11T09:30:00Z,2026-06-11T09:40:00Z,s321,student,RETURN,cam-002,media-lab,good,makerspace_app,Routine return
+e125,2026-06-11T10:00:00Z,2026-06-11T10:05:00Z,s322,student,RESERVE,mic-002,studio-a,,makerspace_app,New reservation
+e126,2026-06-11T10:20:00Z,2026-06-11T10:25:00Z,s323,student,RESERVE,trip-002,studio-a,,makerspace_app,New reservation
+e127,2026-06-11T10:40:00Z,2026-06-11T10:45:00Z,s322,student,CANCEL_RESERVATION,mic-002,studio-a,,makerspace_app,Reservation cancelled
+e128,2026-06-11T11:00:00Z,2026-06-11T11:05:00Z,a001,admin,MANUAL_CORRECTION,mic-002,studio-a,scratched,inventory_portal,Corrected condition
+e129,2026-06-11T11:30:00Z,2026-06-11T11:35:00Z,s324,student,CHECKOUT,mic-002,studio-a,,makerspace_app,Routine checkout
+e130,2026-06-11T12:00:00Z,2026-06-11T12:10:00Z,s324,student,RETURN,mic-002,studio-a,scratched,makerspace_app,Routine return
+e131,2026-06-11T12:30:00Z,2026-06-11T12:35:00Z,s325,student,RESERVE,lap-003,equipment-store,,makerspace_app,New reservation
+e132,2026-06-11T13:00:00Z,2026-06-11T13:05:00Z,s326,student,RESERVE,cam-004,media-lab,,makerspace_app,New reservation
+e133,2026-06-11T13:30:00Z,2026-06-11T13:35:00Z,s325,student,CANCEL_RESERVATION,lap-003,equipment-store,,makerspace_app,Reservation cancelled
+e134,2026-06-11T14:00:00Z,2026-06-11T14:05:00Z,a001,admin,MANUAL_CORRECTION,lap-003,equipment-store,good,inventory_portal,Corrected condition
+e135,2026-06-11T14:30:00Z,2026-06-11T14:35:00Z,s327,student,CHECKOUT,lap-003,equipment-store,,makerspace_app,Routine checkout
+e136,2026-06-11T15:00:00Z,2026-06-11T15:10:00Z,s327,student,RETURN,lap-003,equipment-store,good,makerspace_app,Routine return
+e137,2026-06-11T15:30:00Z,2026-06-11T15:35:00Z,s328,student,RESERVE,light-003,media-lab,,makerspace_app,New reservation
+e138,2026-06-11T16:00:00Z,2026-06-11T16:05:00Z,s329,student,RESERVE,light-004,media-lab,,makerspace_app,New reservation
+e139,2026-06-11T16:30:00Z,2026-06-11T16:35:00Z,s328,student,CANCEL_RESERVATION,light-003,media-lab,,makerspace_app,Reservation cancelled
+e140,2026-06-11T17:00:00Z,2026-06-11T17:05:00Z,a001,admin,MANUAL_CORRECTION,light-003,media-lab,good,inventory_portal,Corrected condition
+e141,2026-06-11T17:30:00Z,2026-06-11T17:35:00Z,s330,student,CHECKOUT,light-003,media-lab,,makerspace_app,Routine checkout
+e142,2026-06-11T18:00:00Z,2026-06-11T18:10:00Z,s330,student,RETURN,light-003,media-lab,good,makerspace_app,Routine return
+e143,2026-06-12T09:00:00Z,2026-06-12T09:05:00Z,s331,student,RESERVE,trip-003,studio-a,,makerspace_app,New reservation
+e144,2026-06-12T09:30:00Z,2026-06-12T09:35:00Z,s332,student,RESERVE,trip-004,studio-a,,makerspace_app,New reservation
+e145,2026-06-12T10:00:00Z,2026-06-12T10:05:00Z,s331,student,CANCEL_RESERVATION,trip-003,studio-a,,makerspace_app,Reservation cancelled
+e146,2026-06-12T10:30:00Z,2026-06-12T10:35:00Z,a001,admin,MANUAL_CORRECTION,trip-003,studio-a,good,inventory_portal,Corrected condition
+e147,2026-06-12T11:00:00Z,2026-06-12T11:05:00Z,s333,student,CHECKOUT,trip-003,studio-a,,makerspace_app,Routine checkout
+e148,2026-06-12T11:30:00Z,2026-06-12T11:40:00Z,s333,student,RETURN,trip-003,studio-a,good,makerspace_app,Routine return
+e149,2026-06-12T12:00:00Z,2026-06-12T12:05:00Z,s334,student,RESERVE,tab-003,equipment-store,,makerspace_app,New reservation
+e150,2026-06-12T12:30:00Z,2026-06-12T12:35:00Z,a001,admin,MANUAL_CORRECTION,tab-003,equipment-store,good,inventory_portal,Corrected condition

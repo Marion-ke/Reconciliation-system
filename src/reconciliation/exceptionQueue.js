@@ -11,7 +11,8 @@ export function buildExceptionQueue(decisions) {
       (decision) =>
         decision.decision === "REJECTED" ||
         decision.decision === "REVIEW_REQUIRED" ||
-        decision.decision === "WARNING_ONLY",
+        decision.decision === "WARNING_ONLY" ||
+        decision.decision === "ACCEPTED_WITH_WARNING",
     )
     .map(
       (decision, index) =>

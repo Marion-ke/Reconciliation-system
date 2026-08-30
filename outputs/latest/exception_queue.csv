@@ -22,21 +22,80 @@ EX-0020,ERROR,ILLEGAL_STATE_TRANSITION,tab-002,e034,events.csv-34,"Cannot CHECKO
 EX-0021,ERROR,ILLEGAL_STATE_TRANSITION,mic-001,e040,events.csv-40,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",mic-001-ILLEGAL_STATE_TRANSITION
 EX-0022,ERROR,HOLDER_MISMATCH,lap-003,e041,events.csv-41,"Asset holder does not match the returning actor.","Verify the current holder before processing the return.",lap-003-HOLDER_MISMATCH
 EX-0023,ERROR,ILLEGAL_STATE_TRANSITION,mic-001,e042,events.csv-42,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",mic-001-ILLEGAL_STATE_TRANSITION
-EX-0024,ERROR,UNAUTHORIZED_ACTOR,lap-001,e046,events.csv-46,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",lap-001-UNAUTHORIZED_ACTOR
-EX-0025,ERROR,UNAUTHORIZED_ACTOR,cam-002,e050,events.csv-50,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",cam-002-UNAUTHORIZED_ACTOR
-EX-0026,WARNING,AUDIT_DISCREPANCY,cam-004,e055,events.csv-55,"Audit observation recorded successfully.","Compare audit observations with the ledger.",cam-004-AUDIT_DISCREPANCY
-EX-0027,WARNING,AUDIT_DISCREPANCY,lap-004,e058,events.csv-58,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",lap-004-AUDIT_DISCREPANCY
-EX-0028,WARNING,AUDIT_DISCREPANCY,mic-004,e071,events.csv-71,"Audit observation recorded successfully.","Compare audit observations with the ledger.",mic-004-AUDIT_DISCREPANCY
-EX-0029,ERROR,ILLEGAL_STATE_TRANSITION,light-004,e088,events.csv-88,"Cannot RETIRE an asset in state RETIRED.","Review the current asset state before replaying the event.",light-004-ILLEGAL_STATE_TRANSITION
-EX-0030,ERROR,ILLEGAL_STATE_TRANSITION,light-004,e089,events.csv-89,"Cannot CHECKOUT an asset in state RETIRED.","Review the current asset state before replaying the event.",light-004-ILLEGAL_STATE_TRANSITION
-EX-0031,WARNING,AUDIT_DISCREPANCY,cam-001,e090,events.csv-90,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
-EX-0032,WARNING,AUDIT_DISCREPANCY,cam-001,e091,events.csv-91,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
-EX-0033,WARNING,AUDIT_DISCREPANCY,cam-001,e092,events.csv-92,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
-EX-0034,WARNING,AUDIT_DISCREPANCY,cam-001,e093,events.csv-93,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
-EX-0035,WARNING,AUDIT_DISCREPANCY,cam-001,e094,events.csv-94,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
-EX-0036,WARNING,AUDIT_DISCREPANCY,cam-001,e095,events.csv-95,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
-EX-0037,WARNING,AUDIT_DISCREPANCY,cam-001,e096,events.csv-96,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
-EX-0038,WARNING,AUDIT_DISCREPANCY,cam-001,e097,events.csv-97,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
-EX-0039,WARNING,AUDIT_DISCREPANCY,cam-001,e098,events.csv-98,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
-EX-0040,WARNING,AUDIT_DISCREPANCY,cam-001,e099,events.csv-99,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
-EX-0041,WARNING,AUDIT_DISCREPANCY,cam-001,e100,events.csv-100,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0024,INFO,LATE_EVENT,trip-001,e044,events.csv-44,"Event arrived 72.0 hours after occurrence.","Review late-arriving event policy.",trip-001-LATE_EVENT
+EX-0025,ERROR,UNAUTHORIZED_ACTOR,lap-001,e046,events.csv-46,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",lap-001-UNAUTHORIZED_ACTOR
+EX-0026,ERROR,UNAUTHORIZED_ACTOR,cam-002,e050,events.csv-50,"student is not permitted to perform MAINTENANCE_CLOSE.","Review manually.",cam-002-UNAUTHORIZED_ACTOR
+EX-0027,WARNING,AUDIT_DISCREPANCY,cam-004,e055,events.csv-55,"Audit observation recorded successfully.","Compare audit observations with the ledger.",cam-004-AUDIT_DISCREPANCY
+EX-0028,WARNING,AUDIT_DISCREPANCY,lap-004,e058,events.csv-58,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",lap-004-AUDIT_DISCREPANCY
+EX-0029,WARNING,AUDIT_DISCREPANCY,mic-004,e071,events.csv-71,"Audit observation recorded successfully.","Compare audit observations with the ledger.",mic-004-AUDIT_DISCREPANCY
+EX-0030,ERROR,ILLEGAL_STATE_TRANSITION,light-004,e088,events.csv-88,"Cannot RETIRE an asset in state RETIRED.","Review the current asset state before replaying the event.",light-004-ILLEGAL_STATE_TRANSITION
+EX-0031,ERROR,ILLEGAL_STATE_TRANSITION,light-004,e089,events.csv-89,"Cannot CHECKOUT an asset in state RETIRED.","Review the current asset state before replaying the event.",light-004-ILLEGAL_STATE_TRANSITION
+EX-0032,WARNING,AUDIT_DISCREPANCY,cam-001,e090,events.csv-90,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0033,WARNING,AUDIT_DISCREPANCY,cam-001,e091,events.csv-91,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0034,WARNING,AUDIT_DISCREPANCY,cam-001,e092,events.csv-92,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0035,WARNING,AUDIT_DISCREPANCY,cam-001,e093,events.csv-93,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0036,WARNING,AUDIT_DISCREPANCY,cam-001,e094,events.csv-94,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0037,WARNING,AUDIT_DISCREPANCY,cam-001,e095,events.csv-95,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0038,WARNING,AUDIT_DISCREPANCY,cam-001,e096,events.csv-96,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0039,WARNING,AUDIT_DISCREPANCY,cam-001,e097,events.csv-97,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0040,WARNING,AUDIT_DISCREPANCY,cam-001,e098,events.csv-98,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0041,WARNING,AUDIT_DISCREPANCY,cam-001,e099,events.csv-99,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0042,WARNING,AUDIT_DISCREPANCY,cam-001,e100,events.csv-100,"Audit observation differs from recorded condition.","Compare audit observations with the ledger.",cam-001-AUDIT_DISCREPANCY
+EX-0043,ERROR,RESERVATION_NOT_FOUND,cam-001,e103,events.csv-103,"Reservation undefined does not exist.","Review manually.",cam-001-RESERVATION_NOT_FOUND
+EX-0044,ERROR,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,lap-001,e104,events.csv-104,"Manual correction is missing required evidence: evidence_ref","Review manually.",lap-001-MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE
+EX-0045,ERROR,ILLEGAL_STATE_TRANSITION,lap-001,e105,events.csv-105,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",lap-001-ILLEGAL_STATE_TRANSITION
+EX-0046,ERROR,HOLDER_MISMATCH,lap-001,e106,events.csv-106,"Asset holder does not match the returning actor.","Verify the current holder before processing the return.",lap-001-HOLDER_MISMATCH
+EX-0047,ERROR,RESERVATION_NOT_FOUND,mic-001,e109,events.csv-109,"Reservation undefined does not exist.","Review manually.",mic-001-RESERVATION_NOT_FOUND
+EX-0048,ERROR,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,mic-001,e110,events.csv-110,"Manual correction is missing required evidence: evidence_ref","Review manually.",mic-001-MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE
+EX-0049,ERROR,RESERVATION_NOT_FOUND,tab-001,e115,events.csv-115,"Reservation undefined does not exist.","Review manually.",tab-001-RESERVATION_NOT_FOUND
+EX-0050,ERROR,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,tab-001,e116,events.csv-116,"Manual correction is missing required evidence: evidence_ref","Review manually.",tab-001-MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE
+EX-0051,ERROR,ILLEGAL_STATE_TRANSITION,tab-001,e117,events.csv-117,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",tab-001-ILLEGAL_STATE_TRANSITION
+EX-0052,ERROR,HOLDER_MISMATCH,tab-001,e118,events.csv-118,"Asset holder does not match the returning actor.","Verify the current holder before processing the return.",tab-001-HOLDER_MISMATCH
+EX-0053,ERROR,RESERVATION_NOT_FOUND,cam-002,e121,events.csv-121,"Reservation undefined does not exist.","Review manually.",cam-002-RESERVATION_NOT_FOUND
+EX-0054,ERROR,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,cam-002,e122,events.csv-122,"Manual correction is missing required evidence: evidence_ref","Review manually.",cam-002-MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE
+EX-0055,ERROR,RESERVATION_NOT_FOUND,mic-002,e127,events.csv-127,"Reservation undefined does not exist.","Review manually.",mic-002-RESERVATION_NOT_FOUND
+EX-0056,ERROR,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,mic-002,e128,events.csv-128,"Manual correction is missing required evidence: evidence_ref","Review manually.",mic-002-MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE
+EX-0057,ERROR,ILLEGAL_STATE_TRANSITION,mic-002,e129,events.csv-129,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",mic-002-ILLEGAL_STATE_TRANSITION
+EX-0058,ERROR,HOLDER_MISMATCH,mic-002,e130,events.csv-130,"Asset holder does not match the returning actor.","Verify the current holder before processing the return.",mic-002-HOLDER_MISMATCH
+EX-0059,ERROR,RESERVATION_NOT_FOUND,lap-003,e133,events.csv-133,"Reservation undefined does not exist.","Review manually.",lap-003-RESERVATION_NOT_FOUND
+EX-0060,ERROR,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,lap-003,e134,events.csv-134,"Manual correction is missing required evidence: evidence_ref","Review manually.",lap-003-MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE
+EX-0061,ERROR,ILLEGAL_STATE_TRANSITION,lap-003,e135,events.csv-135,"Cannot CHECKOUT an asset in state CHECKED_OUT.","Review the current asset state before replaying the event.",lap-003-ILLEGAL_STATE_TRANSITION
+EX-0062,ERROR,HOLDER_MISMATCH,lap-003,e136,events.csv-136,"Asset holder does not match the returning actor.","Verify the current holder before processing the return.",lap-003-HOLDER_MISMATCH
+EX-0063,ERROR,ASSET_NOT_RESERVABLE,light-004,e138,events.csv-138,"Asset light-004 cannot be reserved in state RETIRED.","Review manually.",light-004-ASSET_NOT_RESERVABLE
+EX-0064,ERROR,RESERVATION_NOT_FOUND,light-003,e139,events.csv-139,"Reservation undefined does not exist.","Review manually.",light-003-RESERVATION_NOT_FOUND
+EX-0065,ERROR,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,light-003,e140,events.csv-140,"Manual correction is missing required evidence: evidence_ref","Review manually.",light-003-MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE
+EX-0066,ERROR,RESERVATION_NOT_FOUND,trip-003,e145,events.csv-145,"Reservation undefined does not exist.","Review manually.",trip-003-RESERVATION_NOT_FOUND
+EX-0067,ERROR,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,trip-003,e146,events.csv-146,"Manual correction is missing required evidence: evidence_ref","Review manually.",trip-003-MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE
+EX-0068,ERROR,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,tab-003,e150,events.csv-150,"Manual correction is missing required evidence: evidence_ref","Review manually.",tab-003-MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE
+RES-r001,ERROR,RESERVATION_CHECKOUT_CONFLICT,cam-001,,,"Reservation r001 conflicts because asset cam-001 is currently checked out by another holder.","Review the reservation and current asset assignment.",
+RES-r005,ERROR,RESERVATION_CHECKOUT_CONFLICT,lap-001,,,"Reservation r005 conflicts because asset lap-001 is currently checked out by another holder.","Review the reservation and current asset assignment.",
+RES-r006,ERROR,RESERVATION_CHECKOUT_CONFLICT,lap-002,,,"Reservation r006 conflicts because asset lap-002 is currently checked out by another holder.","Review the reservation and current asset assignment.",
+RES-r007,ERROR,RESERVATION_CHECKOUT_CONFLICT,lap-003,,,"Reservation r007 conflicts because asset lap-003 is currently checked out by another holder.","Review the reservation and current asset assignment.",
+RES-r010,ERROR,RESERVATION_CHECKOUT_CONFLICT,mic-001,,,"Reservation r010 conflicts because asset mic-001 is currently checked out by another holder.","Review the reservation and current asset assignment.",
+RES-r011,ERROR,RESERVATION_CHECKOUT_CONFLICT,mic-002,,,"Reservation r011 conflicts because asset mic-002 is currently checked out by another holder.","Review the reservation and current asset assignment.",
+RES-r015,ERROR,RESERVATION_CHECKOUT_CONFLICT,trip-002,,,"Reservation r015 conflicts because asset trip-002 is currently checked out by another holder.","Review the reservation and current asset assignment.",
+RES-r019,ERROR,RESERVATION_CONFLICT,tab-002,,,"Reservation r019 conflicts with the current state of asset tab-002: MAINTENANCE.","Review the reservation and current asset assignment.",
+RES-r022,ERROR,RESERVATION_CHECKOUT_CONFLICT,light-001,,,"Reservation r022 conflicts because asset light-001 is currently checked out by another holder.","Review the reservation and current asset assignment.",
+RES-r025,ERROR,RESERVATION_CONFLICT,light-004,,,"Reservation r025 conflicts with the current state of asset light-004: RETIRED.","Review the reservation and current asset assignment.",
+RES-r026,ERROR,RESERVATION_CHECKOUT_CONFLICT,cam-001,,,"Reservation r026 conflicts because asset cam-001 is currently checked out by another holder.","Review the reservation and current asset assignment.",
+RES-r030,ERROR,RESERVATION_CHECKOUT_CONFLICT,lap-001,,,"Reservation r030 conflicts because asset lap-001 is currently checked out by another holder.","Review the reservation and current asset assignment.",
+AUDIT-AO-001,WARNING,AUDIT_STATE_DISCREPANCY,cam-001,,,"Audit observation does not match reconciled state at 2026-06-03T08:00:00Z: STATUS, CONDITION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-002,WARNING,AUDIT_STATE_DISCREPANCY,cam-003,,,"Audit observation does not match reconciled state at 2026-06-03T10:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-003,WARNING,AUDIT_STATE_DISCREPANCY,lap-001,,,"Audit observation does not match reconciled state at 2026-06-03T12:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-004,WARNING,AUDIT_STATE_DISCREPANCY,lap-003,,,"Audit observation does not match reconciled state at 2026-06-03T14:00:00Z: STATUS, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-005,WARNING,AUDIT_STATE_DISCREPANCY,lap-005,,,"Audit observation does not match reconciled state at 2026-06-03T16:00:00Z: CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-006,WARNING,AUDIT_STATE_DISCREPANCY,mic-002,,,"Audit observation does not match reconciled state at 2026-06-03T18:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-007,WARNING,AUDIT_STATE_DISCREPANCY,mic-004,,,"Audit observation does not match reconciled state at 2026-06-03T20:00:00Z: STATUS","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-008,WARNING,AUDIT_STATE_DISCREPANCY,trip-002,,,"Audit observation does not match reconciled state at 2026-06-03T22:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-009,WARNING,AUDIT_STATE_DISCREPANCY,trip-004,,,"Audit observation does not match reconciled state at 2026-06-04T00:00:00Z: STATUS, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-010,WARNING,AUDIT_STATE_DISCREPANCY,tab-002,,,"Audit observation does not match reconciled state at 2026-06-04T02:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-011,WARNING,AUDIT_STATE_DISCREPANCY,tab-004,,,"Audit observation does not match reconciled state at 2026-06-04T04:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-012,WARNING,AUDIT_STATE_DISCREPANCY,light-002,,,"Audit observation does not match reconciled state at 2026-06-04T06:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-013,WARNING,AUDIT_STATE_DISCREPANCY,light-004,,,"Audit observation does not match reconciled state at 2026-06-04T08:00:00Z: STATUS, CONDITION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-014,WARNING,AUDIT_STATE_DISCREPANCY,cam-002,,,"Audit observation does not match reconciled state at 2026-06-04T10:00:00Z: CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-015,WARNING,AUDIT_STATE_DISCREPANCY,cam-004,,,"Audit observation does not match reconciled state at 2026-06-04T12:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-016,WARNING,AUDIT_STATE_DISCREPANCY,lap-002,,,"Audit observation does not match reconciled state at 2026-06-04T14:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-017,WARNING,AUDIT_STATE_DISCREPANCY,lap-004,,,"Audit observation does not match reconciled state at 2026-06-04T16:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-018,WARNING,AUDIT_STATE_DISCREPANCY,mic-001,,,"Audit observation does not match reconciled state at 2026-06-04T18:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-019,WARNING,AUDIT_STATE_DISCREPANCY,mic-003,,,"Audit observation does not match reconciled state at 2026-06-04T20:00:00Z: CONDITION","Review the audit observation against the reconciled asset state.",
+AUDIT-AO-020,WARNING,AUDIT_STATE_DISCREPANCY,trip-001,,,"Audit observation does not match reconciled state at 2026-06-04T22:00:00Z: STATUS, CONDITION, LOCATION","Review the audit observation against the reconciled asset state.",

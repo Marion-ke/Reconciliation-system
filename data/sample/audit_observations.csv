@@ -1,0 +1,21 @@
+observation_id,asset_id,observed_at,observed_by,observed_location_id,observed_status,observed_condition,reconciliation_result,source_system,note
+AO-001,cam-001,2026-06-03T08:00:00Z,auditor1,media-lab,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-002,cam-003,2026-06-03T10:00:00Z,auditor2,equipment-store,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-003,lap-001,2026-06-03T12:00:00Z,auditor3,studio-a,maintenance,damaged,DISCREPANCY,audit_system,Physical observation conflicts with ledger state; review required.
+AO-004,lap-003,2026-06-03T14:00:00Z,auditor1,library-store,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-005,lap-005,2026-06-03T16:00:00Z,auditor2,media-lab,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-006,mic-002,2026-06-03T18:00:00Z,auditor3,equipment-store,maintenance,worn,DISCREPANCY,audit_system,Physical observation conflicts with ledger state; review required.
+AO-007,mic-004,2026-06-03T20:00:00Z,auditor1,studio-a,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-008,trip-002,2026-06-03T22:00:00Z,auditor2,library-store,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-009,trip-004,2026-06-04T00:00:00Z,auditor3,media-lab,maintenance,good,DISCREPANCY,audit_system,Physical observation conflicts with ledger state; review required.
+AO-010,tab-002,2026-06-04T02:00:00Z,auditor1,equipment-store,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-011,tab-004,2026-06-04T04:00:00Z,auditor2,studio-a,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-012,light-002,2026-06-04T06:00:00Z,auditor3,library-store,maintenance,scratched,DISCREPANCY,audit_system,Physical observation conflicts with ledger state; review required.
+AO-013,light-004,2026-06-04T08:00:00Z,auditor1,media-lab,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-014,cam-002,2026-06-04T10:00:00Z,auditor2,equipment-store,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-015,cam-004,2026-06-04T12:00:00Z,auditor3,studio-a,maintenance,good,DISCREPANCY,audit_system,Physical observation conflicts with ledger state; review required.
+AO-016,lap-002,2026-06-04T14:00:00Z,auditor1,library-store,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-017,lap-004,2026-06-04T16:00:00Z,auditor2,media-lab,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-018,mic-001,2026-06-04T18:00:00Z,auditor3,equipment-store,maintenance,damaged,DISCREPANCY,audit_system,Physical observation conflicts with ledger state; review required.
+AO-019,mic-003,2026-06-04T20:00:00Z,auditor1,studio-a,available,good,CONFIRMED,audit_system,Physical observation agrees with expected state.
+AO-020,trip-001,2026-06-04T22:00:00Z,auditor2,library-store,checked_out,good,DISCREPANCY,audit_system,Physical observation conflicts with ledger state; review required.

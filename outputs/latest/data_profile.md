@@ -10,14 +10,14 @@ The profile helps identify data quality issues, validate assumptions, and verify
 
 ## Dataset Overview
 
-- Total Event Records: 100
+- Total Event Records: 150
 - Duplicate Event IDs Detected: 0
 
 ---
 
 ## Missing Values
 
-- condition_report: 42
+- condition_report: 75
 - note: 49
 - location_id: 14
 
@@ -29,8 +29,8 @@ Most missing values occur in condition-related fields that are not required for 
 
 ## Event Type Distribution
 
-- CHECKOUT: 33
-- RETURN: 21
+- CHECKOUT: 41
+- RETURN: 29
 - MAINTENANCE_CLOSE: 15
 - MAINTENANCE_OPEN: 7
 - HOLD: 1
@@ -38,6 +38,9 @@ Most missing values occur in condition-related fields that are not required for 
 - TRANSFER_IN: 5
 - AUDIT_OBSERVATION: 14
 - RETIRE: 1
+- RESERVE: 17
+- CANCEL_RESERVATION: 8
+- MANUAL_CORRECTION: 9
 
 ### Observation
 
@@ -47,11 +50,11 @@ The event distribution shows normal operational activity together with intention
 
 ## Actor Role Distribution
 
-- student: 68
+- student: 109
 - staff: 8
 - auditor: 14
 - technician: 9
-- admin: 1
+- admin: 10
 
 ### Observation
 
@@ -61,11 +64,11 @@ Students generated the majority of events. Missing actor roles prevent authoriza
 
 ## Condition Distribution
 
-- good: 36
+- good: 50
 - damaged: 8
-- worn: 6
+- worn: 7
 - unusable: 2
-- scratched: 4
+- scratched: 6
 - new: 1
 - unknown_condition: 1
 
