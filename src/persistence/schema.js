@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS raw_records (
 
 CREATE TABLE IF NOT EXISTS canonical_events (
     event_id TEXT NOT NULL,
+    canonical_event_id TEXT NOT NULL,
     run_id TEXT NOT NULL,
     event_type TEXT NOT NULL,
     asset_id TEXT,
@@ -97,6 +98,11 @@ CREATE TABLE IF NOT EXISTS exception_cases (
     status TEXT NOT NULL,
     recommended_action TEXT,
 
+    -- Resolution audit information.
+    resolved_at TEXT,
+    resolved_by TEXT,
+    resolution TEXT,
+
     FOREIGN KEY (run_id)
         REFERENCES reconciliation_runs(run_id)
         ON DELETE CASCADE
@@ -116,6 +122,63 @@ CREATE TABLE IF NOT EXISTS report_artifacts (
         ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS api_usage (
+    request_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    method TEXT NOT NULL,
+    endpoint TEXT NOT NULL,
+    status_code INTEGER NOT NULL,
+    response_time_ms REAL NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_api_usage_endpoint
+    ON api_usage(endpoint);
+
+CREATE INDEX IF NOT EXISTS idx_api_usage_created
+    ON api_usage(created_at);
+ CREATE TABLE IF NOT EXISTS webhook_configurations (
+    webhook_id TEXT PRIMARY KEY,
+    url TEXT NOT NULL,
+    event_types TEXT,
+    severities TEXT,
+    active INTEGER NOT NULL DEFAULT 1,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS webhook_dispatches (
+    dispatch_id TEXT PRIMARY KEY,
+    webhook_id TEXT NOT NULL,
+    run_id TEXT,
+    event_id TEXT,
+    exception_case_id TEXT,
+    attempt INTEGER NOT NULL,
+    status TEXT NOT NULL,
+    payload TEXT NOT NULL,
+    response_code INTEGER,
+    response_body TEXT,
+    error_message TEXT,
+    attempted_at TEXT NOT NULL,
+
+    FOREIGN KEY (webhook_id)
+        REFERENCES webhook_configurations(webhook_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (run_id)
+        REFERENCES reconciliation_runs(run_id)
+        ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_webhook_dispatches_webhook
+    ON webhook_dispatches(webhook_id);
+
+CREATE INDEX IF NOT EXISTS idx_webhook_dispatches_run
+    ON webhook_dispatches(run_id);
+
+CREATE INDEX IF NOT EXISTS idx_webhook_dispatches_event
+    ON webhook_dispatches(event_id);
+
+CREATE INDEX IF NOT EXISTS idx_webhook_dispatches_exception
+    ON webhook_dispatches(exception_case_id);
 CREATE INDEX IF NOT EXISTS idx_raw_records_run
     ON raw_records(run_id);
 

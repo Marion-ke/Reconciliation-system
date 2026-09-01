@@ -39,7 +39,7 @@ describe("Condition Ranking", () => {
 
     const decision = evaluateEvent(asset, event, policy, new Map());
 
-    expect(decision.decision).toBe("ACCEPTED_WITH_WARNING");
+    expect(decision.decision).toBe("REVIEW_REQUIRED");
 
     expect(decision.reasonCode).toBe(REASON_CODES.CONDITION_DOWNGRADE);
   });

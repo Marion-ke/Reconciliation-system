@@ -2,19 +2,19 @@
 
 ## Run
 
-- Run ID: run-20260830065957581-374abf52
+- Run ID: run-20260901195010485-d213e1f5
 - Policy Version: 2.0.0
-- Input Hash: bb3ec6aef36f59daf14161ca5d5bf169068639f7131d026f3b94cc90408f53a6
-- Started At: 2026-08-30T06:59:57.581Z
-- Completed At: 2026-08-30T06:59:59.287Z
+- Input Hash: a006301918ee52433f0ab7b7fd44096488a227aeaa6294e7d2f5ea1bee5365cb
+- Started At: 2026-09-01T19:50:10.485Z
+- Completed At: 2026-09-01T19:50:12.917Z
 - Status: COMPLETED
 
 ## Persisted Source Evidence
 
 Raw source records are stored in the `raw_records` table and linked to the reconciliation run.
 
-- inventory.csv: 25
-- events.csv: 150
+- inventory.csv: 55
+- events.csv: 250
 - reservations.csv: 30
 - audit_observations.csv: 20
 - manual_corrections.csv: 12
@@ -78,3 +78,6 @@ SELECT * FROM report_artifacts WHERE run_id = '<RUN_ID>' ORDER BY report_id;
 - source_conflict_report: outputs/latest/source_conflict_report.csv
 - database_snapshot_notes.md: outputs/latest/database_snapshot_notes.md
 - policy_decision_difference.csv: outputs/latest/policy_decision_difference.csv
+- auto_resolution_summary: outputs/latest/auto_resolution_summary.csv
+- webhook_dispatch_log: outputs/latest/webhook_dispatch_log.csv
+- api_usage_summary: outputs/latest/api_usage_summary.md

@@ -14,6 +14,8 @@ export default class EventDecision {
     nextState,
     rawRecordId,
     policyVersion,
+    conditionBefore = null,
+    conditionAfter = null,
   }) {
     // Event being evaluated
     this.eventId = eventId;
@@ -41,6 +43,9 @@ export default class EventDecision {
     // Asset state after processing
     this.nextState = nextState;
 
+    // Condition before and after the event
+    this.conditionBefore = conditionBefore;
+    this.conditionAfter = conditionAfter;
     // Source record that produced this decision
     this.rawRecordId = rawRecordId;
 

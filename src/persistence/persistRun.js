@@ -16,6 +16,9 @@ export async function persistExceptions({ runId, exceptionQueue }) {
       status: exception.status ?? "OPEN",
       recommendedAction:
         exception.recommendedNextAction ?? exception.recommendedAction ?? null,
+      resolvedAt: exception.resolvedAt ?? null,
+      resolvedBy: exception.resolvedBy ?? null,
+      resolution: exception.resolution ?? null,
     });
   }
 }

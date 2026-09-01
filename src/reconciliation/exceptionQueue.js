@@ -28,6 +28,8 @@ export function buildExceptionQueue(decisions) {
           eventId: decision.eventId,
 
           rawRecordId: decision.rawRecordId,
+          conditionBefore: decision.conditionBefore ?? null,
+          conditionAfter: decision.conditionAfter ?? null,
 
           message: decision.message,
 

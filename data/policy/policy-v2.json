@@ -27,7 +27,14 @@
     "unusable"
   ],
 
-  "actorRoles": ["student", "staff", "technician", "auditor", "admin"],
+  "actorRoles": [
+    "student",
+    "staff",
+    "technician",
+    "auditor",
+    "admin",
+    "system"
+  ],
 
   "sourceSystems": [
     "makerspace_app",
@@ -111,19 +118,46 @@
       "requiresActor": true,
       "requiresLocation": false,
       "allowedStates": ["available", "checked_out", "in_transit", "maintenance"]
-    }
-  },
+    },
+  
 
+  "WEBHOOK_ACK": {
+  "description": "Acknowledges receipt of a webhook notification by an external system",
+  "requiresActor": true,
+  "requiresLocation": false,
+  "allowedStates": [
+    "available",
+    "checked_out",
+    "in_transit",
+    "maintenance",
+    "retired"
+  ]
+},
+
+"AUTO_RESOLUTION_APPLIED": {
+  "description": "Records the application of an automated resolution rule",
+  "requiresActor": false,
+  "requiresLocation": false,
+  "allowedStates": [
+    "available",
+    "checked_out",
+    "in_transit",
+    "maintenance",
+    "retired"
+  ]
+}
+},
   "actorPermissions": {
     "student": ["CHECKOUT", "RETURN", "RESERVE", "CANCEL_RESERVATION"],
-
+    "system": ["AUTO_RESOLUTION_APPLIED"],
     "staff": [
       "CHECKOUT",
       "RETURN",
       "TRANSFER_OUT",
       "TRANSFER_IN",
       "RESERVE",
-      "CANCEL_RESERVATION"
+      "CANCEL_RESERVATION",
+      "WEBHOOK_ACK"
     ],
 
     "technician": [
@@ -228,7 +262,21 @@
 
     "auditMismatchRequiresReview": true
   },
+  "autoResolutionRules": {
+    "enabled": true,
 
+    "conditionDowngrade": {
+      "enabled": true,
+      "maxRankDifference": 1,
+      "decision": "ACCEPTED_WITH_WARNING"
+    },
+
+    "lateReturn": {
+      "enabled": true,
+      "gracePeriodHours": 2,
+      "decision": "AUTO_RESOLVE"
+    }
+  },
   "validationRules": {
     "requireUniqueEventIds": true,
 

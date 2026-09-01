@@ -11,6 +11,7 @@ import { evaluateManualCorrectionEvent } from "./manualCorrectionDecision.js";
  * Evaluates whether a canonical event can be applied
  * to the current asset state.
  */
+
 export function evaluateEvent(assetState, event, policy, ledger, context = {}) {
   // 1. Validate event type
   const eventTypeResult = validateEventType(event, policy);
@@ -81,7 +82,17 @@ export function evaluateEvent(assetState, event, policy, ledger, context = {}) {
     );
   }
 
-  // 6. Normal accepted event
+  // 6. Operational events do not change asset state.
+  const nonStateChangingEvents = new Set([
+    "WEBHOOK_ACK",
+    "AUTO_RESOLUTION_APPLIED",
+  ]);
+
+  if (nonStateChangingEvents.has(event.eventType)) {
+    return acceptedSpecialEvent(assetState, event, policy);
+  }
+
+  // 7. Normal accepted event
   return accepted(assetState, event, policy);
 }
 
@@ -153,6 +164,9 @@ function validateStateTransition(assetState, event, policy) {
     );
   }
 
+  // A valid transition is only a validation success.
+  // Do not return an ACCEPTED decision here because
+  // business rules must still be evaluated afterward.
   return null;
 }
 
@@ -314,9 +328,36 @@ function validateReturn(assetState, event, policy) {
     );
   }
 
+  const lateReturnRules = policy?.autoResolutionRules?.lateReturn;
+
+  if (lateReturnRules?.enabled && assetState.dueAt && event.occurredAt) {
+    const dueAt = new Date(assetState.dueAt);
+    const returnedAt = new Date(event.occurredAt);
+
+    if (
+      !Number.isNaN(dueAt.getTime()) &&
+      !Number.isNaN(returnedAt.getTime()) &&
+      returnedAt > dueAt
+    ) {
+      const lateHours =
+        (returnedAt.getTime() - dueAt.getTime()) / (1000 * 60 * 60);
+
+      if (lateHours <= lateReturnRules.gracePeriodHours) {
+        return acceptedWithWarning(
+          assetState,
+          event,
+          policy,
+          "LATE_RETURN_WITHIN_GRACE_PERIOD",
+          `Return was ${lateHours.toFixed(1)} hours late but is within the ${lateReturnRules.gracePeriodHours}-hour grace period.`,
+        );
+      }
+
+      return null;
+    }
+  }
+
   return null;
 }
-
 /**
  * ---------------------------------------------------------
  * TRANSFER OUT
@@ -398,22 +439,21 @@ function validateMaintenanceClose(assetState, event, policy) {
  * CONDITION COMPARISON
  * ---------------------------------------------------------
  */
-function isConditionDowngrade(assetState, event, policy) {
+function getConditionDowngradeAmount(assetState, event, policy) {
   if (!event.conditionReport) {
-    return false;
+    return 0;
   }
 
   const ranking = policy.conditionSeverityRanking;
 
-  const current = ranking[assetState.condition.toLowerCase()];
-
+  const current = ranking[assetState.condition?.toLowerCase()];
   const observed = ranking[event.conditionReport.toLowerCase()];
 
   if (current === undefined || observed === undefined) {
-    return false;
+    return 0;
   }
 
-  return observed > current;
+  return Math.max(0, observed - current);
 }
 
 /**
@@ -422,13 +462,33 @@ function isConditionDowngrade(assetState, event, policy) {
  * ---------------------------------------------------------
  */
 function validateAuditObservation(assetState, event, policy) {
-  if (isConditionDowngrade(assetState, event, policy)) {
+  const downgradeAmount = getConditionDowngradeAmount(
+    assetState,
+    event,
+    policy,
+  );
+
+  if (downgradeAmount === 1) {
     return acceptedWithWarning(
       assetState,
       event,
       policy,
       REASON_CODES.CONDITION_DOWNGRADE,
       `Condition downgraded from ${assetState.condition} to ${event.conditionReport}.`,
+      {
+        conditionBefore: assetState.condition,
+        conditionAfter: event.conditionReport,
+      },
+    );
+  }
+
+  if (downgradeAmount >= 2) {
+    return reviewRequired(
+      assetState,
+      event,
+      policy,
+      REASON_CODES.CONDITION_DOWNGRADE,
+      `Condition downgraded by ${downgradeAmount} ranks from ${assetState.condition} to ${event.conditionReport}.`,
     );
   }
 
@@ -529,7 +589,14 @@ function accepted(assetState, event, policy) {
  * ACCEPTED WITH WARNING
  * ---------------------------------------------------------
  */
-function acceptedWithWarning(assetState, event, policy, reasonCode, message) {
+function acceptedWithWarning(
+  assetState,
+  event,
+  policy,
+  reasonCode,
+  message,
+  conditionData = {},
+) {
   const nextState = getNextState(assetState.status, event.eventType);
 
   if (!nextState) {
@@ -554,6 +621,8 @@ function acceptedWithWarning(assetState, event, policy, reasonCode, message) {
     rawRecordId: event.rawRecordId,
 
     policyVersion: policy.policyVersion,
+
+    ...conditionData,
   });
 }
 

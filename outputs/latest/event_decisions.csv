@@ -144,3 +144,103 @@ e147,trip-003,CHECKOUT,ACCEPTED,STATE_TRANSITION_ALLOWED,"CHECKOUT completed suc
 e148,trip-003,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-148,2.0.0
 e149,tab-003,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset tab-003.",AVAILABLE,AVAILABLE,events.csv-149,2.0.0
 e150,tab-003,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_INSUFFICIENT_EVIDENCE,"Manual correction is missing required evidence: evidence_ref",AVAILABLE,,events.csv-150,2.0.0
+p04-condition-001,p04-001,AUDIT_OBSERVATION,ACCEPTED_WITH_WARNING,CONDITION_DOWNGRADE,"Condition downgraded from good to worn.",CHECKED_OUT,CHECKED_OUT,events.csv-151,2.0.0
+p04-condition-002,p04-002,AUDIT_OBSERVATION,ACCEPTED_WITH_WARNING,CONDITION_DOWNGRADE,"Condition downgraded from good to worn.",CHECKED_OUT,CHECKED_OUT,events.csv-152,2.0.0
+p04-condition-003,p04-003,AUDIT_OBSERVATION,ACCEPTED_WITH_WARNING,CONDITION_DOWNGRADE,"Condition downgraded from good to worn.",CHECKED_OUT,CHECKED_OUT,events.csv-153,2.0.0
+p04-condition-004,p04-004,AUDIT_OBSERVATION,ACCEPTED_WITH_WARNING,CONDITION_DOWNGRADE,"Condition downgraded from good to worn.",CHECKED_OUT,CHECKED_OUT,events.csv-154,2.0.0
+p04-condition-005,p04-005,AUDIT_OBSERVATION,ACCEPTED_WITH_WARNING,CONDITION_DOWNGRADE,"Condition downgraded from good to worn.",CHECKED_OUT,CHECKED_OUT,events.csv-155,2.0.0
+p04-condition-006,p04-006,AUDIT_OBSERVATION,ACCEPTED_WITH_WARNING,CONDITION_DOWNGRADE,"Condition downgraded from good to worn.",CHECKED_OUT,CHECKED_OUT,events.csv-156,2.0.0
+p04-condition-007,p04-007,AUDIT_OBSERVATION,ACCEPTED_WITH_WARNING,CONDITION_DOWNGRADE,"Condition downgraded from good to worn.",CHECKED_OUT,CHECKED_OUT,events.csv-157,2.0.0
+p04-condition-008,p04-008,AUDIT_OBSERVATION,ACCEPTED_WITH_WARNING,CONDITION_DOWNGRADE,"Condition downgraded from good to worn.",CHECKED_OUT,CHECKED_OUT,events.csv-158,2.0.0
+p04-condition-009,p04-009,AUDIT_OBSERVATION,ACCEPTED_WITH_WARNING,CONDITION_DOWNGRADE,"Condition downgraded from good to worn.",CHECKED_OUT,CHECKED_OUT,events.csv-159,2.0.0
+p04-condition-010,p04-010,AUDIT_OBSERVATION,ACCEPTED_WITH_WARNING,CONDITION_DOWNGRADE,"Condition downgraded from good to worn.",CHECKED_OUT,CHECKED_OUT,events.csv-160,2.0.0
+p04-condition-011,p04-011,AUDIT_OBSERVATION,REVIEW_REQUIRED,CONDITION_DOWNGRADE,"Condition downgraded by 3 ranks from good to damaged.",CHECKED_OUT,CHECKED_OUT,events.csv-161,2.0.0
+p04-condition-012,p04-012,AUDIT_OBSERVATION,REVIEW_REQUIRED,CONDITION_DOWNGRADE,"Condition downgraded by 3 ranks from good to damaged.",CHECKED_OUT,CHECKED_OUT,events.csv-162,2.0.0
+p04-condition-013,p04-013,AUDIT_OBSERVATION,REVIEW_REQUIRED,CONDITION_DOWNGRADE,"Condition downgraded by 3 ranks from good to damaged.",CHECKED_OUT,CHECKED_OUT,events.csv-163,2.0.0
+p04-condition-014,p04-014,AUDIT_OBSERVATION,REVIEW_REQUIRED,CONDITION_DOWNGRADE,"Condition downgraded by 3 ranks from good to damaged.",CHECKED_OUT,CHECKED_OUT,events.csv-164,2.0.0
+p04-condition-015,p04-015,AUDIT_OBSERVATION,REVIEW_REQUIRED,CONDITION_DOWNGRADE,"Condition downgraded by 3 ranks from good to damaged.",CHECKED_OUT,CHECKED_OUT,events.csv-165,2.0.0
+p04-webhook-001,cam-001,WEBHOOK_ACK,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-186,2.0.0
+p04-webhook-002,lap-001,WEBHOOK_ACK,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-187,2.0.0
+p04-webhook-003,mic-001,WEBHOOK_ACK,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-188,2.0.0
+p04-webhook-004,trip-001,WEBHOOK_ACK,ACCEPTED,,"undefined",AVAILABLE,AVAILABLE,events.csv-189,2.0.0
+p04-webhook-005,tab-001,WEBHOOK_ACK,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-190,2.0.0
+p04-webhook-006,light-001,WEBHOOK_ACK,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-191,2.0.0
+p04-webhook-007,cam-001,WEBHOOK_ACK,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-192,2.0.0
+p04-webhook-008,lap-001,WEBHOOK_ACK,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-193,2.0.0
+p04-webhook-009,mic-001,WEBHOOK_ACK,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-194,2.0.0
+p04-webhook-010,trip-001,WEBHOOK_ACK,ACCEPTED,,"undefined",AVAILABLE,AVAILABLE,events.csv-195,2.0.0
+p04-auto-success-001,cam-001,AUTO_RESOLUTION_APPLIED,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-196,2.0.0
+p04-auto-success-002,lap-001,AUTO_RESOLUTION_APPLIED,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-197,2.0.0
+p04-auto-success-003,mic-001,AUTO_RESOLUTION_APPLIED,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-198,2.0.0
+p04-auto-success-004,trip-001,AUTO_RESOLUTION_APPLIED,ACCEPTED,,"undefined",AVAILABLE,AVAILABLE,events.csv-199,2.0.0
+p04-auto-success-005,tab-001,AUTO_RESOLUTION_APPLIED,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-200,2.0.0
+p04-auto-success-006,light-001,AUTO_RESOLUTION_APPLIED,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-201,2.0.0
+p04-auto-success-007,cam-001,AUTO_RESOLUTION_APPLIED,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-202,2.0.0
+p04-auto-success-008,lap-001,AUTO_RESOLUTION_APPLIED,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-203,2.0.0
+p04-auto-success-009,mic-001,AUTO_RESOLUTION_APPLIED,ACCEPTED,,"undefined",CHECKED_OUT,CHECKED_OUT,events.csv-204,2.0.0
+p04-auto-success-010,trip-001,AUTO_RESOLUTION_APPLIED,ACCEPTED,,"undefined",AVAILABLE,AVAILABLE,events.csv-205,2.0.0
+p04-auto-review-001,cam-001,AUDIT_OBSERVATION,WARNING_ONLY,AUDIT_DISCREPANCY,"Audit observation recorded successfully.",CHECKED_OUT,CHECKED_OUT,events.csv-206,2.0.0
+p04-auto-review-002,lap-001,AUDIT_OBSERVATION,WARNING_ONLY,AUDIT_DISCREPANCY,"Audit observation recorded successfully.",CHECKED_OUT,CHECKED_OUT,events.csv-207,2.0.0
+p04-auto-review-003,mic-001,AUDIT_OBSERVATION,WARNING_ONLY,AUDIT_DISCREPANCY,"Audit observation recorded successfully.",CHECKED_OUT,CHECKED_OUT,events.csv-208,2.0.0
+p04-auto-review-004,trip-001,AUDIT_OBSERVATION,WARNING_ONLY,AUDIT_DISCREPANCY,"Audit observation recorded successfully.",AVAILABLE,AVAILABLE,events.csv-209,2.0.0
+p04-auto-review-005,tab-001,AUDIT_OBSERVATION,WARNING_ONLY,AUDIT_DISCREPANCY,"Audit observation recorded successfully.",CHECKED_OUT,CHECKED_OUT,events.csv-210,2.0.0
+p04-auto-review-006,light-001,AUDIT_OBSERVATION,WARNING_ONLY,AUDIT_DISCREPANCY,"Audit observation recorded successfully.",CHECKED_OUT,CHECKED_OUT,events.csv-211,2.0.0
+p04-auto-review-007,cam-001,AUDIT_OBSERVATION,WARNING_ONLY,AUDIT_DISCREPANCY,"Audit observation recorded successfully.",CHECKED_OUT,CHECKED_OUT,events.csv-212,2.0.0
+p04-auto-review-008,lap-001,AUDIT_OBSERVATION,WARNING_ONLY,AUDIT_DISCREPANCY,"Audit observation recorded successfully.",CHECKED_OUT,CHECKED_OUT,events.csv-213,2.0.0
+p04-auto-review-009,mic-001,AUDIT_OBSERVATION,WARNING_ONLY,AUDIT_DISCREPANCY,"Audit observation recorded successfully.",CHECKED_OUT,CHECKED_OUT,events.csv-214,2.0.0
+p04-auto-review-010,trip-001,AUDIT_OBSERVATION,WARNING_ONLY,AUDIT_DISCREPANCY,"Audit observation recorded successfully.",AVAILABLE,AVAILABLE,events.csv-215,2.0.0
+p04-api-dup-001-original,cam-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-216,2.0.0
+p04-api-dup-001-retry,cam-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-217,2.0.0
+p04-api-dup-002-original,lap-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-218,2.0.0
+p04-api-dup-002-retry,lap-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-219,2.0.0
+p04-api-dup-003-original,mic-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-220,2.0.0
+p04-api-dup-003-retry,mic-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-221,2.0.0
+p04-api-dup-004-original,trip-001,CHECKOUT,REJECTED,CHECKOUT_LIMIT_EXCEEDED,"s104 has reached the checkout limit.",AVAILABLE,,events.csv-222,2.0.0
+p04-api-dup-004-retry,trip-001,CHECKOUT,REJECTED,CHECKOUT_LIMIT_EXCEEDED,"s104 has reached the checkout limit.",AVAILABLE,,events.csv-223,2.0.0
+p04-api-dup-005-original,tab-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-224,2.0.0
+p04-api-dup-005-retry,tab-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-225,2.0.0
+p04-source-conflict-001,cam-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-226,2.0.0
+p04-source-conflict-002,lap-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-227,2.0.0
+p04-source-conflict-003,mic-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-228,2.0.0
+p04-source-conflict-004,trip-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-229,2.0.0
+p04-source-conflict-005,tab-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-230,2.0.0
+p04-source-conflict-006,light-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-231,2.0.0
+p04-source-conflict-007,cam-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-232,2.0.0
+p04-source-conflict-008,lap-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-233,2.0.0
+p04-source-conflict-009,mic-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-234,2.0.0
+p04-source-conflict-010,trip-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-235,2.0.0
+p04-normal-001,cam-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-236,2.0.0
+p04-normal-002,lap-001,RETURN,REJECTED,HOLDER_MISMATCH,"Asset holder does not match the returning actor.",CHECKED_OUT,,events.csv-237,2.0.0
+p04-normal-003,mic-001,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset mic-001.",CHECKED_OUT,CHECKED_OUT,events.csv-238,2.0.0
+p04-normal-004,trip-001,CANCEL_RESERVATION,REJECTED,RESERVATION_NOT_FOUND,"Reservation undefined does not exist.",AVAILABLE,,events.csv-239,2.0.0
+p04-normal-005,tab-001,MAINTENANCE_OPEN,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot MAINTENANCE_OPEN an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-240,2.0.0
+p04-normal-006,light-001,MAINTENANCE_CLOSE,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot MAINTENANCE_CLOSE an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-241,2.0.0
+p04-normal-007,cam-001,TRANSFER_OUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot TRANSFER_OUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-242,2.0.0
+p04-normal-008,lap-001,TRANSFER_IN,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot TRANSFER_IN an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-243,2.0.0
+p04-normal-009,mic-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-244,2.0.0
+p04-normal-010,trip-001,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_UNAUTHORIZED,"Only authorized administrative actors may perform manual corrections.",AVAILABLE,,events.csv-245,2.0.0
+p04-normal-011,tab-001,CHECKOUT,REJECTED,ILLEGAL_STATE_TRANSITION,"Cannot CHECKOUT an asset in state CHECKED_OUT.",CHECKED_OUT,,events.csv-246,2.0.0
+p04-normal-012,light-001,RETURN,REJECTED,HOLDER_MISMATCH,"Asset holder does not match the returning actor.",CHECKED_OUT,,events.csv-247,2.0.0
+p04-normal-013,cam-001,RESERVE,ACCEPTED,RESERVATION_CREATED,"Reservation created for asset cam-001.",CHECKED_OUT,CHECKED_OUT,events.csv-248,2.0.0
+p04-normal-014,lap-001,AUDIT_OBSERVATION,REJECTED,UNAUTHORIZED_ACTOR,"student is not permitted to perform AUDIT_OBSERVATION.",,,events.csv-249,2.0.0
+p04-normal-015,mic-001,MANUAL_CORRECTION,REJECTED,MANUAL_CORRECTION_UNAUTHORIZED,"Only authorized administrative actors may perform manual corrections.",CHECKED_OUT,,events.csv-250,2.0.0
+p04-late-review-006,p04-026,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-181,2.0.0
+p04-late-review-007,p04-027,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-182,2.0.0
+p04-late-review-008,p04-028,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-183,2.0.0
+p04-late-review-009,p04-029,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-184,2.0.0
+p04-late-review-010,p04-030,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-185,2.0.0
+p04-late-review-001,p04-021,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-176,2.0.0
+p04-late-review-002,p04-022,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-177,2.0.0
+p04-late-review-003,p04-023,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-178,2.0.0
+p04-late-review-004,p04-024,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-179,2.0.0
+p04-late-review-005,p04-025,RETURN,ACCEPTED,STATE_TRANSITION_ALLOWED,"RETURN completed successfully.",CHECKED_OUT,AVAILABLE,events.csv-180,2.0.0
+p04-late-grace-001,p04-001,RETURN,ACCEPTED_WITH_WARNING,LATE_RETURN_WITHIN_GRACE_PERIOD,"Return was 1.0 hours late but is within the 2-hour grace period.",CHECKED_OUT,AVAILABLE,events.csv-166,2.0.0
+p04-late-grace-002,p04-002,RETURN,ACCEPTED_WITH_WARNING,LATE_RETURN_WITHIN_GRACE_PERIOD,"Return was 1.0 hours late but is within the 2-hour grace period.",CHECKED_OUT,AVAILABLE,events.csv-167,2.0.0
+p04-late-grace-003,p04-003,RETURN,ACCEPTED_WITH_WARNING,LATE_RETURN_WITHIN_GRACE_PERIOD,"Return was 1.0 hours late but is within the 2-hour grace period.",CHECKED_OUT,AVAILABLE,events.csv-168,2.0.0
+p04-late-grace-004,p04-004,RETURN,ACCEPTED_WITH_WARNING,LATE_RETURN_WITHIN_GRACE_PERIOD,"Return was 1.0 hours late but is within the 2-hour grace period.",CHECKED_OUT,AVAILABLE,events.csv-169,2.0.0
+p04-late-grace-005,p04-005,RETURN,ACCEPTED_WITH_WARNING,LATE_RETURN_WITHIN_GRACE_PERIOD,"Return was 1.0 hours late but is within the 2-hour grace period.",CHECKED_OUT,AVAILABLE,events.csv-170,2.0.0
+p04-late-grace-006,p04-006,RETURN,ACCEPTED_WITH_WARNING,LATE_RETURN_WITHIN_GRACE_PERIOD,"Return was 1.0 hours late but is within the 2-hour grace period.",CHECKED_OUT,AVAILABLE,events.csv-171,2.0.0
+p04-late-grace-007,p04-007,RETURN,ACCEPTED_WITH_WARNING,LATE_RETURN_WITHIN_GRACE_PERIOD,"Return was 1.0 hours late but is within the 2-hour grace period.",CHECKED_OUT,AVAILABLE,events.csv-172,2.0.0
+p04-late-grace-008,p04-008,RETURN,ACCEPTED_WITH_WARNING,LATE_RETURN_WITHIN_GRACE_PERIOD,"Return was 1.0 hours late but is within the 2-hour grace period.",CHECKED_OUT,AVAILABLE,events.csv-173,2.0.0
+p04-late-grace-009,p04-009,RETURN,ACCEPTED_WITH_WARNING,LATE_RETURN_WITHIN_GRACE_PERIOD,"Return was 1.0 hours late but is within the 2-hour grace period.",CHECKED_OUT,AVAILABLE,events.csv-174,2.0.0
+p04-late-grace-010,p04-010,RETURN,ACCEPTED_WITH_WARNING,LATE_RETURN_WITHIN_GRACE_PERIOD,"Return was 1.0 hours late but is within the 2-hour grace period.",CHECKED_OUT,AVAILABLE,events.csv-175,2.0.0

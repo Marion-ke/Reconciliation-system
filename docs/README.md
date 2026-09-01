@@ -2,565 +2,401 @@
 
 ## Overview
 
-The Reconciliation Intelligence System is a deterministic event-processing engine developed during the internship project.
+The Reconciliation Intelligence System is a policy-driven asset operations reconciliation platform. It ingests inventory, operational events, reservations, audit observations, and manual correction records; validates and normalizes the data; reconciles asset state transitions; detects exceptions and source discrepancies; applies controlled automated resolutions; persists an auditable processing history; and exposes operational results through a REST API.
 
-The system ingests an inventory baseline and operational event history, validates and normalizes incoming records, replays events deterministically, applies policy-driven business rules, and produces an auditable final asset ledger together with decision logs, exception reports, policy comparison evidence, and management summaries.
-
-The system also processes reservation records, audit observations, and manual correction requests as additional reconciliation inputs.
-
-The primary design goal is to ensure that every material state change is traceable, explainable, and reproducible.
+The system was developed incrementally across the internship packets and is currently implemented through **Packet 04 — Weeks 7 & 8**, extending the earlier ingestion and reconciliation foundation with persistence, API access, webhook notifications, retry handling, automated resolution, manual exception resolution, policy comparison, and operational reporting.
 
 ---
 
-# Objectives
+## Current Capabilities
 
-The system is designed to:
+### Data Ingestion
 
-- Load inventory and operational event datasets
-- Validate and normalize operational records
-- Process canonical events deterministically
-- Enforce a policy-driven state machine
-- Prevent invalid events from corrupting the ledger
-- Record reconciliation decisions for every event
-- Produce a complete final asset state
-- Detect audit discrepancies
-- Detect reservation conflicts
-- Evaluate manual correction requests
-- Generate management-readable reports
-- Generate exception queues for manual review
-- Persist reconciliation evidence in SQLite
-- Compare policy versions against the same input data
-- Produce repeatable deterministic outputs across multiple runs
+The system supports:
+
+- Inventory CSV loading
+- Event CSV loading
+- Reservation data loading
+- Audit observation loading
+- Manual correction loading
+- JSON policy loading
+- Raw record creation with source traceability
+
+### Validation
+
+Validation covers:
+
+- Required fields
+- Duplicate event IDs
+- Invalid timestamps
+- Invalid received timestamps
+- Unknown event types
+- Unknown assets
+- Missing actor roles
+- Invalid condition values
+- Late-arriving events
+- Reservation validation
+- Audit observation validation
+- Manual correction authorization validation
+
+Validation results distinguish between errors and warnings and retain reason codes, source values, expected rules, and recommended next actions.
+
+### Canonicalization and Reconciliation
+
+The reconciliation pipeline provides:
+
+- Canonical event generation
+- Deterministic event ordering
+- State-transition validation
+- Policy-driven decision making
+- Asset state tracking
+- Exception generation
+- Review-required decisions
+- Warning-only decisions
+- Accepted-with-warning decisions
+- Source conflict detection
+- Audit discrepancy detection
+
+Each decision retains the information required to trace the decision back to the originating event and asset state.
 
 ---
 
-# Architecture
+## Packet 04 Enhancements
 
-The reconciliation pipeline consists of the following stages:
+Packet 04 extends the reconciliation foundation with operational and integration capabilities.
 
-1. CSV Ingestion
-2. Raw Record Construction
-3. Validation
-4. Canonical Mapping
-5. Replay Ordering
-6. Late Event Detection
-7. Reconciliation Engine
-8. Audit Reconciliation
-9. Reservation Reconciliation
-10. Manual Correction Evaluation
-11. Exception Queue Generation
-12. Report Generation
-13. SQLite Persistence
+### SQLite Persistence
 
-Each stage produces structured outputs that are consumed by the next stage, supporting traceable and reproducible reconciliation results.
+The system persists:
+
+- Reconciliation runs
+- Raw records
+- Canonical events
+- Event decisions
+- Final asset states
+- Exception cases
+- Report artifacts
+- Webhook configurations
+- Webhook dispatch attempts
+- API usage records
+
+The database schema is initialized automatically when the application starts.
+
+### REST API
+
+The API is implemented under `/api/v1` and provides endpoints for:
+
+- Reconciliation run listing
+- Reconciliation run details
+- Exception listing
+- Exception resolution
+- Asset event history
+- Webhook registration
+- Event ingestion
+
+A health endpoint is also available at:
+
+```text
+GET /health
+```
+
+The event ingestion endpoint supports both single-event and batch requests and requires an `Idempotency-Key` to prevent duplicate processing.
+
+### Exception Management
+
+Exception cases are persisted with:
+
+- Case ID
+- Run ID
+- Asset ID
+- Event ID
+- Severity
+- Reason code
+- Status
+- Recommended action
+- Resolution timestamp
+- Resolver
+- Resolution information
+
+Manual resolution is restricted to authorized actors and is recorded for auditability.
+
+### Automated Resolution
+
+Policy-driven automated resolution is supported for eligible exception cases.
+
+The system records:
+
+- Which exception was evaluated
+- Whether it was automatically resolved
+- The applied rule
+- The resulting resolution
+- The associated asset and event
+
+Automated resolution does not replace exceptions that require manual review.
+
+### Webhooks
+
+The system supports configurable webhook notifications for reconciliation outcomes.
+
+Webhook functionality includes:
+
+- Webhook registration
+- Event-type filtering
+- Severity filtering
+- Dispatch persistence
+- Response-code recording
+- Response-body recording
+- Retry handling
+- Dispatch attempt tracking
+
+Failed webhook deliveries can be retried and each attempt remains auditable.
+
+### API Usage Monitoring
+
+API requests are persisted with:
+
+- Request ID
+- HTTP method
+- Endpoint
+- Status code
+- Response time
+- Creation timestamp
+
+The system generates an API usage summary containing:
+
+- Total requests
+- Total errors
+- Error rate
+- Average response time
+- Per-endpoint statistics
 
 ---
 
-# Project Structure
+## Current Dataset
+
+The current sample dataset is designed for the later reconciliation packets and contains:
+
+- 55 inventory records
+- 250 event records
+- Multiple asset types
+- Multiple actor roles
+- Multiple source systems
+- Normal operational events
+- Invalid records
+- Late-arriving events
+- Unknown assets
+- Invalid conditions
+- Unsupported event types
+- Manual correction scenarios
+- Webhook acknowledgement events
+- Automated-resolution events
+- Late-return review scenarios
+
+The intentional abnormal records are used to exercise validation, exception handling, policy decisions, and reconciliation behavior.
+
+---
+
+## Generated Outputs
+
+The current pipeline generates operational reports in:
+
+```text
+outputs/latest/
+```
+
+Key outputs include:
+
+- `final_asset_state.csv`
+- `asset_state_report.csv`
+- `event_decisions.csv`
+- `exception_queue.csv`
+- `canonical_events.csv`
+- `raw_record_index.csv`
+- `validation_errors.csv`
+- `policy_breach_summary.csv`
+- `reservation_report.csv`
+- `manual_correction_audit.csv`
+- `source_conflict_report.csv`
+- `policy_decision_difference.csv`
+- `auto_resolution_summary.csv`
+- `webhook_dispatch_log.csv`
+- `api_usage_summary.md`
+- `data_profile.md`
+- `ingestion_summary.md`
+- `run_summary.md`
+- `database_snapshot_notes.md`
+
+Report artifacts are also registered in the persistence layer for the corresponding reconciliation run.
+
+---
+
+## Project Structure
 
 ```text
 src/
-
+├── api/
 ├── contracts/
 ├── domain/
 ├── exporters/
 ├── ingestion/
 ├── normalization/
 ├── persistence/
-├── policy/
+├── profiling/
 ├── reconciliation/
 ├── validation/
-├── index.js
-└── run.js
+├── run.js
+└── index.js
 
 tests/
-
+├── api/
 ├── integration/
 ├── reconciliation/
-├── policy/
-├── persistence/
-└── regression/
+└── ...
 
 data/
-
-├── sample/
-└── policy/
+├── policy/
+└── sample/
 
 outputs/
-
 └── latest/
+
+docs/
+├── architecture.md
+├── assumptions.md
+├── state_transition_table.md
+├── test_evidence.md
+├── test_evidence_updated.md
+├── policy_comparison_notes.md
+├── database_snapshot_notes.md
+└── ASSISTANCE_DISCLOSURE.md
 ```
 
 ---
 
-# Core Features
+## Installation
 
-## Deterministic Event Ordering
-
-Canonical events are replayed using deterministic ordering based on:
-
-1. occurred_at
-2. received_at
-3. source priority
-4. source row
-5. event_id
-
-This ordering ensures that identical input datasets produce identical reconciliation behaviour and deterministic output content across repeated executions.
-
-Run-specific metadata such as Run ID and execution timestamps is intentionally unique to each reconciliation run.
-
----
-
-## Policy-Driven Reconciliation
-
-Business rules are externalised in policy files rather than being hard-coded into the reconciliation engine.
-
-The project contains multiple policy versions:
-
-- `data/policy/policy-v1.json`
-- `data/policy/policy-v2.json`
-
-The policy comparison mechanism evaluates the same inventory and event dataset against both versions and records differences in reconciliation outcomes.
-
-The current policy includes:
-
-- Actor permissions
-- Event definitions
-- Asset conditions
-- Checkout limits
-- Legal transitions
-- Condition ranking
-
----
-
-## Policy Version Comparison
-
-The system supports backward comparison of policy versions using the same input data.
-
-The current real-data comparison records:
-
-- Policy v1: `1.0.0`
-- Policy v2: `2.0.0`
-- Input events: `150`
-- Total policy differences: `89`
-- Changed reconciliation outcomes: `58`
-
-The comparison output is generated as:
-
-```text
-outputs/latest/policy_decision_difference.csv
-```
-
-The run records the active policy version so that decisions remain associated with the policy used during that reconciliation run.
-
----
-
-# Reproducibility
-
-The system includes an automated regression test that executes the complete reconciliation pipeline twice and compares SHA-256 hashes of deterministic generated output files.
-
-The reproducibility test covers:
-
-- `canonical_events.csv`
-- `event_decisions.csv`
-- `exception_queue.csv`
-- `final_asset_state.csv`
-
-Run-specific `run_summary.md` is excluded from byte-for-byte comparison because it contains intentionally changing metadata such as Run ID and execution timestamps.
-
-This verifies that:
-
-- deterministic replay ordering is preserved;
-- policy-driven processing remains stable;
-- reconciliation decisions remain reproducible;
-- deterministic exported outputs remain unchanged across repeated executions.
-
----
-
-# State Machine
-
-The reconciliation engine implements an explicit state machine.
-
-Supported event types include:
-
-- CHECKOUT
-- RETURN
-- MAINTENANCE_OPEN
-- MAINTENANCE_CLOSE
-- TRANSFER_OUT
-- TRANSFER_IN
-- AUDIT_OBSERVATION
-- RETIRE
-
-Additional operational records are processed for:
-
-- RESERVE
-- CANCEL_RESERVATION
-- MANUAL_CORRECTION
-
-Illegal transitions are rejected and do not modify the authoritative ledger.
-
----
-
-# Decision Taxonomy
-
-Every canonical event receives one reconciliation decision.
-
-Supported decision types:
-
-- ACCEPTED
-- ACCEPTED_WITH_WARNING
-- REJECTED
-- WARNING_ONLY
-- REVIEW_REQUIRED
-
-Each decision can record:
-
-- Event ID
-- Event Type
-- Asset ID
-- Previous State
-- Next State
-- Reason Code
-- Message
-- Raw Record Reference
-- Policy Version
-
----
-
-# Exception Management
-
-Events and reconciliation records requiring human attention are exported into an exception queue.
-
-Examples include:
-
-- Illegal state transitions
-- Unauthorized actions
-- Holder mismatches
-- Audit discrepancies
-- Unknown assets
-- Policy violations
-- Reservation conflicts
-- Manual correction failures
-
-Each exception can include:
-
-- Case ID
-- Severity
-- Reason Code
-- Asset
-- Event or source record
-- Recommended Next Action
-- Grouping Key
-
----
-
-# Audit Reconciliation
-
-Audit observations are compared against the reconciled asset state.
-
-The audit reconciliation process checks:
-
-- Status
-- Condition
-- Location
-
-When an observation conflicts with the reconciled state, an audit discrepancy is recorded with a reason code, severity, differences, and explanatory message.
-
-The resulting source conflict report is generated as:
-
-```text
-outputs/latest/source_conflict_report.csv
-```
-
----
-
-# Reservation Reconciliation
-
-Reservation records are evaluated against the current reconciled asset state.
-
-The system handles:
-
-- Unknown assets
-- Conflicts with checked-out assets
-- Reservations involving maintenance assets
-- Reservations involving in-transit assets
-- Reservations involving retired assets
-- Cancelled reservations
-
-The resulting reservation report is generated as:
-
-```text
-outputs/latest/reservation_report.csv
-```
-
----
-
-# Manual Corrections
-
-Manual correction requests are evaluated using authorization and evidence requirements.
-
-Authorized roles are restricted according to the manual correction policy.
-
-A correction must provide the required evidence before it can be accepted with warning.
-
-Manual correction outcomes are exported as:
-
-```text
-outputs/latest/manual_correction_audit.csv
-```
-
----
-
-# SQLite Persistence
-
-The system persists reconciliation evidence in SQLite.
-
-The database contains run-linked records for:
-
-- `reconciliation_runs`
-- `raw_records`
-- `canonical_events`
-- `event_decisions`
-- `asset_states`
-- `exception_cases`
-- `report_artifacts`
-
-Each reconciliation run records identifying metadata including:
-
-- Run ID
-- Policy Version
-- Input Hash
-- Start Time
-- Completion Time
-- Run Status
-
-This provides backward traceability from a completed run to its source evidence, decisions, final states, exceptions, and generated reports.
-
-The database snapshot documentation is generated as:
-
-```text
-outputs/latest/database_snapshot_notes.md
-```
-
----
-
-# Generated Outputs
-
-Running the system produces the following outputs:
-
-```text
-outputs/latest/
-
-canonical_events.csv
-event_decisions.csv
-exception_queue.csv
-final_asset_state.csv
-asset_state_report.csv
-validation_errors.csv
-raw_record_index.csv
-reservation_report.csv
-manual_correction_audit.csv
-source_conflict_report.csv
-policy_breach_summary.csv
-policy_decision_difference.csv
-run_summary.md
-database_snapshot_notes.md
-data_profile.md
-ingestion_summary.md
-```
-
----
-
-# Dataset
-
-The current dataset contains:
-
-- 25 inventory assets
-- 150 operational events
-- 145 canonical events after validation/reconciliation processing
-- 30 reservation records
-- 20 audit observations
-- 12 manual correction records
-- Multiple multi-step asset histories
-- Late-arriving events
-- Duplicate events
-- Illegal transitions
-- Audit discrepancies
-- Unauthorized actions
-- Holder mismatches
-- Unknown assets
-- Condition downgrade scenarios
-- Reservation conflicts
-- Manual correction cases
-
-The generated run currently produces:
-
-- 145 processed reconciliation decisions
-- 78 accepted events
-- 1 accepted-with-warning event
-- 53 rejected events
-- 12 review-required events
-- 2 warning-only events
-- 100 exception cases
-- 20 audit discrepancies
-
----
-
-# Running the Project
-
-Install dependencies:
+Install dependencies with:
 
 ```bash
 npm install
 ```
 
-Run the reconciliation engine:
+---
+
+## Running the Reconciliation Pipeline
+
+Execute:
 
 ```bash
-npm run start
+npm start
 ```
 
-Run the automated test suite:
+The application:
+
+1. Initializes the SQLite database.
+2. Creates a reconciliation run.
+3. Loads source datasets and policy configuration.
+4. Validates raw records.
+5. Generates canonical events.
+6. Reconciles asset state transitions.
+7. Detects discrepancies and exceptions.
+8. Applies eligible automated resolutions.
+9. Persists reconciliation results.
+10. Generates operational reports.
+11. Registers generated report artifacts.
+12. Completes the reconciliation run.
+
+Generated reports are written to:
+
+```text
+outputs/latest/
+```
+
+---
+
+## Running the API
+
+Start the API with:
+
+```bash
+node src/startApi.js
+```
+
+The API listens on port `3000` by default.
+
+Health check:
+
+```text
+GET http://localhost:3000/health
+```
+
+---
+
+## Running Tests
+
+Run the complete test suite with:
 
 ```bash
 npm test
 ```
 
----
+API tests can be run with:
 
-# Requirements Traceability
+```bash
+npm test -- --runInBand tests/api
+```
 
-| Requirement | Implementation |
-|---|---|
-| Validation | `src/validation/` |
-| Canonical Mapping | `src/normalization/` |
-| Replay Ordering | `src/reconciliation/replayOrdering.js` |
-| Late Event Detection | `src/reconciliation/lateEventDetector.js` |
-| Policy Engine | `src/policy/` and `data/policy/` |
-| State Machine | `src/reconciliation/stateMachine.js` |
-| Reconciliation Engine | `src/reconciliation/reconciliationEngine.js` |
-| Audit Reconciliation | `src/reconciliation/auditReconciliation.js` |
-| Reservation Reconciliation | `src/reconciliation/reservationReconciliation.js` |
-| Manual Corrections | `src/reconciliation/manualCorrectionDecision.js` |
-| Exception Queue | `src/reconciliation/exceptionQueue.js` |
-| SQLite Persistence | `src/persistence/` |
-| Exporters | `src/exporters/` |
-| Policy Comparison | `src/reconciliation/policyComparison.js` |
-| Deterministic Outputs | `tests/regression/reproducible_outputs.test.js` |
+Individual test files can also be executed when debugging a specific capability.
 
----
+The test suite covers areas including:
 
-# Traceability
-
-Every asset state in the final ledger can be traced through:
-
-1. The source inventory record
-2. Source operational events
-3. The canonical event record
-4. The reconciliation decision
-5. Any related exception
-6. The resulting record in `final_asset_state.csv`
-7. The corresponding persisted records in SQLite
-
-Rejected and review-required events do not mutate the authoritative ledger unless explicitly permitted by the reconciliation logic.
-
-Each reconciliation run is also associated with the policy version and input hash used during processing.
-
----
-
-# Test Coverage
-
-The project contains automated tests covering the reconciliation, policy, persistence, integration, and regression layers.
-
-Current test coverage includes:
-
-- State transitions
+- Validation
+- Canonicalization
 - Deterministic ordering
-- Replay ordering
-- Late-event handling
-- Policy rules
-- Policy version comparison
-- Checkout limits
-- Condition ranking
-- Duplicate event handling
-- Holder mismatch
-- Unknown assets
-- Invalid timestamps
-- Idempotent replay
-- Integration pipeline
-- Export generation
-- Audit reconciliation
-- Reservation reconciliation
-- Manual correction evaluation
-- SQLite persistence
-- Run isolation
-- Foreign-key relationships
-- Reproducible outputs
+- State transitions
+- Reconciliation decisions
+- Exception handling
+- API endpoints
+- API idempotency
+- Manual exception resolution
+- Webhook dispatch
+- Webhook retry handling
+- Automated resolution
+- Persistence
+- Integration pipelines
+- Report generation
 
-Run the complete suite with:
+---
 
-```bash
-npm test
+## Design Principles
+
+The system is designed around:
+
+- **Traceability** — processing decisions can be traced to source records, events, assets, and runs.
+- **Determinism** — ordering and generated outputs are reproducible.
+- **Validation-first processing** — invalid records are identified before downstream reconciliation.
+- **Policy-driven behavior** — event handling and automated actions are controlled by policy configuration.
+- **Auditability** — reconciliation runs, exceptions, resolutions, webhook attempts, and API usage are persisted.
+- **Separation of concerns** — ingestion, validation, normalization, reconciliation, persistence, API access, and exporting remain separate components.
+- **Controlled automation** — automated resolution is applied only when policy conditions permit it.
+- **Extensibility** — the architecture supports additional reconciliation packets and operational capabilities without replacing the underlying data model.
+
+---
+
+## Documentation
+
+Additional project documentation is available in:
+
+```text
+docs/
 ```
 
----
+Important documents include:
 
-# Design Principles
-
-The system follows several core principles:
-
-- Deterministic replay
-- Explicit state machine
-- Policy-driven decisions
-- Traceability
-- No mutation on rejected events
-- Repeatable deterministic outputs
-- Human-reviewable exceptions
-- Run-level persistence
-- Policy-version traceability
-
----
-
-# Known Limitations
-
-Current implementation is command-line based.
-
-The project currently:
-
-- Processes a single reconciliation batch at a time
-- Does not include a graphical user interface
-- Does not implement distributed or concurrent processing
-- Uses idempotent SQLite schema initialization rather than a separate versioned migration framework
-
-These limitations are acceptable for the current project scope.
-
----
-
-# Outputs
-
-The reconciliation process produces:
-
-- Final asset ledger
-- Decision log
-- Exception queue
-- Validation report
-- Data profile
-- Ingestion summary
-- Run summary
-- Reservation report
-- Manual correction audit
-- Source conflict report
-- Asset state report
-- Policy breach summary
-- Policy decision difference report
-- Database snapshot notes
-
-These outputs provide traceability from source records through canonical events and reconciliation decisions to the final authoritative asset ledger.
-
----
-
-# Requirements
-
-- Node.js 22+
-- npm
+- `docs/architecture.md`
+- `docs/assumptions.md`
+- `docs/state_transition_table.md`
+- `docs/test_evidence_updated.md`
+- `docs/policy_comparison_notes.md`
+- `docs/database_snapshot_notes.md`
+- `docs/ASSISTANCE_DISCLOSURE.md`

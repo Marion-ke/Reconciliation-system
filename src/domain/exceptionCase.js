@@ -10,6 +10,8 @@ export default class ExceptionCase {
     assetId,
     eventId,
     rawRecordId,
+    conditionBefore,
+    conditionAfter,
     message,
     recommendedNextAction,
     groupingKey,
@@ -25,6 +27,10 @@ export default class ExceptionCase {
     this.eventId = eventId;
 
     this.rawRecordId = rawRecordId;
+
+    this.conditionBefore = conditionBefore;
+
+    this.conditionAfter = conditionAfter;
 
     this.message = message;
 

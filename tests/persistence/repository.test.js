@@ -16,6 +16,7 @@ import {
   getEventDecisions,
   getExceptionCases,
   getAssetStates,
+  resolveExceptionCase,
 } from "../../src/persistence/repository.js";
 
 const RUN_ID = "test-run-001";
@@ -172,6 +173,7 @@ describe("Persistence Repository", () => {
   test("stores a canonical event", async () => {
     await insertCanonicalEvent({
       eventId: "e001",
+      canonicalEventId: "ce-0001",
       runId: RUN_ID,
       eventType: "CHECKOUT",
       assetId: "cam-001",
@@ -297,5 +299,43 @@ describe("Persistence Repository", () => {
     expect(artifact).toBeDefined();
     expect(artifact.report_name).toBe("run_summary.md");
     expect(artifact.format).toBe("markdown");
+  });
+  test("resolves an exception case and records resolution audit information", async () => {
+    const runId = "resolution-test-run-001";
+
+    await createReconciliationRun({
+      runId,
+      policyVersion: "2.0.0",
+      inputHash: "resolution-test-hash",
+      startedAt: "2026-08-30T10:00:00.000Z",
+    });
+
+    await insertExceptionCase({
+      caseId: "case-resolution-001",
+      runId,
+      assetId: "cam-001",
+      eventId: "e-resolution-001",
+      severity: "ERROR",
+      reasonCode: "ILLEGAL_TRANSITION",
+      status: "OPEN",
+      recommendedAction: "Review the transition.",
+    });
+
+    const resolved = await resolveExceptionCase({
+      caseId: "case-resolution-001",
+      resolvedBy: "admin-001",
+      resolvedAt: "2026-08-30T11:00:00.000Z",
+      resolution: "Reviewed and approved correction.",
+    });
+
+    expect(resolved).toEqual(
+      expect.objectContaining({
+        case_id: "case-resolution-001",
+        status: "RESOLVED",
+        resolved_by: "admin-001",
+        resolved_at: "2026-08-30T11:00:00.000Z",
+        resolution: "Reviewed and approved correction.",
+      }),
+    );
   });
 });

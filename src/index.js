@@ -36,6 +36,8 @@ import {
   insertAssetState,
   insertExceptionCase,
   insertReportArtifact,
+  getAllWebhookDispatches,
+  getApiUsageRecords,
 } from "./persistence/repository.js";
 import {
   persistExceptions,
@@ -56,6 +58,11 @@ import { buildAssetStateReportCsv } from "./exporters/asset_state_report_exporte
 import { buildDatabaseSnapshotNotes } from "./exporters/database_snapshot_notes_exporter.js";
 import { buildPolicyDifferenceCsv } from "./exporters/policy_difference_exporter.js";
 import { comparePolicyVersions } from "./reconciliation/policyComparison.js";
+import { applyAutoResolution } from "./reconciliation/autoResolution.js";
+import { buildApiUsageSummary } from "./exporters/api_usage_summary_exporter.js";
+import { buildWebhookDispatchLog } from "./exporters/webhook_dispatch_log_exporter.js";
+import { buildAutoResolutionSummary } from "./exporters/auto_resolution_summary_exporter.js";
+
 function createRunId() {
   return `run-${new Date().toISOString().replace(/[-:.TZ]/g, "")}-${crypto
     .randomBytes(4)
@@ -470,10 +477,47 @@ export async function main() {
     ...auditExceptions,
   ];
 
+  const autoResolutionResult = applyAutoResolution(exceptionQueue, policy);
+
+  const finalExceptionQueue = autoResolutionResult.exceptions;
+  const autoResolvedExceptions = autoResolutionResult.autoResolved;
+
   await persistExceptions({
     runId,
-    exceptionQueue,
+    exceptionQueue: [...finalExceptionQueue, ...autoResolvedExceptions],
   });
+
+  // console.log("\n=== AUTO RESOLVED SAMPLE ===");
+  // console.log(autoResolvedExceptions[0]);
+  const autoResolutionSummaryCsv = buildAutoResolutionSummary(
+    autoResolvedExceptions,
+  );
+
+  writeTextFile(
+    "outputs/latest/auto_resolution_summary.csv",
+    autoResolutionSummaryCsv,
+  );
+
+  console.log(`Auto-resolutions exported: ${autoResolvedExceptions.length}`);
+
+  const webhookDispatches = await getAllWebhookDispatches();
+
+  const webhookDispatchLogCsv = buildWebhookDispatchLog(webhookDispatches);
+
+  writeTextFile(
+    "outputs/latest/webhook_dispatch_log.csv",
+    webhookDispatchLogCsv,
+  );
+
+  console.log(`Webhook dispatch records exported: ${webhookDispatches.length}`);
+
+  const apiUsageRecords = await getApiUsageRecords();
+
+  const apiUsageSummary = buildApiUsageSummary(apiUsageRecords);
+
+  writeTextFile("outputs/latest/api_usage_summary.md", apiUsageSummary);
+
+  console.log(`API usage records exported: ${apiUsageRecords.length}`);
   const assetStateReportCsv = buildAssetStateReportCsv(
     reconciliationResult.ledger,
     {
@@ -613,6 +657,8 @@ export async function main() {
       "outputs/latest/policy_breach_summary.csv",
       "outputs/latest/database_snapshot_notes.md",
       "outputs/latest/policy_decision_difference.csv",
+      "outputs/latest/auto_resolution_summary.csv",
+      "outputs/latest/webhook_dispatch_log.csv",
     ],
   });
 
@@ -721,6 +767,21 @@ export async function main() {
       reportName: "policy_decision_difference.csv",
       path: "outputs/latest/policy_decision_difference.csv",
       format: "csv",
+    },
+    {
+      reportName: "auto_resolution_summary",
+      path: "outputs/latest/auto_resolution_summary.csv",
+      format: "csv",
+    },
+    {
+      reportName: "webhook_dispatch_log",
+      path: "outputs/latest/webhook_dispatch_log.csv",
+      format: "csv",
+    },
+    {
+      reportName: "api_usage_summary",
+      path: "outputs/latest/api_usage_summary.md",
+      format: "md",
     },
   ];
 
